@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/features/Home/screens/job_seeker_homeScreen.dart';
+import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
 
 part 'auth_state.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/controllers/cubit/state.dart';
+import 'package:graduation_project/features/Home/presentation/controller/state.dart';
 import 'package:graduation_project/features/Home/Data/models/jobmodel.dart';
 
 class JobCubit extends Cubit<JobState> {

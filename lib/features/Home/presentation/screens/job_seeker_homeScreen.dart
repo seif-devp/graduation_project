@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/controllers/cubit/cubit.dart';
-import 'package:graduation_project/controllers/cubit/state.dart';
+import 'package:graduation_project/features/Home/presentation/controller/cubit.dart';
+import 'package:graduation_project/features/Home/presentation/controller/state.dart';
 
 import '../Widgets/Suggested.dart';
 import '../Widgets/header.dart';
