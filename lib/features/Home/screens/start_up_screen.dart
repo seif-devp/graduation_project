@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project/screens/sign_in_screen.dart';
+import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
 
 class StartUpScreen extends StatelessWidget {
   const StartUpScreen({super.key});
