@@ -5,6 +5,8 @@ import 'Quick Actions.dart';
 import 'info.dart';
 
 class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

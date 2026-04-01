@@ -12,14 +12,14 @@ class JobCubit extends Cubit<JobState> {
 
     try {
       final jobs = [
-        JobModel(
+        JobModelHome(
           title: "Senior React Developer",
           company: "TechCorp Inc.",
           location: "San Francisco, CA",
           salary: "\$120k - \$160k",
           percent: "85%",
         ),
-        JobModel(
+        JobModelHome(
           title: "Frontend Engineer",
           company: "StartupXYZ",
           location: "Remote",
