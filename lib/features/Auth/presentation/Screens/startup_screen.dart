@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
+import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
 
 class StartUpScreen extends StatelessWidget {
   const StartUpScreen({super.key});
@@ -42,8 +44,10 @@ class StartUpScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          const SignInScreen(initialEmployerSelected: false),
+                      builder: (_) => BlocProvider(
+                        create: (context) => AuthCubit(),
+                        child: SignInScreen(initialEmployerSelected: false),
+                      ),
                     ),
                   );
                 },
@@ -59,8 +63,10 @@ class StartUpScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          const SignInScreen(initialEmployerSelected: true),
+                      builder: (_) => BlocProvider(
+                        create: (context) => AuthCubit(),
+                        child: SignInScreen(initialEmployerSelected: true),
+                      ),
                     ),
                   );
                 },
