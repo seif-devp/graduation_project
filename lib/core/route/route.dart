@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 
-=======
 import 'package:flutter_bloc/flutter_bloc.dart';
->>>>>>> aa8aa99d4ed37f6ba895e6e0ee5d4d92ef4f8e6a
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/startup_screen.dart';
@@ -36,14 +33,11 @@ final router = GoRouter(
         child: JobSeekerHomeScreen(),
       ),
     ),
-<<<<<<< HEAD
+  
     GoRoute(
       path: '/jobPage',
       name: '/jobPage',
       builder:(context, state) => JobPage(),
       ),
-=======
-
->>>>>>> aa8aa99d4ed37f6ba895e6e0ee5d4d92ef4f8e6a
   ],
 );

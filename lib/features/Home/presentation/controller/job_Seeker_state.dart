@@ -2,8 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:graduation_project/features/Home/Data/models/jobmodel.dart';
 
 abstract class JobState extends Equatable {
+  const JobState();
+
   @override
-  List<JobModel> get props => [];
+  List<Object?> get props => [];
 }
 
 class JobInitial extends JobState {}
@@ -13,15 +15,17 @@ class JobLoading extends JobState {}
 class JobLoaded extends JobState {
   final List<JobModelHome> jobs;
 
-  JobLoaded(this.jobs);
+  const JobLoaded(this.jobs);
 
   @override
-  List<JobModel> get props => jobs;}
+  List<Object?> get props => [jobs]; // تمرير القائمة هنا للمقارنة
+}
 
 class JobError extends JobState {
   final String message;
 
-  JobError(this.message);
+  const JobError(this.message);
 
   @override
-  List<JobModel> get props => [];}
+  List<Object?> get props => [message]; // تمرير الرسالة هنا
+}
