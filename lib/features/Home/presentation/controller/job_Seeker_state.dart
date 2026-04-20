@@ -11,7 +11,7 @@ class JobInitial extends JobState {}
 class JobLoading extends JobState {}
 
 class JobLoaded extends JobState {
-  final List<JobModel> jobs;
+  final List<JobModelHome> jobs;
 
   JobLoaded(this.jobs);
 

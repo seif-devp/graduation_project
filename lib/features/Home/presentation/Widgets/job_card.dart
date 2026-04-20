@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/features/Home/Data/models/jobmodel.dart';
 
 class JobCard extends StatelessWidget {
-  final JobModel job;
+  final JobModelHome job;
 
   const JobCard({super.key, required this.job});
 
@@ -26,7 +26,7 @@ class JobCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🔹 العنوان + النسبة
+      
           Row(
             children: [
               Expanded(
