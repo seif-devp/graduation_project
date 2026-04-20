@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'menu_item.dart';
 
@@ -15,7 +16,9 @@ class QuickActions extends StatelessWidget {
       childAspectRatio: 1.6,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        menuItem(Icons.search, "Search Jobs", Colors.blue),
+        GestureDetector(
+          onTap: ()=> context.pushNamed('/jobPage'),
+          child: menuItem(Icons.search, "Search Jobs", Colors.blue)),
         menuItem(Icons.upload, "Upload CV", Colors.green),
         menuItem(Icons.favorite, "Favorites", Colors.red),
         menuItem(Icons.calendar_today, "Interviews", Colors.purple),

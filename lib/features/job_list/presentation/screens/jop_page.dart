@@ -5,14 +5,14 @@ import 'package:graduation_project/features/job_list/data/job_repo_imp.dart';
 import 'package:graduation_project/features/job_list/domain/job_use_case.dart';
 import 'package:graduation_project/features/job_list/presentation/cubit/job_list_cubit.dart';
 
-class JopPage extends StatefulWidget {
-  const JopPage({super.key});
+class JobPage extends StatefulWidget {
+  const JobPage({super.key});
 
   @override
-  State<JopPage> createState() => _JopPageState();
+  State<JobPage> createState() => _JobPageState();
 }
 
-class _JopPageState extends State<JopPage> {
+class _JobPageState extends State<JobPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -64,8 +64,9 @@ class _JopPageState extends State<JopPage> {
                 ),
               );
             } else if (state is JobListFailure) {
-              return Center(child:Text(state.massege));
-            } return const SizedBox();
+              return Center(child: Text(state.massege));
+            }
+            return const SizedBox();
           },
         ),
       ),

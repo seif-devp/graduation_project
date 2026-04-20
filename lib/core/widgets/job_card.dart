@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 
-class JobCardwidget extends StatelessWidget {
+class JobCardwidget extends StatefulWidget {
   const JobCardwidget({super.key, required this.job});
   final JobEntity job;
+
+  @override
+  State<JobCardwidget> createState() => _JobCardwidgetState();
+}
+
+class _JobCardwidgetState extends State<JobCardwidget> {
+  bool isfavirate = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,21 +36,25 @@ class JobCardwidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  job.percent,
+                  widget.job.percent,
                   style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
               ),
+
               Icon(Icons.favorite, color: Colors.red),
             ],
           ),
           SizedBox(height: 15),
           Text(
-            job.title,
+            widget.job.title,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 5),
 
-          Text(job.company, style: TextStyle(color: Colors.grey, fontSize: 16)),
+          Text(
+            widget.job.company,
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
           SizedBox(height: 20),
 
           Row(
@@ -53,7 +65,10 @@ class JobCardwidget extends StatelessWidget {
                 color: Colors.grey.shade400,
               ),
               SizedBox(width: 10),
-              Text(job.address, style: TextStyle(color: Colors.blueGrey)),
+              Text(
+                widget.job.address,
+                style: TextStyle(color: Colors.blueGrey),
+              ),
             ],
           ),
           SizedBox(height: 8),
@@ -62,7 +77,7 @@ class JobCardwidget extends StatelessWidget {
             children: [
               Icon(Icons.attach_money, size: 18, color: Colors.grey.shade400),
               SizedBox(width: 10),
-              Text(job.salary, style: TextStyle(color: Colors.blueGrey)),
+              Text(widget.job.salary, style: TextStyle(color: Colors.blueGrey)),
             ],
           ),
           SizedBox(height: 8),
@@ -71,7 +86,7 @@ class JobCardwidget extends StatelessWidget {
             children: [
               Icon(Icons.access_time, size: 18, color: Colors.grey.shade400),
               SizedBox(width: 10),
-              Text(job.date, style: TextStyle(color: Colors.blueGrey)),
+              Text(widget.job.date, style: TextStyle(color: Colors.blueGrey)),
             ],
           ),
         ],

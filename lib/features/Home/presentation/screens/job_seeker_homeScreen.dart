@@ -81,7 +81,7 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen> {
 
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(
+            BottomNavigationBarItem( 
               icon: Icon(Icons.work_outline),
               label: "Jobs",
             ),
