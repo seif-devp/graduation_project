@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/Suggested.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/header.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/job_card.dart';
-import 'package:graduation_project/features/Home/presentation/controller/cubit.dart';
-import 'package:graduation_project/features/Home/presentation/controller/state.dart';
+import 'package:graduation_project/features/Home/presentation/controller/job_Seeker_cubit.dart';
+import 'package:graduation_project/features/Home/presentation/controller/job_Seeker_state.dart';
 
 class JobSeekerHomeScreen extends StatefulWidget {
   const JobSeekerHomeScreen({super.key});
@@ -19,14 +19,14 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => JobCubit()..loadJobs(),
+      create: (context) => JobSeekerCubit()..loadJobs(),
       child: Scaffold(
         backgroundColor: Colors.grey[100],
 
         body: Column(
           children: [
             HeaderWidget(),
-            BlocBuilder<JobCubit, JobState>(
+            BlocBuilder<JobSeekerCubit, JobState>(
               builder: (context, state) {
                 if (state is JobLoading) {
                   return Center(child: CircularProgressIndicator());

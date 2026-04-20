@@ -29,8 +29,23 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        // TODO: implement listener
+        if (state is AuthLoading) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Signing in...')),
+          );
+        }
+        if (state is AuthSuccess) {
+          context.go('/home');
+        }
+        if (state is AuthFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error occurred while signing in')),
+          );
+        }
+      },
       child: Scaffold(
         backgroundColor: const Color(0xFFF8F9FF),
         body: SafeArea(
@@ -172,9 +187,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               password: passwordController.text,
                               isEmployer: isEmployerSelected,
                             );
-                            context.pushReplacementNamed('/home');
                           }
                         },
+
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),

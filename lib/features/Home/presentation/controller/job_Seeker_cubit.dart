@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/features/Home/presentation/controller/state.dart';
+import 'package:graduation_project/features/Home/presentation/controller/job_Seeker_state.dart';
 import 'package:graduation_project/features/Home/Data/models/jobmodel.dart';
 
-class JobCubit extends Cubit<JobState> {
-  JobCubit() : super(JobInitial());
+class JobSeekerCubit extends Cubit<JobState> {
+  JobSeekerCubit() : super(JobInitial());
 
   void loadJobs() async {
     emit(JobLoading());
