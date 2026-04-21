@@ -7,13 +7,14 @@ import 'package:graduation_project/features/Auth/presentation/controller/auth_cu
 import 'package:graduation_project/features/Home/presentation/controller/job_Seeker_cubit.dart';
 import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
+import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 
 final router = GoRouter(
   routes: [
 
     GoRoute(
       path: '/',
-      builder: (context, state) => StartUpScreen(),
+      builder: (context, state) => ProfileScreen(),
     ),
 
     GoRoute(
@@ -36,8 +37,14 @@ final router = GoRouter(
   
     GoRoute(
       path: '/jobPage',
-      name: '/jobPage',
+      name: 'jobPage',
       builder:(context, state) => JobPage(),
+      ),
+
+       GoRoute(
+      path: '/ProfileScreen',
+      name: 'ProfileScreen',
+      builder:(context, state) => ProfileScreen(),
       ),
   ],
 );
