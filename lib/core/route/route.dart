@@ -6,6 +6,7 @@ import 'package:graduation_project/features/Auth/presentation/Screens/startup_sc
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
 import 'package:graduation_project/features/Home/presentation/controller/job_Seeker_cubit.dart';
 import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
+import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 
@@ -14,7 +15,7 @@ final router = GoRouter(
 
     GoRoute(
       path: '/',
-      builder: (context, state) => ProfileScreen(),
+      builder: (context, state) => InterviewsPage(),
     ),
 
     GoRoute(
@@ -41,10 +42,11 @@ final router = GoRouter(
       builder:(context, state) => JobPage(),
       ),
 
-       GoRoute(
-      path: '/ProfileScreen',
-      name: 'ProfileScreen',
-      builder:(context, state) => ProfileScreen(),
+    GoRoute(
+      path: '/interveiw',
+      name: 'interveiw',
+      builder:(context, state) => InterviewsPage(),
       ),
   ],
+     
 );
