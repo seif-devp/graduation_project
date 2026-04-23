@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:graduation_project/features/Home/presentation/Widgets/Bottom_Navigation_Bar.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/Suggested.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/header.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/job_card.dart';
@@ -65,7 +63,6 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen> {
                 return SizedBox();
               },
             ),
-            CustomBottomNavBar(),
           ],
         ),
       ),
