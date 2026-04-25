@@ -11,7 +11,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) {
     emit(AuthLoading());
     Future.delayed(const Duration(seconds: 2));
-    if (email == 'seif@gmail.com' && password == '123456') {
+    if (email == ' ' && password == ' ') {
       emit(AuthSuccess());
     }
   }

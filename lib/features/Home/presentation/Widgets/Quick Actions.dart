@@ -17,11 +17,16 @@ class QuickActions extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: [
         GestureDetector(
-          onTap: ()=> context.pushNamed('/jobPage'),
+          onTap: ()=> context.pushNamed('jobPage'),
           child: menuItem(Icons.search, "Search Jobs", Colors.blue)),
-        menuItem(Icons.upload, "Upload CV", Colors.green),
-        menuItem(Icons.favorite, "Favorites", Colors.red),
-        menuItem(Icons.calendar_today, "Interviews", Colors.purple),
+        GestureDetector(onTap: () => context.pushReplacementNamed('profile'),
+        child: menuItem(Icons.upload, "Upload CV", Colors.green)
+        ),
+        GestureDetector(
+          onTap:()=>context.pushReplacementNamed('interveiw'),
+        child: menuItem(Icons.calendar_today, "Interviews", Colors.purple)
+        )
+         ,menuItem(Icons.favorite, "Favorites", Colors.red)
       ],
     );
   }

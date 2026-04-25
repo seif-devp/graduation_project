@@ -6,6 +6,7 @@ import 'package:graduation_project/features/Auth/presentation/controller/auth_cu
 import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/shell_layout.dart';
 import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
+import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 
@@ -33,6 +34,12 @@ final router = GoRouter(
           path: '/jobPage',
           name: 'jobPage',
           builder: (context, state) => JobPage(),
+        ),
+
+        GoRoute(
+          path: '/applying',
+          name: 'applying',
+          builder: (context, state) => ApplicationProgressScreen(),
         ),
 
         GoRoute(

@@ -47,19 +47,26 @@ class JobCard extends StatelessWidget {
                   color: Color(0xff1D4ED8),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
-                  job.percent,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: [
+                   Padding(
+                     padding: const EdgeInsets.all(2.0),
+                     child: const SizedBox(child: Icon(Icons.auto_awesome_outlined,color: Colors.white,size: 16,)),
+                   ),
+                    Text(
+                      job.percent,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 8),
 
           Text(
             job.company,
