@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/Suggested.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/header.dart';
@@ -13,8 +14,48 @@ class JobSeekerHomeScreen extends StatefulWidget {
   State<JobSeekerHomeScreen> createState() => _JobSeekerHomeScreenState();
 }
 
-class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen> {
-  int currentIndex = 2;
+class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
+    with TickerProviderStateMixin {
+  int currentIndex = 6;
+  late ScrollController _scrollController;
+  late AnimationController _collapseController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _collapseController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final direction = _scrollController.position.userScrollDirection;
+
+    if (direction == ScrollDirection.reverse) {
+      // Scrolling DOWN -> Collapse
+      if (!_collapseController.isAnimating &&
+          _collapseController.value != 1.0) {
+        _collapseController.forward();
+      }
+    } else if (direction == ScrollDirection.forward) {
+      // Scrolling UP -> Expand
+      if (!_collapseController.isAnimating &&
+          _collapseController.value != 0.0) {
+        _collapseController.reverse();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    _collapseController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +66,7 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen> {
 
         body: Column(
           children: [
-            HeaderWidget(),
+            HeaderWidget(collapseAnimation: _collapseController),
             BlocBuilder<JobSeekerCubit, JobState>(
               builder: (context, state) {
                 if (state is JobLoading) {
@@ -35,6 +76,11 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen> {
                 if (state is JobLoaded) {
                   return Expanded(
                     child: ListView.builder(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent:
+                            BouncingScrollPhysics(), // بتدي نعومة أكتر في الـ iOS والـ Web
+                      ),
                       padding: EdgeInsets.all(16),
                       itemCount: state.jobs.length,
                       itemBuilder: (context, index) {

@@ -20,6 +20,27 @@ class JobSeekerCubit extends Cubit<JobState> {
           percent: "85%",
         ),
         JobModelHome(
+          title: "Senior React Developer",
+          company: "TechCorp Inc.",
+          location: "San Francisco, CA",
+          salary: "\$120k - \$160k",
+          percent: "85%",
+        ),
+        JobModelHome(
+          title: "Frontend Engineer",
+          company: "StartupXYZ",
+          location: "Remote",
+          salary: "\$100k - \$140k",
+          percent: "92%",
+        ),
+        JobModelHome(
+          title: "Frontend Engineer",
+          company: "StartupXYZ",
+          location: "Remote",
+          salary: "\$100k - \$140k",
+          percent: "92%",
+        ),
+        JobModelHome(
           title: "Frontend Engineer",
           company: "StartupXYZ",
           location: "Remote",

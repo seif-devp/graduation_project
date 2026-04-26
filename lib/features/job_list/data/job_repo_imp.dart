@@ -1,13 +1,10 @@
-
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/domain/repo_interface.dart';
 
 class JobRepoImp extends Jobrepo {
   @override
   Future<List<JobEntity>> fetchJob() async {
-    await Future.delayed(Duration(seconds: 2));
-    return 
-    [
+    return [
       JobEntity(
         title: "Senior React Developer",
         company: "TechCorp Inc.",
