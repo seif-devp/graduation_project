@@ -31,7 +31,7 @@ class QuickActions extends StatelessWidget {
         'icon': Icons.calendar_today,
         'label': 'Interviews',
         'color': const Color(0xFFFF9800),
-        'route': 'interveiw',
+        'route': 'interview',
       },
     ];
 

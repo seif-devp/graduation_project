@@ -14,7 +14,7 @@ class CustomBottomNavBar extends StatelessWidget {
         return 1;
       case '/applying':
         return 2;
-      case '/alerts':
+      case '/interview':
         return 3;
       case '/profile':
         return 4;
@@ -35,7 +35,7 @@ class CustomBottomNavBar extends StatelessWidget {
         context.go('/applying');
         break;
       case 3:
-        context.go('/alerts');
+        context.go('/interview');
         break;
       case 4:
         context.go('/profile');
@@ -71,35 +71,8 @@ class CustomBottomNavBar extends StatelessWidget {
             label: "Applied",
           ),
           BottomNavigationBarItem(
-            icon: BlocBuilder<NotificationCubit, NotificationState>(
-              builder: (context, state) {
-                int count = 5;
-
-                if (state is NotificationCountLoaded) {
-                  count = state.unreadCount;
-                }
-
-                return Badge(
-                  // النقطة هتختفي تماماً لو العداد صفر
-                  isLabelVisible: count > 0,
-
-                  // عرض الرقم مع هندلة الأرقام اللي أكبر من 99
-                  label: Text(
-                    count > 99 ? '+99' : count.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  backgroundColor: Colors.red,
-                  child: const Icon(Icons.notifications_outlined),
-                );
-              },
-            ),
-            activeIcon: const Icon(Icons.notifications),
-            label: 'Alerts',
+            icon:Icon(Icons.meeting_room_outlined),
+            label: 'Interviews',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

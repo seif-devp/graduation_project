@@ -43,7 +43,7 @@ final router = GoRouter(
         ),
 
         GoRoute(
-          path: '/interveiw',
+          path: '/interview',
           name: 'interview',
           builder: (context, state) => InterviewsPage(),
         ),
