@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/widgets/progressTimeLine.dart';
 
 class ApplicationCard extends StatelessWidget {
@@ -86,19 +87,19 @@ class ApplicationCard extends StatelessWidget {
                       children: [
                         Text(
                           jobTitle,
-                          style: const TextStyle(
-                            fontSize: 18,
+                          style:  TextStyle(
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF1E293B),
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                         SizedBox(height: 4.h),
                         Text(
                           companyName,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14..sp,
                             color: Colors.grey[500],
                           ),
                         ),
@@ -120,11 +121,11 @@ class ApplicationCard extends StatelessWidget {
                           size: 16,
                           color: Color(0xFF4F46E5), // لون النجمة
                         ),
-                        const SizedBox(width: 4),
+                         SizedBox(width: 4.w),
                         Text(
                           '${matchPercentage.toInt()}%',
-                          style: const TextStyle(
-                            fontSize: 13,
+                          style:  TextStyle(
+                            fontSize: 13..sp,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF4F46E5),
                           ),
@@ -134,12 +135,12 @@ class ApplicationCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               
               // Progress Timeline (العداد المتعدل)
               buildProgressTimeline(status),
               
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               
               // Bottom Status Card
               Container(
@@ -156,14 +157,14 @@ class ApplicationCard extends StatelessWidget {
                       size: 20,
                       color: _getStatusColor(status),
                     ),
-                    const SizedBox(width: 12),
+                     SizedBox(width: 12.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RichText(
                           text: TextSpan(
                             text: 'Status: ',
-                            style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                            style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
                             children: [
                               TextSpan(
                                 text: status[0].toUpperCase() + status.substring(1),
@@ -175,11 +176,11 @@ class ApplicationCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 2),
+                         SizedBox(height: 2.h),
                         Text(
                           'Applied $appliedDate',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.grey[500],
                           ),
                         ),

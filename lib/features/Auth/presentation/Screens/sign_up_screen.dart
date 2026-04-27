@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreen extends StatelessWidget {
   final Function(String email) onEmailChanged;
@@ -31,22 +32,22 @@ class SignUpScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+               SizedBox(height: 40.h),
 
-              const Text(
+               Text(
                 "Create Account",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
               ),
 
-              const SizedBox(height: 8),
+               SizedBox(height: 8.h),
 
               const Text("Sign up to get started"),
 
-              const SizedBox(height: 30),
+               SizedBox(height: 30.h),
 
               /// Toggle Buttons
               Container(
-                height: 50,
+                height: 50.h,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(25),
@@ -86,7 +87,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 30),
+               SizedBox(height: 30.h),
 
               /// Email
               TextField(
@@ -97,7 +98,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 15),
+               SizedBox(height: 15.h),
 
               /// Password
               TextField(
@@ -109,23 +110,23 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 25),
+               SizedBox(height: 25.h),
 
               /// Sign Up Button
               SizedBox(
                 width: double.infinity,
-                height: 50,
+                height: 50.h,
                 child: ElevatedButton(
                   onPressed: onSignUpPressed,
                   child: const Text("Sign Up"),
                 ),
               ),
 
-              const SizedBox(height: 20),
+               SizedBox(height: 20.h),
 
               const Text("Or continue with"),
 
-              const SizedBox(height: 15),
+               SizedBox(height: 15.h),
 
               Row(
                 children: [
@@ -136,7 +137,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(width: 10),
+                   SizedBox(width: 10.w),
 
                   Expanded(
                     child: OutlinedButton(

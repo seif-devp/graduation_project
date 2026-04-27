@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget menuItem(IconData icon, String text, Color color) {
   return Container(
@@ -14,8 +15,8 @@ Widget menuItem(IconData icon, String text, Color color) {
           backgroundColor: color,
           child: Icon(icon, color: Colors.white),
         ),
-        SizedBox(height: 8),
-        Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
+        SizedBox(height: 8.h),
+        Text(text, style: TextStyle(color: Colors.white, fontSize: 18.sp)),
       ],
     ),
   );

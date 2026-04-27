@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class QuickActions extends StatelessWidget {
@@ -52,7 +53,7 @@ class QuickActions extends StatelessWidget {
   // Compact 2x2 Grid with smaller icons and labels
   Widget _buildGrid(List<Map<String, dynamic>> actions, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding:  EdgeInsets.symmetric(vertical: 12.h),
       child: GridView.count(
         shrinkWrap: true,
         crossAxisCount: 2,
@@ -97,7 +98,7 @@ class QuickActions extends StatelessWidget {
                       ),
                       border: Border.all(
                         color: (action['color'] as Color).withOpacity(0.5),
-                        width: 1.5,
+                        width: 1.5.w,
                       ),
                     ),
                     child: Icon(
@@ -106,13 +107,13 @@ class QuickActions extends StatelessWidget {
                       size: 24, // Reduced from 32
                     ),
                   ),
-                  const SizedBox(height: 8), // Reduced from 12
+                   SizedBox(height: 8.h), // Reduced from 12
                   Text(
                     action['label'] as String,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       color: Colors.white,
-                      fontSize: 13, // Reduced from 14
+                      fontSize: 13.sp, // Reduced from 14
                       fontWeight: FontWeight.w600,
                     ),
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QuickStatsRow extends StatelessWidget {
   const QuickStatsRow({super.key});
@@ -20,8 +21,8 @@ class QuickStatsRow extends StatelessWidget {
     children: [
       Text(
         n,
-        style: const TextStyle(
-          fontSize: 22,
+        style:  TextStyle(
+          fontSize: 22.sp,
           fontWeight: FontWeight.bold,
           color: Color(0xFF2563EB),
         ),

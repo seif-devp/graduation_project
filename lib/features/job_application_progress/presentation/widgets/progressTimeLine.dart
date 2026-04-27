@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget buildProgressTimeline(String status) {
    final stages = ['Sent', 'Viewed', 'Interview', 'Decision'];
@@ -22,13 +23,13 @@ Widget buildProgressTimeline(String status) {
               children: [
                 // الحل هنا: ثبتنا الارتفاع بـ 36 عشان الخطوط كلها تلحم في نفس المستوى السنتر
                 SizedBox(
-                  height: 36, 
+                  height: 36.h, 
                   child: Row(
                     children: [
                       // الخط الأيسر 
                       Expanded(
                         child: Container(
-                          height: 3,
+                          height: 3.h,
                           color: index == 0
                               ? Colors.transparent 
                               : (index <= currentIndex ? activeColor : inactiveColor),
@@ -36,8 +37,8 @@ Widget buildProgressTimeline(String status) {
                       ),
                       // الدائرة (Node)
                       Container(
-                        width: isCurrent ? 36 : 28, 
-                        height: isCurrent ? 36 : 28,
+                        width: isCurrent ? 36.w : 28.w, 
+                        height: isCurrent ? 36.h : 28.h,
                         decoration: BoxDecoration(
                           color: isUpcoming ? inactiveColor : activeColor,
                           shape: BoxShape.circle,
@@ -47,8 +48,8 @@ Widget buildProgressTimeline(String status) {
                             : isUpcoming
                                 ? Center(
                                     child: Container(
-                                      width: 6,
-                                      height: 6,
+                                      width: 6.w,
+                                      height: 6.h,
                                       decoration: const BoxDecoration(
                                         color: Color(0xFF94A3B8), 
                                         shape: BoxShape.circle,
@@ -60,7 +61,7 @@ Widget buildProgressTimeline(String status) {
                       // الخط الأيمن 
                       Expanded(
                         child: Container(
-                          height: 3,
+                          height: 3.h,
                           color: index == stages.length - 1
                               ? Colors.transparent
                               : (index < currentIndex ? activeColor : inactiveColor),
@@ -69,11 +70,11 @@ Widget buildProgressTimeline(String status) {
                     ],
                   ),
                 ),
-                const SizedBox(height: 8),
+                 SizedBox(height: 8.h),
                 Text(
                   stages[index],
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     fontWeight: isCurrent ? FontWeight.bold : FontWeight.w500,
                     color: isUpcoming ? Colors.grey[500] : const Color(0xFF1E293B),
                   ),

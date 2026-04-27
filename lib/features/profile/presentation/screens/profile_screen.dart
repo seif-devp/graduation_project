@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/profile/widgets/Resume.dart';
 import 'package:graduation_project/features/profile/widgets/header.dart';
 import 'package:graduation_project/features/profile/widgets/section_wrapper.dart';
@@ -26,28 +27,28 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
-                          children: const [
+                          children:  [
                             Icon(
                               Icons.email_outlined,
                               size: 20,
                               color: Colors.grey,
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 10.w),
                             Text(
                               "ahmed.johnson@email.com",
                               style: TextStyle(color: Colors.black87),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                         SizedBox(height: 10.h),
                         Row(
-                          children: const [
+                          children:  [
                             Icon(
                               Icons.phone_android_outlined,
                               size: 20,
                               color: Colors.grey,
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 10.w),
                             Text(
                               "+1 (555) 123-4567",
                               style: TextStyle(color: Colors.black87),
@@ -57,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                   SizedBox(height: 16.h),
 
                   // 2. My Resumes (بسطناها هنا)
                   Frame(
@@ -75,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                         SizedBox(height: 5.h),
 
                         // ملفات السيرة الذاتية
                         ResumeItem(
@@ -98,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                         SizedBox(height: 10.h),
                         ResumeItem(
                           name: "Sarah_Johnson_Resum...",
                           date: "Uploaded 1/20/2026",
@@ -122,7 +123,7 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                   SizedBox(height: 16.h),
 
                   // 3. Quick Stats
                   const Frame(

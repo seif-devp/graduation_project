@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 
 class JobCardwidget extends StatefulWidget {
@@ -21,7 +22,7 @@ class _JobCardwidgetState extends State<JobCardwidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
 
-        border: Border.all(color: Colors.blue.shade100, width: 1.5),
+        border: Border.all(color: Colors.blue.shade100, width: 1.5.w),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,25 +38,25 @@ class _JobCardwidgetState extends State<JobCardwidget> {
                 ),
                 child: Text(
                   widget.job.percent,
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+                  style: TextStyle(color: Colors.white, fontSize: 12.sp),
                 ),
               ),
 
               Icon(Icons.favorite, color: Colors.red),
             ],
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.h),
           Text(
             widget.job.title,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 5.h),
 
           Text(
             widget.job.company,
-            style: TextStyle(color: Colors.grey, fontSize: 16),
+            style: TextStyle(color: Colors.grey, fontSize: 16.sp),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           Row(
             children: [
@@ -64,28 +65,28 @@ class _JobCardwidgetState extends State<JobCardwidget> {
                 size: 18,
                 color: Colors.grey.shade400,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 10.w),
               Text(
                 widget.job.address,
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ],
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           Row(
             children: [
               Icon(Icons.attach_money, size: 18, color: Colors.grey.shade400),
-              SizedBox(width: 10),
+              SizedBox(width: 10.w),
               Text(widget.job.salary, style: TextStyle(color: Colors.blueGrey)),
             ],
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
 
           Row(
             children: [
               Icon(Icons.access_time, size: 18, color: Colors.grey.shade400),
-              SizedBox(width: 10),
+              SizedBox(width: 10.w),
               Text(widget.job.date, style: TextStyle(color: Colors.blueGrey)),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
 
@@ -31,7 +32,6 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
         if (state is AuthLoading) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Signing in...')),
@@ -54,19 +54,19 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 32),
-                const Text(
+                 SizedBox(height: 32.h),
+                 Text(
                   'Welcome Back',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                 SizedBox(height: 8.h),
+                 Text(
                   'Sign in to continue',
-                  style: TextStyle(fontSize: 16, color: Colors.black54),
+                  style: TextStyle(fontSize: 16.sp, color: Colors.black54),
                 ),
-                const SizedBox(height: 32),
+                 SizedBox(height: 32.h),
                 Container(
-                  height: 52,
+                  height: 52.h,
                   decoration: BoxDecoration(
                     color: Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(26),
@@ -106,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 28),
+                 SizedBox(height: 28.h),
                 Form(
                   key: formKey,
                   child: Column(
@@ -127,7 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                       SizedBox(height: 16.h),
                       TextFormField(
                         validator: (value) => value == null || value.isEmpty
                             ? 'Please enter your password'
@@ -165,11 +165,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: const Text('Forgot Password?'),
                   ),
                 ),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20.h),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     if (state is AuthLoading) {
-                      return const SizedBox(
+                      return  SizedBox(
                         width: double.infinity,
                         height: 52,
                         child: Center(child: CircularProgressIndicator()),
@@ -177,7 +177,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     }
                     return SizedBox(
                       width: double.infinity,
-                      height: 52,
+                      height: 52.h,
                       child: ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -200,18 +200,18 @@ class _SignInScreenState extends State<SignInScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 24),
+                 SizedBox(height: 24.h),
                 Row(
-                  children: const [
+                  children:  [
                     Expanded(child: Divider(thickness: 1)),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Text('Or continue with'),
                     ),
                     Expanded(child: Divider(thickness: 1)),
                   ],
                 ),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20.h),
                 Row(
                   children: [
                     Expanded(
@@ -226,7 +226,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: const Text('Google'),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                     SizedBox(width: 12.h),
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {},
@@ -241,7 +241,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                 SizedBox(height: 32.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

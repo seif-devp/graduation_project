@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/widgets/job_card.dart';
 import 'package:graduation_project/features/job_list/data/job_repo_imp.dart';
 import 'package:graduation_project/features/job_list/domain/job_use_case.dart';
@@ -23,28 +24,71 @@ class _JobPageState extends State<JobPage> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 "Discover Jobs",
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 22.sp,
                 ),
               ),
               Text(
                 "AI-matched positions for you",
                 style: TextStyle(
                   color: Colors.grey.shade600,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.normal,
                 ),
               ),
             ],
           ),
           actions: [
-            IconButton(
-              icon: Icon(Icons.tune, color: Colors.blue.shade700),
-              onPressed: () {},
+            
+            Builder( // استخدمنا Builder عشان نقدر نوصل للـ context بتاع الكيوبت
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.tune, color: Colors.blue.shade700),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      builder: (bottomSheetContext) {
+                        return Container(
+                          padding: const EdgeInsets.all(20),
+                          height: 250,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const Text("Test Filters", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 20),
+                              
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<JobListCubit>().filterByLocation("San Francisco");
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Show San Francisco Jobs"),
+                              ),
+                              const SizedBox(height: 10),
+
+                              // زرار الغاء الفلتر
+                              OutlinedButton(
+                                onPressed: () {
+                                  context.read<JobListCubit>().filterByLocation("");
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Clear Filters"),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              }
             ),
             const SizedBox(width: 8),
           ],

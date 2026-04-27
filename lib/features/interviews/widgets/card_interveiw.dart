@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/interviews/domain/entity.dart';
 
 class InterviewCard extends StatelessWidget {
@@ -25,48 +26,48 @@ class InterviewCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(interview.jobTitle,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A1D23))),
+                  style:  TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Color(0xFF1A1D23))),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(interview.status,
-                    style: TextStyle(fontSize: 11,  fontWeight: FontWeight.w600)),
+                    style: TextStyle(fontSize: 11.sp,  fontWeight: FontWeight.w600)),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+           SizedBox(height: 4.h),
 
-          Text(interview.company, style: const TextStyle(fontSize: 13, color: Colors.grey)),
-          const SizedBox(height: 16),
+          Text(interview.company, style:  TextStyle(fontSize: 13.sp, color: Colors.grey)),
+           SizedBox(height: 16.h),
 
           Row(
             children: [
-              const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey),
-              const SizedBox(width: 8),
-              Text(interview.date, style: const TextStyle(fontSize: 13, color: Color(0xFF444444))),
+               Icon(Icons.calendar_today_outlined, size: 16.sp, color: Colors.grey),
+               SizedBox(width: 8.w),
+              Text(interview.date, style:  TextStyle(fontSize: 13.sp, color: Color(0xFF444444))),
             ],
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8.h),
 
           Row(
             children: [
               const Icon(Icons.access_time, size: 16, color: Colors.grey),
-              const SizedBox(width: 8),
-              Text(interview.time, style: const TextStyle(fontSize: 13, color: Color(0xFF444444))),
+               SizedBox(width: 8.w),
+              Text(interview.time, style:  TextStyle(fontSize: 13.sp, color: Color(0xFF444444))),
             ],
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8.h),
 
           Row(
             children: [
               const Icon(Icons.videocam_outlined, size: 16, color: Colors.grey),
-              const SizedBox(width: 8),
-              Text(interview.type, style: const TextStyle(fontSize: 13, color: Color(0xFF444444))),
+               SizedBox(width: 8.w),
+              Text(interview.type, style:  TextStyle(fontSize: 13.sp, color: Color(0xFF444444))),
             ],
           ),
-          const SizedBox(height: 16),
+           SizedBox(height: 16.h),
 
           Container(
             width: double.infinity,
@@ -78,10 +79,10 @@ class InterviewCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Meeting Link', style: TextStyle(fontSize: 11, color: Colors.grey)),
-                const SizedBox(height: 4),
+                 Text('Meeting Link', style: TextStyle(fontSize: 11.sp, color: Colors.grey)),
+                 SizedBox(height: 4.h),
                 Text(interview.meetingLink,
-                    style: const TextStyle(fontSize: 13, color: Color(0xFF3D5AFE), fontWeight: FontWeight.w500)),
+                    style:  TextStyle(fontSize: 13.sp, color: Color(0xFF3D5AFE), fontWeight: FontWeight.w500)),
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/Home/Data/models/jobmodel.dart';
 
 class JobCard extends StatelessWidget {
@@ -32,9 +33,9 @@ class JobCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   job.title,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 18.sp,
                   ),
                 ),
               ),
@@ -55,9 +56,9 @@ class JobCard extends StatelessWidget {
                    ),
                     Text(
                       job.percent,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -70,22 +71,22 @@ class JobCard extends StatelessWidget {
 
           Text(
             job.company,
-            style: const TextStyle(color: Colors.grey, fontSize: 14),
+            style:  TextStyle(color: Colors.grey, fontSize: 14.sp),
           ),
 
-          const SizedBox(height: 10),
+           SizedBox(height: 10.h),
 
           Row(
             children: [
               const Icon(Icons.location_on, size: 16, color: Colors.grey),
-              const SizedBox(width: 5),
-              Text(job.location, style: const TextStyle(fontSize: 14)),
-              const SizedBox(width: 10),
-              Text(job.salary, style: const TextStyle(fontSize: 14)),
+               SizedBox(width: 5.w),
+              Text(job.location, style:  TextStyle(fontSize: 14.sp)),
+               SizedBox(width: 10.w),
+              Text(job.salary, style:  TextStyle(fontSize: 14.sp)),
             ],
           ),
 
-          const SizedBox(height: 12),
+           SizedBox(height: 12.h),
 
           Wrap(
             spacing: 6,
@@ -104,11 +105,11 @@ class JobCard extends StatelessWidget {
 
 Widget chip(String text) {
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
     decoration: BoxDecoration(
       color: Colors.grey[200],
       borderRadius: BorderRadius.circular(12),
     ),
-    child: Text(text, style: const TextStyle(fontSize: 13)),
+    child: Text(text, style:  TextStyle(fontSize: 13.sp)),
   );
 }
