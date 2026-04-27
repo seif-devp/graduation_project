@@ -67,7 +67,7 @@ class _JobCardwidgetState extends State<JobCardwidget> {
               ),
               SizedBox(width: 10.w),
               Text(
-                widget.job.address,
+                widget.job.location,
                 style: TextStyle(color: Colors.blueGrey),
               ),
             ],

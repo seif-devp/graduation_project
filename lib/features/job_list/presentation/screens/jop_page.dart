@@ -24,92 +24,80 @@ class _JobPageState extends State<JobPage> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text(
-                "Discover Jobs",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22.sp,
-                ),
-              ),
-              Text(
-                "AI-matched positions for you",
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+              Text("Discover Jobs", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22.sp)),
+              Text("AI-matched positions for you", style: TextStyle(color: Colors.grey.shade600, fontSize: 14.sp)),
             ],
           ),
           actions: [
-            
-            Builder( // استخدمنا Builder عشان نقدر نوصل للـ context بتاع الكيوبت
-              builder: (context) {
-                return IconButton(
-                  icon: Icon(Icons.tune, color: Colors.blue.shade700),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                      ),
-                      builder: (bottomSheetContext) {
-                        return Container(
-                          padding: const EdgeInsets.all(20),
-                          height: 250,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              const Text("Test Filters", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 20),
-                              
-                              ElevatedButton(
-                                onPressed: () {
-                                  context.read<JobListCubit>().filterByLocation("San Francisco");
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Show San Francisco Jobs"),
-                              ),
-                              const SizedBox(height: 10),
-
-                              // زرار الغاء الفلتر
-                              OutlinedButton(
-                                onPressed: () {
-                                  context.read<JobListCubit>().filterByLocation("");
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Clear Filters"),
-                              ),
-                            ],
+            Builder(builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.tune, color: Colors.blue.shade700),
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (ctx) => Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                    
+                          TextField(
+                            decoration: const InputDecoration(labelText: "Search by title", prefixIcon: Icon(Icons.search)),
+                            onChanged: (val) => context.read<JobListCubit>().filterJobs(title: val),
                           ),
-                        );
-                      },
-                    );
-                  },
-                );
-              }
-            ),
-            const SizedBox(width: 8),
+                           SizedBox(height: 20.h),
+                          const Text("Location", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Wrap(
+                            spacing: 10,
+                            children: ["San Francisco, CA", "New York, NY"].map((loc) => FilterChip(
+                              label: Text(loc),
+                              onSelected: (val) {
+                                context.read<JobListCubit>().filterJobs(location: val ? loc : null);
+                                Navigator.pop(ctx);
+                              },
+                            )).toList(),
+                          ),
+                           SizedBox(height: 20.h),
+                          const Text("Salary Range", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Wrap(
+                            spacing: 10,
+                            children: ["\$120k - \$110k", "\$120k - \$180k"].map((sal) => FilterChip(
+                              label: Text(sal),
+                              onSelected: (val) {
+                                context.read<JobListCubit>().filterJobs(salary: val ? sal : null);
+                                Navigator.pop(ctx);
+                              },
+                            )).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
+             SizedBox(width: 8.w),
           ],
         ),
-
         body: BlocBuilder<JobListCubit, JobListState>(
           builder: (context, state) {
-            if (state is JobListLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is JobListSuccess) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: List.generate(state.jobs.length, (index) {
-                    return JobCardwidget(job: state.jobs[index]);
-                  }),
-                ),
+            if (state is JobListLoading) return const Center(child: CircularProgressIndicator());
+            if (state is JobListSuccess) {
+              // 2. ListView.builder يجعل الكارت يأخذ عرض الشاشة كاملاً تلقائياً
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: state.jobs.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: JobCardwidget(job: state.jobs[index]),
+                  );
+                },
               );
-            } else if (state is JobListFailure) {
-              return Center(child: Text(state.massege));
             }
+            if (state is JobListFailure) return Center(child: Text(state.massege));
             return const SizedBox();
           },
         ),

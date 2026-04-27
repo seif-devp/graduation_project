@@ -8,7 +8,7 @@ class JobRepoImp extends Jobrepo {
       JobEntity(
         title: "Senior React Developer",
         company: "TechCorp Inc.",
-        address: "San Francisco, CA",
+        location: "San Francisco, CA",
         salary: "\$120k - \$100k",
         percent: "66%",
         date: "1/28/2026",
@@ -16,7 +16,7 @@ class JobRepoImp extends Jobrepo {
       JobEntity(
         title: "Senior flutter Developer",
         company: "TechCorp Inc.",
-        address: "San Francisco, CA",
+        location: "NewYork",
         salary: "\$120k - \$110k",
         percent: "85%",
         date: "1/28/2026",
@@ -24,7 +24,7 @@ class JobRepoImp extends Jobrepo {
       JobEntity(
         title: "Senior web Developer",
         company: "TechCorp Inc.",
-        address: "San Francisco, CA",
+        location: "Brazil",
         salary: "\$120k - \$180k",
         percent: "92%",
         date: "1/28/2026",
@@ -32,7 +32,7 @@ class JobRepoImp extends Jobrepo {
       JobEntity(
         title: "Senior uiux ",
         company: "TechCorp Inc.",
-        address: "San Francisco, CA",
+        location: "Cairo",
         salary: "\$120k - \$120k",
         percent: "60%",
         date: "1/28/2026",

@@ -7,33 +7,30 @@ part 'job_list_state.dart';
 
 class JobListCubit extends Cubit<JobListState> {
   final JobUseCase jobUseCase;
-
-  List<JobEntity> allJobs = []; 
+  List<JobEntity> allJobs = [];
 
   JobListCubit(this.jobUseCase) : super(JobListInitial());
 
   Future<void> fetchJob() async {
     emit(JobListLoading());
     try {
-      final jobs = await jobUseCase.getJobList();
-      allJobs = jobs; 
-      emit(JobListSuccess(jobs));
+      allJobs = await jobUseCase.getJobList();
+      emit(JobListSuccess(allJobs));
     } catch (e) {
-      emit(JobListFailure("error try agian"));
+      emit(JobListFailure("Error"));
     }
   }
 
+  void filterJobs({String? location, String? salary, String? title}) {
+    final filtered = allJobs.where((job) {
   
-  void filterByLocation(String location) {
-    if (location.isEmpty) {
-      emit(JobListSuccess(allJobs)); 
-      return;
-    }
+      bool matchesLocation = location == null || job.location == location;
+      bool matchesSalary = salary == null || job.salary == salary;
+      bool matchesTitle = title == null || job.title.contains(title);
 
-    final filteredList = allJobs.where((job) {
-      return job.address.toLowerCase().contains(location.toLowerCase());
+      return matchesLocation && matchesSalary && matchesTitle;
     }).toList();
 
-    emit(JobListSuccess(filteredList)); 
+    emit(JobListSuccess(filtered));
   }
 }
