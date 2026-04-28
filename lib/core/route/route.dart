@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
@@ -24,10 +23,7 @@ final router = GoRouter(
       builder: (context, state) =>
           BlocProvider(create: (_) => AuthCubit(), child: SignInScreen()),
     ),
-    ShellRoute(
-      builder: (context, state, child) => ShellLayout(child: child),
-      routes: [
-        GoRoute(
+       GoRoute(
           path:'/startup',
           name:'startup',
           builder: (context, state) => StartUpScreen(),
@@ -40,6 +36,21 @@ final router = GoRouter(
             child: const SignUpScreen(),
           ),
         ),
+        GoRoute(
+  path: '/job_details',
+  name: 'job_details',
+  builder: (context, state) => BlocProvider(
+  
+    create: (context) => JobDetailsCubit()..loadJob(state.extra as JobEntity),
+    child: const JobDetailsPage(),
+  ),
+),
+    ShellRoute(
+      builder: (context, state, child) => ShellLayout(child: child),
+      routes: [
+        GoRoute(path: '/profile',name: 'profile',         
+        builder: (context, state) => ProfileScreen(),
+),
         GoRoute(
           path: '/home',
           name: 'home',
@@ -66,15 +77,8 @@ final router = GoRouter(
           builder: (context, state) => InterviewsPage(),
         ),
 
-        GoRoute(
-  path: '/job_details',
-  name: 'job_details',
-  builder: (context, state) => BlocProvider(
-  
-    create: (context) => JobDetailsCubit()..loadJob(state.extra as JobEntity),
-    child: const JobDetailsPage(),
-  ),
-),
+        
+
       ],
        
     ),

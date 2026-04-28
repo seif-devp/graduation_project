@@ -241,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const Text('Already have an account? '),
                     GestureDetector(
                       onTap: () {
-                        context.go('/signin'); // للرجوع لشاشة الدخول
+                        context.go('/login'); // للرجوع لشاشة الدخول
                       },
                       child: const Text(
                         'Sign In',
