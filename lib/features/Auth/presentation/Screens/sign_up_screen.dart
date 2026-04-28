@@ -41,9 +41,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Creating account...')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Creating account...')),
+          );
         }
         if (state is AuthSuccess) {
           context.go('/home'); // أو أي شاشة تانية بعد التسجيل
@@ -85,8 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              setState(() => isEmployerSelected = false),
+                          onTap: () => setState(() => isEmployerSelected = false),
                           child: Container(
                             decoration: BoxDecoration(
                               color: !isEmployerSelected
@@ -100,8 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              setState(() => isEmployerSelected = true),
+                          onTap: () => setState(() => isEmployerSelected = true),
                           child: Container(
                             decoration: BoxDecoration(
                               color: isEmployerSelected
@@ -192,7 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                 ),
-
+                
                 const SizedBox(height: 32),
 
                 /// Sign Up Button
@@ -213,11 +211,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (formKey.currentState!.validate()) {
                             // هنا بنبعت كل البيانات للكيوبيت كـ Arguments
                             context.read<AuthCubit>().register(
-                              name: nameController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
-                              isEmployer: isEmployerSelected,
-                            );
+                                  name: nameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  isEmployer: isEmployerSelected,
+                                );
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -232,53 +230,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
 
                 const SizedBox(height: 24),
-                Row(
-                  children: const [
-                    Expanded(child: Divider(thickness: 1)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('Or continue with'),
-                    ),
-                    Expanded(child: Divider(thickness: 1)),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: const Text('Google'),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: const Text('LinkedIn'),
-                      ),
-                    ),
-                  ],
-                ),
+
+                // ... باقي الأكواد زي السوشيال ميديا أو الـ Sign In
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Already have an account? '),
                     GestureDetector(
                       onTap: () {
-                        context.pushNamed('/login'); // للرجوع لشاشة الدخول
+                        context.go('/signin'); // للرجوع لشاشة الدخول
                       },
                       child: const Text(
                         'Sign In',

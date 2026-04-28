@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ResumeItem extends StatelessWidget {
   final String name, date;
@@ -22,13 +23,13 @@ class ResumeItem extends StatelessWidget {
       child: Row(
         children: [
           const Icon(Icons.article_outlined, color: Color(0xFF2563EB)),
-          const SizedBox(width: 10),
+           SizedBox(width: 10.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                Text(date, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text(date, style:  TextStyle(fontSize: 12.sp, color: Colors.grey)),
               ],
             ),
           ),

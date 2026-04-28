@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ApplicationDetailWidget extends StatelessWidget {
   final String jobTitle;
@@ -58,26 +59,26 @@ class ApplicationDetailWidget extends StatelessWidget {
             controller: scrollController,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              const SizedBox(height: 8),
+               SizedBox(height: 8.h),
               // Handle indicator
               Center(
                 child: Container(
-                  width: 40,
-                  height: 4,
+                  width: 40.w,
+                  height: 4.h,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               // Company and job info
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 64,
-                    height: 64,
+                    width: 6.w,
+                    height: 64.h,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
@@ -87,34 +88,34 @@ class ApplicationDetailWidget extends StatelessWidget {
                         companyName.isNotEmpty
                             ? companyName[0].toUpperCase()
                             : '?',
-                        style: const TextStyle(
-                          fontSize: 28,
+                        style:  TextStyle(
+                          fontSize:28.sp,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF1D4ED8),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                   SizedBox(width: 12.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           jobTitle,
-                          style: const TextStyle(
-                            fontSize: 18,
+                          style:  TextStyle(
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                         SizedBox(height: 4.h),
                         Text(
                           companyName,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize:14.sp,
                             color: Colors.grey[600],
                             fontWeight: FontWeight.w500,
                           ),
@@ -124,7 +125,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+               SizedBox(height: 20.h),
               // Status badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -135,13 +136,13 @@ class ApplicationDetailWidget extends StatelessWidget {
                 child: Text(
                   status[0].toUpperCase() + status.substring(1),
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize:13.sp,
                     fontWeight: FontWeight.w600,
                     color: _getStatusColor(status),
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               // Details grid
               Row(
                 children: [
@@ -152,7 +153,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                       value: location,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                   SizedBox(width: 12.w),
                   Expanded(
                     child: _DetailBox(
                       icon: Icons.attach_money,
@@ -162,7 +163,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+               SizedBox(height: 12.h),
               Row(
                 children: [
                   Expanded(
@@ -172,7 +173,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                       value: appliedDate,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                   SizedBox(width: 12.w),
                   Expanded(
                     child: _DetailBox(
                       icon: Icons.schedule,
@@ -182,36 +183,36 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               // Description section
-              const Text(
+               Text(
                 'About the Role',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize:16.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 8),
+               SizedBox(height: 8.h),
               Text(
                 description,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize:13.sp,
                   color: Colors.grey[700],
-                  height: 1.6,
+                  height: 1.6.h,
                 ),
               ),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               // Requirements section
-              const Text(
+               Text(
                 'Requirements',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize:16.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 12),
+               SizedBox(height: 12.h),
               ...requirements.map((req) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Row(
@@ -219,28 +220,28 @@ class ApplicationDetailWidget extends StatelessWidget {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(top: 4),
-                      width: 6,
-                      height: 6,
+                      width: 6.w,
+                      height: 6.h,
                       decoration: const BoxDecoration(
                         color: Color(0xFF1D4ED8),
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                     SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         req,
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize:13.sp,
                           color: Colors.grey[700],
-                          height: 1.5,
+                          height: 1.5.h,
                         ),
                       ),
                     ),
                   ],
                 ),
               )),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
               // Action buttons - TODO: Add Cubit actions
               Row(
                 children: [
@@ -267,7 +268,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                   SizedBox(width: 12.w),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -291,7 +292,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+               SizedBox(height: 24.h),
             ],
           ),
         );
@@ -330,22 +331,22 @@ class _DetailBox extends StatelessWidget {
                 size: 16,
                 color: const Color(0xFF1D4ED8),
               ),
-              const SizedBox(width: 6),
+               SizedBox(width: 6.w),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 11.sp,
                   color: Colors.grey[600],
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+           SizedBox(height: 6.h),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 13,
+            style:  TextStyle(
+              fontSize:13.sp,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/widgets/application_card.dart';
 
 class ApplicationProgressScreen extends StatelessWidget {
@@ -18,23 +19,23 @@ class ApplicationProgressScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                   Text(
                     'My Applications',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 28.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                   SizedBox(height: 4.h),
                   Text(
                     'Track your job applications',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       color: Colors.grey[600],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                   SizedBox(height: 4.h),
                   // Stats row
                   _buildStatsBar(context),
                 ],
@@ -187,20 +188,20 @@ class _StatItem extends StatelessWidget {
             color: const Color(0xFF1D4ED8),
           ),
         ),
-        const SizedBox(height: 4),
+         SizedBox(height: 16.h),
         Text(
           count,
-          style: const TextStyle(
-            fontSize: 16,
+          style:  TextStyle(
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 2),
+         SizedBox(height: 2.h),
         Text(
           label,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 11.sp,
             color: Colors.grey[600],
           ),
         ),

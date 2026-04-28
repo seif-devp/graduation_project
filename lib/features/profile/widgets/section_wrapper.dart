@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Frame extends StatelessWidget {
   final String title;
@@ -21,12 +22,12 @@ class Frame extends StatelessWidget {
             children: [
               Row(children: [
                 if (icon != null) Icon(icon, color: const Color(0xFF2563EB)),
-                const SizedBox(width: 8),
-                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                 SizedBox(width: 8.w),
+                Text(title, style:  TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
               ]),
             ],
           ),
-          const SizedBox(height: 20),
+           SizedBox(height: 20.h),
           child,
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/interviews/data/repo_imp.dart';
 import 'package:graduation_project/features/interviews/presentation/cubit/interview_cubit.dart';
 import 'package:graduation_project/features/interviews/presentation/cubit/interview_state.dart';
@@ -26,20 +27,20 @@ class InterviewsPage extends StatelessWidget {
               }
               if (state is InterviewLoaded) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                  padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                       Text(
                         'My Interviews',
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1A1D23)),
+                        style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, color: Color(0xFF1A1D23)),
                       ),
-                      const SizedBox(height: 4),
+                       SizedBox(height: 4.h),
                       Text(
                         '${state.interviews.length} scheduled',
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
+                        style:  TextStyle(fontSize: 13.sp, color: Colors.grey),
                       ),
-                      const SizedBox(height: 20),
+                       SizedBox(height: 20.h),
                       Expanded(
                         child: ListView.separated(
                           itemCount: state.interviews.length,

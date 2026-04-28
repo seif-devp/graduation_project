@@ -1,7 +1,7 @@
 class JobModel {
   final String title;
   final String company;
-  final String address;
+  final String location;
   final String salary;
   final String percent;
   final String date;
@@ -9,7 +9,7 @@ class JobModel {
   JobModel({
     required this.title,
     required this.company,
-    required this.address,
+    required this.location,
     required this.salary,
     required this.percent,
     required this.date,
