@@ -54,17 +54,18 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 SizedBox(height: 32.h),
-                 Text(
+                SizedBox(height: 32.h),
+                Text(
                   'Welcome Back',
-                  style: TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(fontSize: 30.sp, fontWeight: FontWeight.bold),
                 ),
-                 SizedBox(height: 8.h),
-                 Text(
+                SizedBox(height: 8.h),
+                Text(
                   'Sign in to continue',
                   style: TextStyle(fontSize: 16.sp, color: Colors.black54),
                 ),
-                 SizedBox(height: 32.h),
+                SizedBox(height: 32.h),
                 Container(
                   height: 52.h,
                   decoration: BoxDecoration(
@@ -106,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ],
                   ),
                 ),
-                 SizedBox(height: 28.h),
+                SizedBox(height: 28.h),
                 Form(
                   key: formKey,
                   child: Column(
@@ -127,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                       SizedBox(height: 16.h),
+                      SizedBox(height: 16.h),
                       TextFormField(
                         validator: (value) => value == null || value.isEmpty
                             ? 'Please enter your password'
@@ -165,11 +166,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: const Text('Forgot Password?'),
                   ),
                 ),
-                 SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     if (state is AuthLoading) {
-                      return  SizedBox(
+                      return SizedBox(
                         width: double.infinity,
                         height: 52,
                         child: Center(child: CircularProgressIndicator()),
@@ -183,13 +184,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           if (formKey.currentState!.validate()) {
                             // Perform sign in logic here
                             context.read<AuthCubit>().login(
-                              email: emailController.text,
-                              password: passwordController.text,
-                              isEmployer: isEmployerSelected,
-                            );
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  isEmployer: isEmployerSelected,
+                                );
                           }
                         },
-
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -200,9 +200,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     );
                   },
                 ),
-                 SizedBox(height: 24.h),
+                SizedBox(height: 24.h),
                 Row(
-                  children:  [
+                  children: [
                     Expanded(child: Divider(thickness: 1)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -211,7 +211,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Expanded(child: Divider(thickness: 1)),
                   ],
                 ),
-                 SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
                 Row(
                   children: [
                     Expanded(
@@ -226,7 +226,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: const Text('Google'),
                       ),
                     ),
-                     SizedBox(width: 12.h),
+                    SizedBox(width: 12.h),
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {},
@@ -241,13 +241,16 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ],
                 ),
-                 SizedBox(height: 32.h),
+                SizedBox(height: 32.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Don\'t have an account? '),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.go('/signup',
+                            extra: {'isEmployer': isEmployerSelected});
+                      },
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(

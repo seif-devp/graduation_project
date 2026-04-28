@@ -15,23 +15,21 @@ import 'package:graduation_project/features/splash_screen/screen/splash_screen.d
 final router = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => SplashScreen()),
-
     GoRoute(
       path: '/login',
       name: 'login',
       builder: (context, state) =>
           BlocProvider(create: (_) => AuthCubit(), child: SignInScreen()),
     ),
-
     ShellRoute(
       builder: (context, state, child) => ShellLayout(child: child),
       routes: [
         GoRoute(
-          path: 'signup',
+          path: '/signup',
           name: 'signup',
           builder: (context, state) => BlocProvider(
-            create: (context) => AuthCubit(), 
-            child: const SignUpScreen(), 
+            create: (context) => AuthCubit(),
+            child: const SignUpScreen(),
           ),
         ),
         GoRoute(
@@ -39,31 +37,26 @@ final router = GoRouter(
           name: 'home',
           builder: (context, state) => JobSeekerHomeScreen(),
         ),
-
         GoRoute(
           path: '/jobPage',
           name: 'jobPage',
           builder: (context, state) => JobPage(),
         ),
-
         GoRoute(
           path: '/applying',
           name: 'applying',
           builder: (context, state) => ApplicationProgressScreen(),
         ),
-
         GoRoute(
           path: '/interview',
           name: 'interview',
           builder: (context, state) => InterviewsPage(),
         ),
-
         GoRoute(
           path: '/alerts',
           name: 'alerts',
           builder: (context, state) => InterviewsPage(),
         ),
-
         GoRoute(
           path: '/profile',
           name: 'profile',

@@ -85,7 +85,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() => isEmployerSelected = false),
+                          onTap: () =>
+                              setState(() => isEmployerSelected = false),
                           child: Container(
                             decoration: BoxDecoration(
                               color: !isEmployerSelected
@@ -99,7 +100,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() => isEmployerSelected = true),
+                          onTap: () =>
+                              setState(() => isEmployerSelected = true),
                           child: Container(
                             decoration: BoxDecoration(
                               color: isEmployerSelected
@@ -190,7 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
 
                 /// Sign Up Button
@@ -217,6 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   isEmployer: isEmployerSelected,
                                 );
                           }
+                          context.go('/login');
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
