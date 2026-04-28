@@ -24,22 +24,33 @@ final router = GoRouter(
       builder: (context, state) =>
           BlocProvider(create: (_) => AuthCubit(), child: SignInScreen()),
     ),
+    GoRoute(
+      path: '/startup',
+      name: 'startup',
+      builder: (context, state) => StartUpScreen(),
+    ),
+    GoRoute(
+      path: '/signup',
+      name: 'signup',
+      builder: (context, state) => BlocProvider(
+        create: (context) => AuthCubit(),
+        child: const SignUpScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/job_details',
+      name: 'job_details',
+      builder: (context, state) =>
+          JobDetailsPage(job: state.extra as JobEntity),
+    ),
+    GoRoute(
+      path: '/alerts',
+      name: 'alerts',
+      builder: (context, state) => InterviewsPage(),
+    ),
     ShellRoute(
       builder: (context, state, child) => ShellLayout(child: child),
       routes: [
-        GoRoute(
-          path: '/startup',
-          name: 'startup',
-          builder: (context, state) => StartUpScreen(),
-        ),
-        GoRoute(
-          path: '/signup',
-          name: 'signup',
-          builder: (context, state) => BlocProvider(
-            create: (context) => AuthCubit(),
-            child: const SignUpScreen(),
-          ),
-        ),
         GoRoute(
           path: '/home',
           name: 'home',
@@ -51,12 +62,6 @@ final router = GoRouter(
           builder: (context, state) => JobPage(),
         ),
         GoRoute(
-          path: '/job_details',
-          name: 'job_details',
-          builder: (context, state) =>
-              JobDetailsPage(job: state.extra as JobEntity),
-        ),
-        GoRoute(
           path: '/applying',
           name: 'applying',
           builder: (context, state) => ApplicationProgressScreen(),
@@ -64,11 +69,6 @@ final router = GoRouter(
         GoRoute(
           path: '/interview',
           name: 'interview',
-          builder: (context, state) => InterviewsPage(),
-        ),
-        GoRoute(
-          path: '/alerts',
-          name: 'alerts',
           builder: (context, state) => InterviewsPage(),
         ),
         GoRoute(

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_state.dart';
-import 'package:graduation_project/features/view_ai_match/presentation/screen/job_details_view.dart';
+import 'package:graduation_project/features/view_ai_match/presentation/screen/Ai_match.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 
 class JobDetailsPage extends StatelessWidget {

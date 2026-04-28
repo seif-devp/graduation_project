@@ -5,4 +5,3 @@ class JobDetailsState {
   final JobEntity? job;
   JobDetailsState(this.job);
 }
-
