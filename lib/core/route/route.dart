@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
@@ -14,7 +15,7 @@ import 'package:graduation_project/features/splash_screen/screen/splash_screen.d
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (context, state) => SplashScreen()),
+    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
     GoRoute(
       path: '/login',
       name: 'login',
@@ -24,6 +25,11 @@ final router = GoRouter(
     ShellRoute(
       builder: (context, state, child) => ShellLayout(child: child),
       routes: [
+        GoRoute(
+          path:'/startup',
+          name:'startup',
+          builder: (context, state) => StartUpScreen(),
+        ),
         GoRoute(
           path: '/signup',
           name: 'signup',
