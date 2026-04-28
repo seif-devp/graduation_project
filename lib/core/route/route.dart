@@ -8,6 +8,8 @@ import 'package:graduation_project/features/Home/presentation/screens/job_seeker
 import 'package:graduation_project/features/Home/presentation/Widgets/shell_layout.dart';
 import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
+import 'package:graduation_project/features/job_details/screens/job_details.dart';
+import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
@@ -57,12 +59,18 @@ final router = GoRouter(
           name: 'alerts',
           builder: (context, state) => InterviewsPage(),
         ),
+
         GoRoute(
-          path: '/profile',
-          name: 'profile',
-          builder: (context, state) => ProfileScreen(),
-        ),
+  path: '/job_details',
+  name: 'job_details',
+  builder: (context, state) => BlocProvider(
+  
+    create: (context) => JobDetailsCubit()..loadJob(state.extra as JobEntity),
+    child: const JobDetailsPage(),
+  ),
+),
       ],
+       
     ),
   ],
 );

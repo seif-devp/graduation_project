@@ -16,7 +16,7 @@ class JobRepoImp extends Jobrepo {
       JobEntity(
         title: "Senior flutter Developer",
         company: "TechCorp Inc.",
-        location: "NewYork",
+        location: "New York ,NY ",
         salary: "\$120k - \$110k",
         percent: "85%",
         date: "1/28/2026",

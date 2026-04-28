@@ -51,7 +51,7 @@ class _JobPageState extends State<JobPage> {
                           const Text("Location", style: TextStyle(fontWeight: FontWeight.bold)),
                           Wrap(
                             spacing: 10,
-                            children: ["San Francisco, CA", "New York, NY"].map((loc) => FilterChip(
+                            children: ["San Francisco, CA", "New York", "Cairo" ].map((loc) => FilterChip(
                               label: Text(loc),
                               onSelected: (val) {
                                 context.read<JobListCubit>().filterJobs(location: val ? loc : null);
@@ -85,7 +85,6 @@ class _JobPageState extends State<JobPage> {
           builder: (context, state) {
             if (state is JobListLoading) return const Center(child: CircularProgressIndicator());
             if (state is JobListSuccess) {
-              // 2. ListView.builder يجعل الكارت يأخذ عرض الشاشة كاملاً تلقائياً
               return ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: state.jobs.length,
