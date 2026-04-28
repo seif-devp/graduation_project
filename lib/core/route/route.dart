@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
@@ -12,22 +11,18 @@ import 'package:graduation_project/features/job_application_progress/presentatio
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
+import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/', 
-      builder: (context, state) => const SplashScreen()
-    ),
+    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
     GoRoute(
       path: '/login',
       name: 'login',
-      builder: (context, state) => BlocProvider(
-        create: (_) => AuthCubit(), 
-        child: SignInScreen()
-      ),
+      builder: (context, state) =>
+          BlocProvider(create: (_) => AuthCubit(), child: SignInScreen()),
     ),
     ShellRoute(
       builder: (context, state, child) => ShellLayout(child: child),
@@ -58,9 +53,8 @@ final router = GoRouter(
         GoRoute(
           path: '/job_details',
           name: 'job_details',
-          builder: (context, state) => JobDetailsPage(
-            job: state.extra as JobEntity
-          ),
+          builder: (context, state) =>
+              JobDetailsPage(job: state.extra as JobEntity),
         ),
         GoRoute(
           path: '/applying',
@@ -77,6 +71,10 @@ final router = GoRouter(
           name: 'alerts',
           builder: (context, state) => InterviewsPage(),
         ),
+        GoRoute(
+            path: '/profile',
+            name: 'profile',
+            builder: (context, state) => ProfileScreen()),
       ],
     ),
   ],
