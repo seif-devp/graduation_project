@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
@@ -9,10 +8,11 @@ import 'package:graduation_project/features/Home/presentation/screens/job_seeker
 import 'package:graduation_project/features/Home/presentation/Widgets/shell_layout.dart';
 import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
+import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
+import 'package:graduation_project/features/view_ai_match/presentation/screen/job_details_view.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
-import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 
 final router = GoRouter(
@@ -28,8 +28,8 @@ final router = GoRouter(
       builder: (context, state, child) => ShellLayout(child: child),
       routes: [
         GoRoute(
-          path:'/startup',
-          name:'startup',
+          path: '/startup',
+          name: 'startup',
           builder: (context, state) => StartUpScreen(),
         ),
         GoRoute(
@@ -65,18 +65,17 @@ final router = GoRouter(
           name: 'alerts',
           builder: (context, state) => InterviewsPage(),
         ),
-
         GoRoute(
-  path: '/job_details',
-  name: 'job_details',
-  builder: (context, state) => BlocProvider(
-  
-    create: (context) => JobDetailsCubit()..loadJob(state.extra as JobEntity),
-    child: const JobDetailsPage(),
-  ),
-),
+          path: '/job_details',
+          name: 'job_details',
+          builder: (context, state) => JobDetailsPage(job: state.extra as JobEntity),
+        ),
+        GoRoute(
+          path: '/ai_match',
+          name: 'ai_match',
+          builder: (context, state) => AiMatch(),
+        ),
       ],
-       
     ),
   ],
 );
