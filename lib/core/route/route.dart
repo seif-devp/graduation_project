@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
+import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/startup_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
 import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
@@ -9,10 +10,11 @@ import 'package:graduation_project/features/interviews/presentation/screens/inte
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
+import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (context, state) => StartUpScreen()),
+    GoRoute(path: '/', builder: (context, state) => SplashScreen()),
 
     GoRoute(
       path: '/login',
@@ -24,6 +26,14 @@ final router = GoRouter(
     ShellRoute(
       builder: (context, state, child) => ShellLayout(child: child),
       routes: [
+        GoRoute(
+          path: 'signup',
+          name: 'signup',
+          builder: (context, state) => BlocProvider(
+            create: (context) => AuthCubit(), 
+            child: const SignUpScreen(), 
+          ),
+        ),
         GoRoute(
           path: '/home',
           name: 'home',
