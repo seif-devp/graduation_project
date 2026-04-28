@@ -1,3 +1,4 @@
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
@@ -8,21 +9,25 @@ import 'package:graduation_project/features/Home/presentation/screens/job_seeker
 import 'package:graduation_project/features/Home/presentation/Widgets/shell_layout.dart';
 import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
-import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
-import 'package:graduation_project/features/view_ai_match/presentation/screen/job_details_view.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 
 final router = GoRouter(
+  initialLocation: '/',
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
+    GoRoute(
+      path: '/', 
+      builder: (context, state) => const SplashScreen()
+    ),
     GoRoute(
       path: '/login',
       name: 'login',
-      builder: (context, state) =>
-          BlocProvider(create: (_) => AuthCubit(), child: SignInScreen()),
+      builder: (context, state) => BlocProvider(
+        create: (_) => AuthCubit(), 
+        child: SignInScreen()
+      ),
     ),
     ShellRoute(
       builder: (context, state, child) => ShellLayout(child: child),
@@ -51,6 +56,13 @@ final router = GoRouter(
           builder: (context, state) => JobPage(),
         ),
         GoRoute(
+          path: '/job_details',
+          name: 'job_details',
+          builder: (context, state) => JobDetailsPage(
+            job: state.extra as JobEntity
+          ),
+        ),
+        GoRoute(
           path: '/applying',
           name: 'applying',
           builder: (context, state) => ApplicationProgressScreen(),
@@ -64,16 +76,6 @@ final router = GoRouter(
           path: '/alerts',
           name: 'alerts',
           builder: (context, state) => InterviewsPage(),
-        ),
-        GoRoute(
-          path: '/job_details',
-          name: 'job_details',
-          builder: (context, state) => JobDetailsPage(job: state.extra as JobEntity),
-        ),
-        GoRoute(
-          path: '/ai_match',
-          name: 'ai_match',
-          builder: (context, state) => AiMatch(),
         ),
       ],
     ),
