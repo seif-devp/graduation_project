@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/route/route.dart';
 
 void main() {
-  runApp(DevicePreview(enabled: false, builder: (context) => const MyApp()));
+  runApp( const MyApp());
 
   
 }
