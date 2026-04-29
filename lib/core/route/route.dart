@@ -18,25 +18,41 @@ final router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
+    
     GoRoute(
       path: '/login',
       name: 'login',
-      builder: (context, state) =>
-          BlocProvider(create: (_) => AuthCubit(), child: SignInScreen()),
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final isEmployer = extra?['isEmployer'] as bool? ?? false;
+
+        return BlocProvider(
+          create: (_) => AuthCubit(),
+          child: SignInScreen(initialEmployerSelected: isEmployer),
+        );
+      },
     ),
+    
     GoRoute(
       path: '/startup',
       name: 'startup',
       builder: (context, state) => StartUpScreen(),
     ),
+    
     GoRoute(
       path: '/signup',
       name: 'signup',
-      builder: (context, state) => BlocProvider(
-        create: (context) => AuthCubit(),
-        child: const SignUpScreen(),
-      ),
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final isEmployer = extra?['isEmployer'] as bool? ?? false;
+
+        return BlocProvider(
+          create: (context) => AuthCubit(),
+          child: SignUpScreen(initialEmployerSelected: isEmployer),
+        );
+      },
     ),
+    
     GoRoute(
       path: '/job_details',
       name: 'job_details',

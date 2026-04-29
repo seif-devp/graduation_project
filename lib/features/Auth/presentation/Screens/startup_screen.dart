@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
-import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 class StartUpScreen extends StatelessWidget {
   const StartUpScreen({super.key});
 
+  // ألوان الهوية البصرية
+  final Color primaryDarkBlue = const Color.fromARGB(255, 3, 59, 122);
+  final Color accentCyan = const Color(0xFF00F2FE);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FF),
+      backgroundColor: const Color(0xFFF8F9FF), // الخلفية الفاتحة المريحة للعين
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
@@ -24,7 +26,7 @@ class StartUpScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: primaryDarkBlue, // استخدام لون البراند الأساسي
                   ),
                 ),
                 SizedBox(height: 10.h),
@@ -34,46 +36,35 @@ class StartUpScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16.sp, color: Colors.black54),
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 32.h),
+
+                // كارت الباحث عن عمل
                 _ChoiceCard(
                   icon: Icons.person_outline,
-                  iconBackground: const Color(0xFFEAF4FF),
-                  iconColor: const Color(0xFF3366FF),
+                  iconBackground: primaryDarkBlue.withOpacity(0.1), // لون شفاف من الأساسي
+                  iconColor: primaryDarkBlue,
                   title: "I'm a Job Seeker",
                   subtitle: 'Find your dream job with AI-powered matching',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider(
-                          create: (context) => AuthCubit(),
-                          child: const SignInScreen(initialEmployerSelected: false),
-                        ),
-                      ),
-                    );
+                    // استخدام GoRouter للتنقل للحفاظ على نظافة الكود
+                    context.push('/signup', extra: {'isEmployer': false});
                   },
                 ),
-                SizedBox(height: 18.h),
+                SizedBox(height: 20.h),
+
+                // كارت صاحب العمل
                 _ChoiceCard(
                   icon: Icons.apartment_outlined,
-                  iconBackground: const Color(0xFFF5E9FF),
-                  iconColor: const Color(0xFF7B39F5),
+                  iconBackground: primaryDarkBlue.withOpacity(0.1), // لون شفاف من الأساسي
+                  iconColor: primaryDarkBlue,
                   title: "I'm an Employer",
                   subtitle: 'Find the perfect candidates for your team',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider(
-                          create: (context) => AuthCubit(),
-                          child: const SignInScreen(initialEmployerSelected: true),
-                        ),
-                      ),
-                    );
+                    // استخدام GoRouter للتنقل
+                    context.push('/signup', extra: {'isEmployer': true});
                   },
                 ),
                 
-                // شلنا الـ Spacer وحطينا SizedBox ثابت عشان الـ ScrollView ميزعلش
                 SizedBox(height: 60.h), 
                 
                 const Center(
@@ -115,7 +106,7 @@ class _ChoiceCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: double.infinity, // شلنا حرف الـ .w من هنا
+        width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -128,19 +119,22 @@ class _ChoiceCard extends StatelessWidget {
             ),
           ],
         ),
-        // كمان مفيش داعي لـ SingleChildScrollView جوه الكارد نفسه
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 30.r,
+              radius: 34.r, // كبرت الدايرة حاجة بسيطة عشان الشكل يكون متناسق أكتر
               backgroundColor: iconBackground,
               child: Icon(icon, size: 38.r, color: iconColor),
             ),
             SizedBox(height: 18.h),
             Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
+              style: TextStyle(
+                fontWeight: FontWeight.bold, 
+                fontSize: 18.sp,
+                color: const Color.fromARGB(255, 3, 59, 122), // نفس الكحلي
+              ),
             ),
             SizedBox(height: 8.h),
             Text(
@@ -148,7 +142,7 @@ class _ChoiceCard extends StatelessWidget {
               style: TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.normal,
-                fontFamily: 'inter',
+                fontFamily: 'inter', // تأكد إن الخط ده متضاف في pubspec.yaml
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
