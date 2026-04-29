@@ -43,12 +43,11 @@ class _SignInScreenState extends State<SignInScreen> {
           );
         }
         if (state is AuthSuccess) {
-          if(isEmployerSelected) {
-            
+          if (isEmployerSelected) {
+            context.goNamed('home_employer', extra: {'isEmployer': true});
           } else {
             context.goNamed('home', extra: {'isEmployer': false});
           }
-          
         }
         if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
