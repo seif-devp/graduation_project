@@ -6,7 +6,6 @@ import 'package:graduation_project/core/route/route.dart';
 void main() {
   runApp( const MyApp());
 
-  
 }
 
 class MyApp extends StatelessWidget {
