@@ -6,11 +6,14 @@ import 'package:graduation_project/features/Auth/presentation/Screens/startup_sc
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
 import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/shell_layout.dart';
+import 'package:graduation_project/features/Home_employer/presentation/screens/home_employer.dart';
 import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
+import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_cubit.dart';
+import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 
@@ -34,7 +37,7 @@ final router = GoRouter(
       name: 'signup',
       builder: (context, state) => BlocProvider(
         create: (context) => AuthCubit(),
-        child: const SignUpScreen(),
+        child:  SignUpScreen(),
       ),
     ),
     GoRoute(
@@ -55,6 +58,16 @@ final router = GoRouter(
           path: '/home',
           name: 'home',
           builder: (context, state) => JobSeekerHomeScreen(),
+        ),
+        GoRoute(
+            path: '/post_jobs_employer',
+            name: 'post_jobs_employer',
+            builder: (context, state) => PostJobScreen()
+            ),
+        GoRoute(
+          path: '/home_employer',
+          name: 'home_employer',
+          builder: (context, state) => EmployerHomeScreen(),
         ),
         GoRoute(
           path: '/jobPage',
