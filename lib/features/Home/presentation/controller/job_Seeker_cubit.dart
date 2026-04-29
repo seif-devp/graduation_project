@@ -5,7 +5,7 @@ import 'package:graduation_project/features/Home/Data/models/jobmodel.dart';
 class JobSeekerCubit extends Cubit<JobState> {
   JobSeekerCubit() : super(JobInitial());
 
-  void loadJobs() async {
+  void  loadJobs() async {
     emit(JobLoading());
 
     await Future.delayed(Duration(seconds: 1)); // fake API
