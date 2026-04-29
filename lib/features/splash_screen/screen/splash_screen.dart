@@ -21,31 +21,31 @@ class SplashScreen extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: const Color.fromARGB(255, 3, 59, 122),
-          body: Column(
+          body: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,            
-            children: [
-           Column(
-              
-               children: [
-                 Lottie.asset(
-                  'assets/icons/splash.json',
-                  width: 200.w,
-                  height: 200.h,
-                               ),
-               ],
-             ),
-             Text(
-               'A Chance To Shine',
-               textAlign: TextAlign.center,
-               style: TextStyle(
-                 fontSize: 26,
-                 fontWeight: FontWeight.bold,
-                 color: Color(0xFF00F2FE),
-               ),
-             )
-          ],
-            
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Lottie.asset(
+                      'assets/icons/splash.json',
+                      width: 200.w,
+                      height: 200.h,
+                    ),
+                  ],
+                ),
+                Text(
+                  'A Chance To Shine',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF00F2FE),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

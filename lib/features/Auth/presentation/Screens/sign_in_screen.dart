@@ -43,7 +43,12 @@ class _SignInScreenState extends State<SignInScreen> {
           );
         }
         if (state is AuthSuccess) {
-          context.go('/home');
+          if(isEmployerSelected) {
+            
+          } else {
+            context.goNamed('home', extra: {'isEmployer': false});
+          }
+          
         }
         if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -63,7 +68,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Text(
                   'Welcome Back',
                   style: TextStyle(
-                    fontSize: 30.sp, 
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.bold,
                     color: primaryDarkBlue, // تطعيم بالكحلي
                   ),
@@ -84,7 +89,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() => isEmployerSelected = false),
+                          onTap: () =>
+                              setState(() => isEmployerSelected = false),
                           child: Container(
                             decoration: BoxDecoration(
                               color: !isEmployerSelected
@@ -97,8 +103,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 'Job Seeker',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: !isEmployerSelected ? Colors.white : Colors.black54,
-                                ),  
+                                  color: !isEmployerSelected
+                                      ? Colors.white
+                                      : Colors.black54,
+                                ),
                               ),
                             ),
                           ),
@@ -106,7 +114,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() => isEmployerSelected = true),
+                          onTap: () =>
+                              setState(() => isEmployerSelected = true),
                           child: Container(
                             decoration: BoxDecoration(
                               color: isEmployerSelected
@@ -119,8 +128,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 'Employer',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: isEmployerSelected ? Colors.white : Colors.black54,
-                                ),  
+                                  color: isEmployerSelected
+                                      ? Colors.white
+                                      : Colors.black54,
+                                ),
                               ),
                             ),
                           ),
@@ -141,7 +152,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'your.email@example.com',
-                          prefixIcon: Icon(Icons.email_outlined, color: primaryDarkBlue), // آيكون كحلي
+                          prefixIcon: Icon(Icons.email_outlined,
+                              color: primaryDarkBlue), // آيكون كحلي
                           filled: true,
                           fillColor: Colors.white,
                           border: const OutlineInputBorder(
@@ -159,7 +171,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         obscureText: !isPasswordVisible,
                         decoration: InputDecoration(
                           hintText: 'Enter your password',
-                          prefixIcon: Icon(Icons.lock_outline, color: primaryDarkBlue), // آيكون كحلي
+                          prefixIcon: Icon(Icons.lock_outline,
+                              color: primaryDarkBlue), // آيكون كحلي
                           suffixIcon: IconButton(
                             icon: Icon(
                               isPasswordVisible
@@ -188,7 +201,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: () {},
                     child: Text(
                       'Forgot Password?',
-                      style: TextStyle(color: primaryDarkBlue, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: primaryDarkBlue, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -200,7 +214,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity.w,
                         height: 52.h,
                         child: Center(
-                          child: CircularProgressIndicator(color: primaryDarkBlue),
+                          child:
+                              CircularProgressIndicator(color: primaryDarkBlue),
                         ),
                       );
                     }
@@ -241,7 +256,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     const Expanded(child: Divider(thickness: 1)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: const Text('Or continue with', style: TextStyle(color: Colors.black54)),
+                      child: const Text('Or continue with',
+                          style: TextStyle(color: Colors.black54)),
                     ),
                     const Expanded(child: Divider(thickness: 1)),
                   ],
@@ -268,7 +284,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             height: 28.h,
                             width: 28.w,
                             child: Lottie.asset(
-                              'icons/Google_Logo.json',
+                              'assets/icons/Google_Logo.json',
                               repeat: true,
                               fit: BoxFit.contain,
                             ),

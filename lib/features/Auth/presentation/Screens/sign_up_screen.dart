@@ -71,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Text(
                   'Create Account',
                   style: TextStyle(
-                    fontSize: 30.sp, 
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.bold,
                     color: primaryDarkBlue, // تطعيم بالكحلي
                   ),
@@ -94,7 +94,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() => isEmployerSelected = false),
+                          onTap: () =>
+                              setState(() => isEmployerSelected = false),
                           child: Container(
                             decoration: BoxDecoration(
                               color: !isEmployerSelected
@@ -107,7 +108,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 'Job Seeker',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: !isEmployerSelected ? Colors.white : Colors.black54,
+                                  color: !isEmployerSelected
+                                      ? Colors.white
+                                      : Colors.black54,
                                 ),
                               ),
                             ),
@@ -116,7 +119,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() => isEmployerSelected = true),
+                          onTap: () =>
+                              setState(() => isEmployerSelected = true),
                           child: Container(
                             decoration: BoxDecoration(
                               color: isEmployerSelected
@@ -129,7 +133,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 'Employer',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: isEmployerSelected ? Colors.white : Colors.black54,
+                                  color: isEmployerSelected
+                                      ? Colors.white
+                                      : Colors.black54,
                                 ),
                               ),
                             ),
@@ -154,7 +160,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'Full Name',
-                          prefixIcon: Icon(Icons.person_outline, color: primaryDarkBlue),
+                          prefixIcon: Icon(Icons.person_outline,
+                              color: primaryDarkBlue),
                           filled: true,
                           fillColor: Colors.white,
                           border: const OutlineInputBorder(
@@ -173,7 +180,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'your.email@example.com',
-                          prefixIcon: Icon(Icons.email_outlined, color: primaryDarkBlue),
+                          prefixIcon: Icon(Icons.email_outlined,
+                              color: primaryDarkBlue),
                           filled: true,
                           fillColor: Colors.white,
                           border: const OutlineInputBorder(
@@ -193,7 +201,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'Enter your password',
-                          prefixIcon: Icon(Icons.lock_outline, color: primaryDarkBlue),
+                          prefixIcon:
+                              Icon(Icons.lock_outline, color: primaryDarkBlue),
                           suffixIcon: IconButton(
                             icon: Icon(
                               isPasswordVisible
@@ -227,7 +236,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: double.infinity,
                         height: 52.h,
                         child: Center(
-                          child: CircularProgressIndicator(color: primaryDarkBlue),
+                          child:
+                              CircularProgressIndicator(color: primaryDarkBlue),
                         ),
                       );
                     }
@@ -272,7 +282,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const Expanded(child: Divider(thickness: 1)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: const Text('Or continue with', style: TextStyle(color: Colors.black54)),
+                      child: const Text('Or continue with',
+                          style: TextStyle(color: Colors.black54)),
                     ),
                     const Expanded(child: Divider(thickness: 1)),
                   ],
@@ -299,7 +310,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 28,
                             width: 28,
                             child: Lottie.asset(
-                              'icons/Google_Logo.json',
+                              'assets/icons/Google_Logo.json',
                               repeat: true,
                               fit: BoxFit.contain,
                             ),
@@ -308,7 +319,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     SizedBox(width: 16.w),
-                    // زرار لينكد إن 
+                    // زرار لينكد إن
                     GestureDetector(
                       onTap: () {},
                       child: Container(
