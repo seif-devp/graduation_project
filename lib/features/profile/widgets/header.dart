@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -12,7 +13,6 @@ class ProfileHeader extends StatelessWidget {
         color: Color(0xFF2563EB),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
-    
       padding: EdgeInsets.fromLTRB(20.w, 50.h, 20.w, 30.h),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -29,7 +29,9 @@ class ProfileHeader extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/settings');
+                },
                 icon: const Icon(Icons.settings, color: Colors.white),
               ),
             ],
@@ -59,7 +61,9 @@ class ProfileHeader extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push('/edit_profile');
+            },
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: Colors.white54),
               shape: RoundedRectangleBorder(

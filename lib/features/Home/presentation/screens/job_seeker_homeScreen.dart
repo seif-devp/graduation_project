@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/Suggested.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/header.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/job_card.dart';
@@ -69,7 +70,7 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
             BlocBuilder<JobSeekerCubit, JobState>(
               builder: (context, state) {
                 if (state is JobLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Expanded(child: Center(child: loading));
                 }
 
                 if (state is JobLoaded) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Home_employer/data/repo_imp.dart' show EmployerHomeRepository;
 import 'package:graduation_project/features/Home_employer/presentation/cubit/home_employer_cubit.dart';
 import 'package:graduation_project/features/Home_employer/presentation/cubit/home_employer_state.dart';
@@ -21,7 +22,7 @@ class EmployerHomeScreen extends StatelessWidget {
         body: BlocBuilder<EmployerHomeCubit, EmployerHomeState>(
           builder: (context, state) {
             if (state is EmployerHomeLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: loading);
             } else if (state is EmployerHomeLoaded) {
               
               return SingleChildScrollView(

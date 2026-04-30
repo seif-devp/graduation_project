@@ -16,6 +16,8 @@ class CustomBottomNavBar extends StatelessWidget {
         return 2;
       case '/interview':
         return 3;
+      case '/settings':
+        return 4;
       case '/profile':
         return 4;
       default:
@@ -71,7 +73,7 @@ class CustomBottomNavBar extends StatelessWidget {
             label: "Applied",
           ),
           BottomNavigationBarItem(
-            icon:Icon(Icons.meeting_room_outlined),
+            icon: Icon(Icons.meeting_room_outlined),
             label: 'Interviews',
           ),
           BottomNavigationBarItem(

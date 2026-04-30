@@ -16,12 +16,13 @@ import 'package:graduation_project/features/post_job/presentation/cubit/post_lob
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
+import 'package:graduation_project/features/settings/presentation/screens/settings_page.dart';
+import 'package:graduation_project/features/settings/presentation/screens/edit_profile_page.dart';
 
 final router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
-    
     GoRoute(
       path: '/login',
       name: 'login',
@@ -35,17 +36,14 @@ final router = GoRouter(
         );
       },
     ),
-    
     GoRoute(
       path: '/startup',
       name: 'startup',
       builder: (context, state) => StartUpScreen(),
     ),
-    
     GoRoute(
       path: '/signup',
       name: 'signup',
-
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>?;
         final isEmployer = extra?['isEmployer'] as bool? ?? false;
@@ -55,9 +53,12 @@ final router = GoRouter(
           child: SignUpScreen(initialEmployerSelected: isEmployer),
         );
       },
-
     ),
-    
+    GoRoute(
+      path: '/edit_profile',
+      name: 'edit_profile',
+      builder: (context, state) => const EditProfilePage(),
+    ),
     GoRoute(
       path: '/job_details',
       name: 'job_details',
@@ -80,8 +81,7 @@ final router = GoRouter(
         GoRoute(
             path: '/post_jobs_employer',
             name: 'post_jobs_employer',
-            builder: (context, state) => PostJobScreen()
-            ),
+            builder: (context, state) => PostJobScreen()),
         GoRoute(
           path: '/home_employer',
           name: 'home_employer',
@@ -106,6 +106,11 @@ final router = GoRouter(
             path: '/profile',
             name: 'profile',
             builder: (context, state) => ProfileScreen()),
+        GoRoute(
+          path: '/settings',
+          name: 'settings',
+          builder: (context, state) => const SettingsPage(),
+        ),
       ],
     ),
   ],
