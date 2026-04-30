@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/core/widgets/job_card.dart';
 import 'package:graduation_project/features/job_list/data/job_repo_imp.dart';
 import 'package:graduation_project/features/job_list/domain/job_use_case.dart';
@@ -24,8 +25,14 @@ class _JobPageState extends State<JobPage> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Discover Jobs", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22.sp)),
-              Text("AI-matched positions for you", style: TextStyle(color: Colors.grey.shade600, fontSize: 14.sp)),
+              Text("Discover Jobs",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.sp)),
+              Text("AI-matched positions for you",
+                  style:
+                      TextStyle(color: Colors.grey.shade600, fontSize: 14.sp)),
             ],
           ),
           actions: [
@@ -42,34 +49,45 @@ class _JobPageState extends State<JobPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                    
                           TextField(
-                            decoration: const InputDecoration(labelText: "Search by title", prefixIcon: Icon(Icons.search)),
-                            onChanged: (val) => context.read<JobListCubit>().filterJobs(title: val),
+                            decoration: const InputDecoration(
+                                labelText: "Search by title",
+                                prefixIcon: Icon(Icons.search)),
+                            onChanged: (val) => context
+                                .read<JobListCubit>()
+                                .filterJobs(title: val),
                           ),
-                           SizedBox(height: 20.h),
-                          const Text("Location", style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 20.h),
+                          const Text("Location",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           Wrap(
                             spacing: 10,
-                            children: ["San Francisco, CA", "New York", "Cairo" ].map((loc) => FilterChip(
-                              label: Text(loc),
-                              onSelected: (val) {
-                                context.read<JobListCubit>().filterJobs(location: val ? loc : null);
-                                Navigator.pop(ctx);
-                              },
-                            )).toList(),
+                            children: ["San Francisco, CA", "New York", "Cairo"]
+                                .map((loc) => FilterChip(
+                                      label: Text(loc),
+                                      onSelected: (val) {
+                                        context.read<JobListCubit>().filterJobs(
+                                            location: val ? loc : null);
+                                        Navigator.pop(ctx);
+                                      },
+                                    ))
+                                .toList(),
                           ),
-                           SizedBox(height: 20.h),
-                          const Text("Salary Range", style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 20.h),
+                          const Text("Salary Range",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           Wrap(
                             spacing: 10,
-                            children: ["\$120k - \$110k", "\$120k - \$180k"].map((sal) => FilterChip(
-                              label: Text(sal),
-                              onSelected: (val) {
-                                context.read<JobListCubit>().filterJobs(salary: val ? sal : null);
-                                Navigator.pop(ctx);
-                              },
-                            )).toList(),
+                            children: ["\$120k - \$110k", "\$120k - \$180k"]
+                                .map((sal) => FilterChip(
+                                      label: Text(sal),
+                                      onSelected: (val) {
+                                        context.read<JobListCubit>().filterJobs(
+                                            salary: val ? sal : null);
+                                        Navigator.pop(ctx);
+                                      },
+                                    ))
+                                .toList(),
                           ),
                         ],
                       ),
@@ -78,12 +96,12 @@ class _JobPageState extends State<JobPage> {
                 },
               );
             }),
-             SizedBox(width: 8.w),
+            SizedBox(width: 8.w),
           ],
         ),
         body: BlocBuilder<JobListCubit, JobListState>(
           builder: (context, state) {
-            if (state is JobListLoading) return const Center(child: CircularProgressIndicator());
+            if (state is JobListLoading) return const Center(child: loading);
             if (state is JobListSuccess) {
               return ListView.builder(
                 padding: const EdgeInsets.all(16),
@@ -96,7 +114,8 @@ class _JobPageState extends State<JobPage> {
                 },
               );
             }
-            if (state is JobListFailure) return Center(child: Text(state.massege));
+            if (state is JobListFailure)
+              return Center(child: Text(state.massege));
             return const SizedBox();
           },
         ),

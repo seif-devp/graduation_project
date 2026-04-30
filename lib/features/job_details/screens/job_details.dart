@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_state.dart';
 import 'package:graduation_project/features/view_ai_match/presentation/screen/Ai_match.dart';
@@ -34,7 +35,7 @@ class JobDetailsPage extends StatelessWidget {
             final job = state.job;
 
             if (job == null) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: loading);
             }
 
             return SingleChildScrollView(
