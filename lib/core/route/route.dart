@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/features/Applicants/presentation/screen/application_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/startup_screen.dart';
@@ -77,6 +78,11 @@ final router = GoRouter(
           path: '/home',
           name: 'home',
           builder: (context, state) => JobSeekerHomeScreen(),
+        ),
+        GoRoute(
+          path: '/applications_swip',
+          name: 'applications_swip',
+          builder: (context, state) => ApplicantsScreen(),
         ),
         GoRoute(
             path: '/post_jobs_employer',
