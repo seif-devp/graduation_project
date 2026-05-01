@@ -34,12 +34,12 @@ class ApplicantsScreen extends StatelessWidget {
                       ? context.read<ApplicantsCubit>().swipeRight()
                       : context.read<ApplicantsCubit>().swipeLeft(),
                   background: SwipeIndicator(
-                      icon: Icons.check,
-                      color: Colors.green,
-                      alignment: Alignment.centerLeft),
-                  secondaryBackground: SwipeIndicator(
                       icon: Icons.close,
                       color: Colors.red,
+                      alignment: Alignment.centerLeft),
+                  secondaryBackground: SwipeIndicator(
+                      icon: Icons.check,
+                      color: Colors.green,
                       alignment: Alignment.centerRight),
                   child: ApplicantCard(applicant: current),
                 ),
