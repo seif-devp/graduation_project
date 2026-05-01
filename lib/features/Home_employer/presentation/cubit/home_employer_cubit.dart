@@ -8,13 +8,13 @@ class EmployerHomeCubit extends Cubit<EmployerHomeState> {
   void getdata() async {
     emit(EmployerHomeLoading());
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      // Use repository integration here. For now return zeroed stats.
       emit(EmployerHomeLoaded(EmployerHomeEntity(
-        activeJobs: 12,
-        applicantsCount: 48,
-        interviewsCount: 3,
-        newApplicants: 2,
-        interviewsToday: 4,
+        activeJobs: 0,
+        applicantsCount: 0,
+        interviewsCount: 0,
+        newApplicants: 0,
+        interviewsToday: 0,
       )));
     } catch (e) {
       emit(EmployerHomeError("Error loading data"));

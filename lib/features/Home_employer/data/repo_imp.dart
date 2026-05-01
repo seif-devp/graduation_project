@@ -2,14 +2,13 @@ import 'package:graduation_project/features/Home_employer/logic/entity.dart';
 
 class EmployerHomeRepository {
   Future<EmployerHomeEntity> getHomeData() async {
-    await Future.delayed(const Duration(seconds: 1));
-
+    // TODO: connect to backend. Returning zeroed stats instead of sample data.
     return EmployerHomeEntity(
-      activeJobs: 12,
-      newApplicants: 48,
-      interviewsToday: 3,
-      interviewsCount: 50,
-      applicantsCount: 28,
+      activeJobs: 0,
+      newApplicants: 0,
+      interviewsToday: 0,
+      interviewsCount: 0,
+      applicantsCount: 0,
     );
   }
 }

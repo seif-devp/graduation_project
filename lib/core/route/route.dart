@@ -13,12 +13,15 @@ import 'package:graduation_project/features/job_application_progress/presentatio
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
-import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_cubit.dart';
+// import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_cubit.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 import 'package:graduation_project/features/settings/presentation/screens/settings_page.dart';
 import 'package:graduation_project/features/settings/presentation/screens/edit_profile_page.dart';
+import 'package:graduation_project/features/Notifications/cubit/notification_cubit.dart';
+import 'package:graduation_project/features/Notifications/presentation/pages/notifications_page.dart';
+import 'package:graduation_project/features/job_application_progress/presentation/screens/application_detail_page.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -69,10 +72,13 @@ final router = GoRouter(
     GoRoute(
       path: '/alerts',
       name: 'alerts',
-      builder: (context, state) => InterviewsPage(),
+      redirect: (context, state) => '/notifications',
     ),
     ShellRoute(
-      builder: (context, state, child) => ShellLayout(child: child),
+      builder: (context, state, child) => BlocProvider(
+        create: (context) => NotificationCubit()..loadUnradCount(),
+        child: ShellLayout(child: child),
+      ),
       routes: [
         GoRoute(
           path: '/home',
@@ -104,9 +110,22 @@ final router = GoRouter(
           builder: (context, state) => ApplicationProgressScreen(),
         ),
         GoRoute(
+          path: '/application_detail',
+          name: 'application_detail',
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>? ?? {};
+            return ApplicationDetailPage(data: data);
+          },
+        ),
+        GoRoute(
           path: '/interview',
           name: 'interview',
           builder: (context, state) => InterviewsPage(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          name: 'notifications',
+          builder: (context, state) => const NotificationsPage(),
         ),
         GoRoute(
             path: '/profile',

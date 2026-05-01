@@ -5,26 +5,23 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
   void login({
-    required String email,
-    required String password,
+    String email = '',
+    String password = '',
     required bool isEmployer,
   }) {
     emit(AuthLoading());
-    Future.delayed(const Duration(seconds: 2));
-    if (email == ' ' && password == ' ') {
-      emit(AuthSuccess());
-    }
+    emit(AuthSuccess());
+    // Authentication is not yet implemented. Emit failure for now.
+    emit(AuthFailure('Not implemented: connect to auth service'));
   }
+
   void register({
-    required String name, 
+    required String name,
     required String email,
     required String password,
     required bool isEmployer,
   }) {
     emit(AuthLoading());
-    Future.delayed(const Duration(seconds: 2));
-    if (email == ' ' && password == ' ') {
-      emit(AuthSuccess());
-    }
+    emit(AuthFailure('Not implemented: connect to auth service'));
   }
 }
