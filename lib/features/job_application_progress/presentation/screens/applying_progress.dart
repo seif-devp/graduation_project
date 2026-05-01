@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/features/job_application_progress/presentation/widgets/application_card.dart';
+import 'package:go_router/go_router.dart';
+// application_card and detail widget are provided elsewhere; no local fake data used here
 
 class ApplicationProgressScreen extends StatelessWidget {
   const ApplicationProgressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // We don't use local fake data here. The real data source will be provided
+    // by a Bloc/Cubit and API services later. For now, show the empty state.
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
@@ -19,193 +23,79 @@ class ApplicationProgressScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
-                    'My Applications',
+                  Text(
+                    'Applied Jobs',
                     style: TextStyle(
                       fontSize: 28.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
                   ),
-                   SizedBox(height: 4.h),
+                  SizedBox(height: 4.h),
                   Text(
-                    'Track your job applications',
+                    'Track your application status',
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: Colors.grey[600],
                     ),
                   ),
-                   SizedBox(height: 4.h),
-                  // Stats row
-                  _buildStatsBar(context),
+                  SizedBox(height: 12.h),
                 ],
               ),
             ),
-            // Applications list - TODO: Replace with BlocBuilder
+
+            // Empty state placeholder — real list will come from Cubit/API
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(bottom: 16),
-                children: [
-                  // TODO: Wrap with BlocBuilder<ApplicationProgressCubit, ApplicationProgressState>
-                  // TODO: Add loading state
-                  // TODO: Add error state
-                  // TODO: Map state.applications to ApplicationCard widgets
-                  ApplicationCard(
-                    jobTitle: 'Senior React Developer',
-                    companyName: 'TechCorp Inc.',
-                    logoUrl: 'assets/techcorp.png',
-                    matchPercentage: 85,
-                    status: 'interview',
-                    appliedDate: '1/29/2026',
-                    onTap: () {
-                      // TODO: Navigate to application details
-                    },
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 96,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.check_circle_outline,
+                            size: 36, color: Colors.blue.shade400),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text('No Applications Yet',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      const SizedBox(
+                        width: 300,
+                        child: Text(
+                          'Start applying to jobs and track your progress here.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () => context.go('/jobPage'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1D4ED8),
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 28, vertical: 14),
+                        ),
+                        child: const Text('Find Jobs'),
+                      ),
+                    ],
                   ),
-                  ApplicationCard(
-                    jobTitle: 'Frontend Engineer',
-                    companyName: 'StartupXYZ',
-                    logoUrl: 'assets/startup.png',
-                    matchPercentage: 92,
-                    status: 'viewed',
-                    appliedDate: '1/28/2026',
-                    onTap: () {
-                      // TODO: Navigate to application details
-                    },
-                  ),
-                  ApplicationCard(
-                    jobTitle: 'UI/UX Designer',
-                    companyName: 'Design Studio Co',
-                    logoUrl: 'assets/design.png',
-                    matchPercentage: 78,
-                    status: 'sent',
-                    appliedDate: '1/27/2026',
-                    onTap: () {
-                      // TODO: Navigate to application details
-                    },
-                  ),
-                  ApplicationCard(
-                    jobTitle: 'Backend Developer',
-                    companyName: 'Enterprise Systems',
-                    logoUrl: 'assets/enterprise.png',
-                    matchPercentage: 88,
-                    status: 'rejected',
-                    appliedDate: '1/25/2026',
-                    onTap: () {
-                      // TODO: Navigate to application details
-                    },
-                  ),
-                  ApplicationCard(
-                    jobTitle: 'Full Stack Developer',
-                    companyName: 'Tech Innovations',
-                    logoUrl: 'assets/techinnovate.png',
-                    matchPercentage: 95,
-                    status: 'accepted',
-                    appliedDate: '1/24/2026',
-                    onTap: () {
-                      // TODO: Navigate to application details
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildStatsBar(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _StatItem(
-            icon: Icons.send,
-            label: 'Sent',
-            count: '12',
-            // TODO: Replace with state.sentCount
-          ),
-          _StatItem(
-            icon: Icons.visibility,
-            label: 'Viewed',
-            count: '8',
-            // TODO: Replace with state.viewedCount
-          ),
-          _StatItem(
-            icon: Icons.calendar_today,
-            label: 'Interviews',
-            count: '3',
-            // TODO: Replace with state.interviewCount
-          ),
-          _StatItem(
-            icon: Icons.check_circle,
-            label: 'Accepted',
-            count: '1',
-            // TODO: Replace with state.acceptedCount
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String count;
-
-  const _StatItem({
-    required this.icon,
-    required this.label,
-    required this.count,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: const Color(0xFFE3F2FD),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: const Color(0xFF1D4ED8),
-          ),
-        ),
-         SizedBox(height: 16.h),
-        Text(
-          count,
-          style:  TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-         SizedBox(height: 2.h),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 11.sp,
-            color: Colors.grey[600],
-          ),
-        ),
-      ],
     );
   }
 }

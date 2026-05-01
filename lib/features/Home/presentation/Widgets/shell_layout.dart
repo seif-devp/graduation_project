@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; // ضفنا دي عشان نقرأ المسار
+// NotificationCubit is injected by the router (DI); don't provide it here
 import 'package:graduation_project/core/widgets/employer_navigation_bar.dart';
 import 'package:graduation_project/features/Home/presentation/Widgets/Bottom_Navigation_Bar.dart';
 // اعمل import للملف الجديد اللي عملناه فوق
-// import 'package:graduation_project/features/.../employer_bottom_nav_bar.dart'; 
+// import 'package:graduation_project/features/.../employer_bottom_nav_bar.dart';
 
 class ShellLayout extends StatelessWidget {
   final Widget child;
@@ -12,9 +13,8 @@ class ShellLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final String location = GoRouterState.of(context).uri.path;
-    
+
     final bool isEmployerRoute = location.contains('employer');
 
     return Scaffold(
@@ -36,8 +36,8 @@ class ShellLayout extends StatelessWidget {
         },
         child: child,
       ),
-      bottomNavigationBar: isEmployerRoute 
-          ? const EmployerBottomNavBar() 
+      bottomNavigationBar: isEmployerRoute
+          ? const EmployerBottomNavBar()
           : const CustomBottomNavBar(),
     );
   }

@@ -6,15 +6,7 @@ class AiMatchCubit extends Cubit<AiMatchState> {
   AiMatchCubit() : super(AiMatchState());
 
   void fetchAiData() async {
-    
-    emit(AiMatchState(isLoading: true));
-
-    await Future.delayed(const Duration(seconds: 1));
-
-    emit(AiMatchState(
-      isLoading: false,
-      score: 85, 
-      skills: ["React", "TypeScript", "Node.js"]
-    ));
+    // TODO: fetch AI match data from backend. Currently no fake/sample data.
+    emit(AiMatchState(isLoading: false));
   }
 }

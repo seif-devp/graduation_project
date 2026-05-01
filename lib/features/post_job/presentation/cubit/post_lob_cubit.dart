@@ -1,9 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/features/post_job/logic/entity.dart';
 import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_state.dart';
 
 class PostJobCubit extends Cubit<PostJobState> {
-  
   PostJobCubit() : super(PostJobInitial());
 
   List<String> currentRequirements = [];
@@ -28,30 +26,14 @@ class PostJobCubit extends Cubit<PostJobState> {
     required String jobType,
     required String description,
   }) async {
-
     if (title.isEmpty || companyName.isEmpty || description.isEmpty) {
       emit(const PostJobFailure("Please fill all required fields."));
       return;
     }
 
     emit(PostJobLoading());
-
-    try {
-      JobPostEntity(
-        title: title,
-        companyName: companyName,
-        location: location,
-        salaryRange: salaryRange,
-        jobType: jobType,
-        description: description,
-        requirements: currentRequirements,
-      );
-
-      await Future.delayed(const Duration(seconds: 2));
-      emit(PostJobSuccess());
-      
-    } catch (e) {
-      emit(PostJobFailure(e.toString()));
-    }
+    // TODO: integrate with backend. For now return failure to avoid
+    // shipping fake success behavior.
+    emit(const PostJobFailure('Not implemented: connect to job service'));
   }
 }

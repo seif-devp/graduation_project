@@ -12,7 +12,7 @@ class ApplicationCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const ApplicationCard({
-    Key? key,
+    super.key,
     required this.jobTitle,
     required this.companyName,
     required this.logoUrl,
@@ -20,12 +20,14 @@ class ApplicationCard extends StatelessWidget {
     required this.status,
     required this.appliedDate,
     this.onTap,
-  }) : super(key: key);
+  });
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'sent':
+        return const Color(0xFF3B82F6); // اللون الأزرق الموجود في الصورة
       case 'viewed':
+        return const Color(0xFF6B7280); // اللون الرمادي الموجود في الصورة
       case 'interview':
         return const Color(0xFFF97316); // اللون البرتقالي الموجود في الصورة
       case 'rejected':
@@ -54,6 +56,17 @@ class ApplicationCard extends StatelessWidget {
     }
   }
 
+  Color colorCard(String status) {
+    if (status.toLowerCase() == 'rejected') {
+      return Color.fromARGB(
+          255, 255, 147, 139); // خلفية حمراء فاتحة للحالات المرفوضة
+    } else if (status.toLowerCase() == 'accepted') {
+      return Color.fromARGB(255, 20, 165, 136);
+    } else {
+      return Colors.white; // خلفية بيضاء للحالات الأخرى
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -61,9 +74,11 @@ class ApplicationCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorCard(status),
+          // خلفية بيضاء للحالات الأخرى
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200), // تحديد خفيف زي الصورة
+          border:
+              Border.all(color: Colors.grey.shade200), // تحديد خفيف زي الصورة
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
@@ -87,7 +102,7 @@ class ApplicationCard extends StatelessWidget {
                       children: [
                         Text(
                           jobTitle,
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF1E293B),
@@ -95,7 +110,7 @@ class ApplicationCard extends StatelessWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                         SizedBox(height: 4.h),
+                        SizedBox(height: 4.h),
                         Text(
                           companyName,
                           style: TextStyle(
@@ -109,10 +124,12 @@ class ApplicationCard extends StatelessWidget {
                   // Match Percentage Badge
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEEF2FF), // لون خلفية البادج (أزرق فاتح جداً)
+                      color: const Color(
+                          0xFFEEF2FF), // لون خلفية البادج (أزرق فاتح جداً)
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -121,10 +138,10 @@ class ApplicationCard extends StatelessWidget {
                           size: 16,
                           color: Color(0xFF4F46E5), // لون النجمة
                         ),
-                         SizedBox(width: 4.w),
+                        SizedBox(width: 4.w),
                         Text(
                           '${matchPercentage.toInt()}%',
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: 13..sp,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF4F46E5),
@@ -135,17 +152,18 @@ class ApplicationCard extends StatelessWidget {
                   ),
                 ],
               ),
-               SizedBox(height: 24.h),
-              
+              SizedBox(height: 24.h),
+
               // Progress Timeline (العداد المتعدل)
-              buildProgressTimeline(status),
-              
-               SizedBox(height: 24.h),
-              
+              buildProgressTimeline(status, _getStatusColor(status)),
+
+              SizedBox(height: 24.h),
+
               // Bottom Status Card
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF8FAFC), // رمادي فاتح جداً زي الصورة
                   borderRadius: BorderRadius.circular(8),
@@ -157,17 +175,19 @@ class ApplicationCard extends StatelessWidget {
                       size: 20,
                       color: _getStatusColor(status),
                     ),
-                     SizedBox(width: 12.w),
+                    SizedBox(width: 12.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RichText(
                           text: TextSpan(
                             text: 'Status: ',
-                            style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
+                            style: TextStyle(
+                                fontSize: 13.sp, color: Colors.grey[600]),
                             children: [
                               TextSpan(
-                                text: status[0].toUpperCase() + status.substring(1),
+                                text: status[0].toUpperCase() +
+                                    status.substring(1),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFF1E293B),
@@ -176,7 +196,7 @@ class ApplicationCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                         SizedBox(height: 2.h),
+                        SizedBox(height: 2.h),
                         Text(
                           'Applied $appliedDate',
                           style: TextStyle(
@@ -195,6 +215,4 @@ class ApplicationCard extends StatelessWidget {
       ),
     );
   }
-
-  
 }

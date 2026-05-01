@@ -26,15 +26,15 @@ class ApplicationDetailWidget extends StatelessWidget {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'sent':
-        return const Color(0xFFFF9800);
+        return const Color(0xFF3B82F6); // اللون الأزرق الموجود في الصورة
       case 'viewed':
-        return const Color(0xFF2196F3);
+        return const Color(0xFF6B7280); // اللون الرمادي الموجود في الصورة
       case 'interview':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFFF97316); // اللون البرتقالي الموجود في الصورة
       case 'rejected':
-        return const Color(0xFFf44336);
+        return const Color(0xFFEF4444);
       case 'accepted':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF10B981);
       default:
         return Colors.grey;
     }
@@ -59,7 +59,7 @@ class ApplicationDetailWidget extends StatelessWidget {
             controller: scrollController,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-               SizedBox(height: 8.h),
+              SizedBox(height: 8.h),
               // Handle indicator
               Center(
                 child: Container(
@@ -71,7 +71,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ),
               ),
-               SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
               // Company and job info
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,22 +88,22 @@ class ApplicationDetailWidget extends StatelessWidget {
                         companyName.isNotEmpty
                             ? companyName[0].toUpperCase()
                             : '?',
-                        style:  TextStyle(
-                          fontSize:28.sp,
+                        style: TextStyle(
+                          fontSize: 28.sp,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF1D4ED8),
                         ),
                       ),
                     ),
                   ),
-                   SizedBox(width: 12.w),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           jobTitle,
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
@@ -111,11 +111,11 @@ class ApplicationDetailWidget extends StatelessWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                         SizedBox(height: 4.h),
+                        SizedBox(height: 4.h),
                         Text(
                           companyName,
                           style: TextStyle(
-                            fontSize:14.sp,
+                            fontSize: 14.sp,
                             color: Colors.grey[600],
                             fontWeight: FontWeight.w500,
                           ),
@@ -125,10 +125,11 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-               SizedBox(height: 20.h),
+              SizedBox(height: 20.h),
               // Status badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: _getStatusColor(status).withOpacity(0.15),
                   borderRadius: BorderRadius.circular(20),
@@ -136,13 +137,13 @@ class ApplicationDetailWidget extends StatelessWidget {
                 child: Text(
                   status[0].toUpperCase() + status.substring(1),
                   style: TextStyle(
-                    fontSize:13.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w600,
                     color: _getStatusColor(status),
                   ),
                 ),
               ),
-               SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
               // Details grid
               Row(
                 children: [
@@ -153,7 +154,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                       value: location,
                     ),
                   ),
-                   SizedBox(width: 12.w),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: _DetailBox(
                       icon: Icons.attach_money,
@@ -163,7 +164,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-               SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               Row(
                 children: [
                   Expanded(
@@ -173,7 +174,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                       value: appliedDate,
                     ),
                   ),
-                   SizedBox(width: 12.w),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: _DetailBox(
                       icon: Icons.schedule,
@@ -183,73 +184,71 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-               SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
               // Description section
-               Text(
+              Text(
                 'About the Role',
                 style: TextStyle(
-                  fontSize:16.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
-               SizedBox(height: 8.h),
+              SizedBox(height: 8.h),
               Text(
                 description,
                 style: TextStyle(
-                  fontSize:13.sp,
+                  fontSize: 13.sp,
                   color: Colors.grey[700],
                   height: 1.6.h,
                 ),
               ),
-               SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
               // Requirements section
-               Text(
+              Text(
                 'Requirements',
                 style: TextStyle(
-                  fontSize:16.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
-               SizedBox(height: 12.h),
+              SizedBox(height: 12.h),
               ...requirements.map((req) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 4),
-                      width: 6.w,
-                      height: 6.h,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF1D4ED8),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                     SizedBox(width: 8.w),
-                    Expanded(
-                      child: Text(
-                        req,
-                        style: TextStyle(
-                          fontSize:13.sp,
-                          color: Colors.grey[700],
-                          height: 1.5.h,
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 4),
+                          width: 6.w,
+                          height: 6.h,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF1D4ED8),
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: Text(
+                            req,
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Colors.grey[700],
+                              height: 1.5.h,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )),
-               SizedBox(height: 24.h),
+                  )),
+              SizedBox(height: 24.h),
               // Action buttons - TODO: Add Cubit actions
               Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {
-                        // TODO: Withdraw application
-                      },
+                      onPressed: null,
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         side: const BorderSide(
@@ -268,12 +267,10 @@ class ApplicationDetailWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                   SizedBox(width: 12.w),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        // TODO: Track application or view details
-                      },
+                      onPressed: null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1D4ED8),
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -292,7 +289,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-               SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
             ],
           ),
         );
@@ -331,7 +328,7 @@ class _DetailBox extends StatelessWidget {
                 size: 16,
                 color: const Color(0xFF1D4ED8),
               ),
-               SizedBox(width: 6.w),
+              SizedBox(width: 6.w),
               Text(
                 label,
                 style: TextStyle(
@@ -342,11 +339,11 @@ class _DetailBox extends StatelessWidget {
               ),
             ],
           ),
-           SizedBox(height: 6.h),
+          SizedBox(height: 6.h),
           Text(
             value,
-            style:  TextStyle(
-              fontSize:13.sp,
+            style: TextStyle(
+              fontSize: 13.sp,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
