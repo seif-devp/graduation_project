@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  const EditProfilePage({super.key});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
