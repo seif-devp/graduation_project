@@ -79,22 +79,24 @@ final router = GoRouter(
       redirect: (context, state) => '/notifications',
     ),
     GoRoute(
-          path: '/application_detail',
-          name: 'application_detail',
-          builder: (context, state) {
-            final data = state.extra as Map<String, dynamic>? ?? {};
-            return ApplicationDetailPage(data: data);
-          },
-        ),
+      path: '/application_detail',
+      name: 'application_detail',
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>? ?? {};
+        return ApplicationDetailPage(data: data);
+      },
+    ),
 
-        GoRoute(
-          path: '/notifications',
-          name: 'notifications',
-          builder: (context, state) => const NotificationsPage(),
-        ),
+    GoRoute(
+      path: '/notifications',
+      name: 'notifications',
+      builder: (context, state) => BlocProvider(
+        create: (context) => NotificationCubit(),
+        child: const NotificationsPage(),
+      ),
+    ),
 
-
-        ///////// shell bta3 job seeker
+    ///////// shell bta3 job seeker
 
     ShellRoute(
       builder: (context, state, child) => BlocProvider(
@@ -117,61 +119,55 @@ final router = GoRouter(
           name: 'applying',
           builder: (context, state) => ApplicationProgressScreen(),
         ),
-        
         GoRoute(
           path: '/interview',
           name: 'interview',
           builder: (context, state) => InterviewsPage(),
         ),
-        
         GoRoute(
             path: '/profile',
             name: 'profile',
             builder: (context, state) => ProfileScreen()),
       ],
 
-
       ////////////// shell bta3 employer
-
     ),
     ShellRoute(
         builder: (context, state, child) {
-        return Scaffold(
-          body: child, 
-          bottomNavigationBar: const EmployerBottomNavBar(),
-        );
-      },
-      routes: [
-      GoRoute(
-        path: '/home_employer',
-        name: 'home_employer',
-        builder: (context, state) => EmployerHomeScreen(),
-      ),
-      GoRoute(
-          path: '/post_jobs_employer',
-          name: 'post_jobs_employer',
-          builder: (context, state) => PostJobScreen()),
-      GoRoute(
-        path: '/applications_swip',
-        name: 'applications_swip',
-        builder: (context, state) => ApplicantsScreen(),
-      ),
-      GoRoute(
-        path: '/interview_employer',
-        name: 'interview_employer',
-        builder: (context, state) => InterviewsPageEmployer(),
-      ),
-      GoRoute(
-        path: '/settings',
-        name: 'settings',
-        builder: (context, state) => BlocProvider(
-          create: (context) =>
-              SettingsCubit(SettingsRepository())..loadSettingsData(),
-          child: const SettingsPage(),
-        ),
-      ),
-    ]),
-
-
+          return Scaffold(
+            body: child,
+            bottomNavigationBar: const EmployerBottomNavBar(),
+          );
+        },
+        routes: [
+          GoRoute(
+            path: '/home_employer',
+            name: 'home_employer',
+            builder: (context, state) => EmployerHomeScreen(),
+          ),
+          GoRoute(
+              path: '/post_jobs_employer',
+              name: 'post_jobs_employer',
+              builder: (context, state) => PostJobScreen()),
+          GoRoute(
+            path: '/applications_swip',
+            name: 'applications_swip',
+            builder: (context, state) => ApplicantsScreen(),
+          ),
+          GoRoute(
+            path: '/interview_employer',
+            name: 'interview_employer',
+            builder: (context, state) => InterviewsPageEmployer(),
+          ),
+          GoRoute(
+            path: '/settings',
+            name: 'settings',
+            builder: (context, state) => BlocProvider(
+              create: (context) =>
+                  SettingsCubit(SettingsRepository())..loadSettingsData(),
+              child: const SettingsPage(),
+            ),
+          ),
+        ]),
   ],
 );
