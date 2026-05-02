@@ -9,16 +9,16 @@ class EmployerBottomNavBar extends StatelessWidget {
     final String location = GoRouterState.of(context).uri.path;
 
     int currentIndex = 0;
-    
+
     if (location.startsWith('/home_employer')) {
       currentIndex = 0;
     } else if (location.startsWith('/post_jobs_employer')) {
       currentIndex = 1;
-    } else if (location.startsWith('/applications_swip')) { 
+    } else if (location.startsWith('/applications_swip')) {
       currentIndex = 2;
-    } else if (location.startsWith('/interviews')) {
+    } else if (location.startsWith('/interview_employer')) {
       currentIndex = 3;
-    } else if (location.startsWith('/settings')) { 
+    } else if (location.startsWith('/settings')) {
       currentIndex = 4;
     }
 
@@ -33,13 +33,13 @@ class EmployerBottomNavBar extends StatelessWidget {
             context.goNamed('post_jobs_employer');
             break;
           case 2:
-            context.goNamed('applications_swip'); 
+            context.goNamed('applications_swip');
             break;
           case 3:
-        
+            context.goNamed('interview_employer');
             break;
           case 4:
-          
+            context.goNamed('settings');
             break;
         }
       },
@@ -50,9 +50,12 @@ class EmployerBottomNavBar extends StatelessWidget {
       unselectedFontSize: 12,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: 'Post Jobs'),
-        BottomNavigationBarItem(icon: Icon(Icons.people_outline), label: 'Applicants'),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), label: 'Interviews'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle_outline), label: 'Post Jobs'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.people_outline), label: 'Applicants'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_outlined), label: 'Interviews'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
       ],
     );
