@@ -44,7 +44,7 @@ class UserInfo extends StatelessWidget {
             }
 
             return IconButton(
-              onPressed: () => context.go('/notifications'),
+              onPressed: () => context.push('/notifications'),
               icon: Badge(
                 isLabelVisible: count > 0,
                 label: Text(

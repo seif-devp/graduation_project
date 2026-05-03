@@ -24,83 +24,86 @@ class InterviewsPage extends StatelessWidget {
               if (state is InterviewLoading) {
                 return const Center(child: loading);
               }
+
               if (state is InterviewError) {
                 return Center(child: Text(state.message));
               }
-              if (state is InterviewLoaded) {
+              if (state is InterviewEmpty) {
                 // Empty state when there are no interviews
-                if (state.interviews.isEmpty) {
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Interviews',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF1A1D23)),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          'Upcoming scheduled meetings',
-                          style: TextStyle(fontSize: 13.sp, color: Colors.grey),
-                        ),
-                        SizedBox(height: 40.h),
-                        Expanded(
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 96,
-                                  height: 96,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade50,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(Icons.calendar_today,
-                                      size: 36, color: Colors.blue.shade400),
+
+                return Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Interviews',
+                        style: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF1A1D23)),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Upcoming scheduled meetings',
+                        style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                      ),
+                      SizedBox(height: 40.h),
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 96,
+                                height: 96,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade50,
+                                  shape: BoxShape.circle,
                                 ),
-                                const SizedBox(height: 20),
-                                const Text('No Interviews Scheduled',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 8),
-                                const SizedBox(
-                                  width: 300,
-                                  child: Text(
-                                    'Keep applying! Your upcoming interview schedules will appear here.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
+                                child: Icon(Icons.calendar_today,
+                                    size: 36, color: Colors.blue.shade400),
+                              ),
+                              const SizedBox(height: 20),
+                              const Text('No Interviews Scheduled',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 8),
+                              const SizedBox(
+                                width: 300,
+                                child: Text(
+                                  'Keep applying! Your upcoming interview schedules will appear here.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.grey),
                                 ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: () => context.go('/jobPage'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF1D4ED8),
-                                    elevation: 8,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 28, vertical: 14),
-                                  ),
-                                  child: const Text('Browse Open Roles'),
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () => context.go('/jobPage'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF1D4ED8),
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 28, vertical: 14),
                                 ),
-                              ],
-                            ),
+                                child: const Text(
+                                  'Browse Open Roles',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                }
-
+                      ),
+                    ],
+                  ),
+                );
+              }
+              if (state is InterviewLoaded) {
                 return Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),

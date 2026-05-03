@@ -11,9 +11,13 @@ class InterviewCubit extends Cubit<InterviewState> {
     emit(InterviewLoading());
     try {
       final interviews = await repository.getInterviews();
-      emit(InterviewLoaded(interviews));
+      if (interviews.isEmpty) {
+        emit(InterviewEmpty());
+      } else {
+        emit(InterviewLoaded(interviews));
+      }
     } catch (e) {
-      emit(InterviewError('Failed to load interviews'));
+      emit(InterviewEmpty());
     }
   }
 }

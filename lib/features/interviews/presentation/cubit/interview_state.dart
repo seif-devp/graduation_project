@@ -1,4 +1,3 @@
-
 import 'package:graduation_project/features/interviews/domain/entity.dart';
 
 abstract class InterviewState {}
@@ -16,3 +15,5 @@ class InterviewError extends InterviewState {
   final String message;
   InterviewError(this.message);
 }
+
+class InterviewEmpty extends InterviewState {}

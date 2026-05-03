@@ -86,7 +86,10 @@ class ApplicationProgressScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 28, vertical: 14),
                         ),
-                        child: const Text('Find Jobs'),
+                        child: const Text(
+                          'Find Jobs',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
