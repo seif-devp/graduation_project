@@ -6,8 +6,8 @@ import 'package:graduation_project/features/settings/setting_employer/data/repo.
 import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
 
 
-class SettingsPageSeeker extends StatelessWidget {
-  const SettingsPageSeeker({super.key});
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

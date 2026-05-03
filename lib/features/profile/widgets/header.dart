@@ -31,7 +31,7 @@ class ProfileHeader extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  context.push('/settings');
+                  context.push('/settingsSeeker');
                 },
                 icon: const Icon(Icons.settings, color: Colors.white),
               ),

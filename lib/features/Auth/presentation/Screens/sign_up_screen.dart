@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
 import 'package:lottie/lottie.dart';
 
@@ -237,7 +238,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 52.h,
                         child: Center(
                           child:
-                              CircularProgressIndicator(color: primaryDarkBlue),
+                              loading,
                         ),
                       );
                     }

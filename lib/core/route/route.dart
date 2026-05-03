@@ -7,9 +7,9 @@ import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_sc
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/startup_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
-import 'package:graduation_project/features/Home/presentation/screens/job_seeker_homeScreen.dart';
-import 'package:graduation_project/features/Home/presentation/Widgets/shell_layout.dart';
-import 'package:graduation_project/features/Home_employer/presentation/screens/home_employer.dart';
+import 'package:graduation_project/features/Home/home_seeker/presentation/screens/job_seeker_homeScreen.dart';
+import 'package:graduation_project/features/Home/home_seeker/presentation/Widgets/shell_layout.dart';
+import 'package:graduation_project/features/Home/Home_employer/presentation/screens/home_employer.dart';
 import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/interviews_employer/presentation/screens/interveiw_employer_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
@@ -18,11 +18,14 @@ import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
-import 'package:graduation_project/features/settings/data/repo.dart';
-import 'package:graduation_project/features/settings/presentation/cubit/setting_cubit.dart';
+import 'package:graduation_project/features/settings/setting_employer/data/repo.dart';
+import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingSeeker_cubit.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/screens/settings_page.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
-import 'package:graduation_project/features/settings/presentation/screens/settings_page.dart';
-import 'package:graduation_project/features/settings/presentation/screens/edit_profile_page.dart';
+import 'package:graduation_project/features/settings/setting_employer/presentation/screens/settings_page.dart';
+import 'package:graduation_project/features/settings/setting_employer/presentation/screens/edit_profile_page.dart';
 import 'package:graduation_project/features/Notifications/cubit/notification_cubit.dart';
 import 'package:graduation_project/features/Notifications/presentation/pages/notifications_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/application_detail_page.dart';
@@ -124,6 +127,15 @@ final router = GoRouter(
           name: 'interview',
           builder: (context, state) => InterviewsPage(),
         ),
+        GoRoute(
+            path: '/settingsSeeker',
+            name: 'settingsSeeker',
+            builder: (context, state) => BlocProvider(
+              create: (context) =>
+                  SettingsSeekerCubit(SettingsSekeerRepository())..loadSettingsData(),
+              child: const SettingsPageSeeker(),
+            ),
+          ),
         GoRoute(
             path: '/profile',
             name: 'profile',
