@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/const/colors.dart';
 
 class EmployerBottomNavBar extends StatelessWidget {
   const EmployerBottomNavBar({super.key});
@@ -44,7 +45,7 @@ class EmployerBottomNavBar extends StatelessWidget {
         }
       },
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: const Color(0xFF2563EB),
+      selectedItemColor: primaryColor,
       unselectedItemColor: Colors.grey,
       selectedFontSize: 12,
       unselectedFontSize: 12,

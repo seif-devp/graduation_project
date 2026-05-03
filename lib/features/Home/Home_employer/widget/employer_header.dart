@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/Home/Home_employer/logic/entity.dart';
 
 class EmployerHeaderSection extends StatelessWidget {
@@ -12,7 +13,7 @@ class EmployerHeaderSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 60, left: 20, right: 20, bottom: 30),
       decoration: const BoxDecoration(
-        color: Color(0xFF2962FF),
+        color: primaryColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(24),
           bottomRight: Radius.circular(24),
@@ -78,7 +79,7 @@ class EmployerHeaderSection extends StatelessWidget {
               Text(count, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ],
           ),
-          const Text('View Calendar >', style: TextStyle(color: Color(0xFF2962FF))),
+          const Text('View Calendar >', style: TextStyle(color: primaryColor)),
         ],
       ),
     );

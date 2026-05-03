@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/core/widgets/text_field_post_job.dart';
 import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_cubit.dart';
@@ -40,7 +41,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: primaryColor,
           elevation: 0,
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +49,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
               Text(
                 'Post a Job',
                 style: TextStyle(
-                  color: Color(0xFF0F172A),
+                  color: Color.fromARGB(255, 255, 255, 255),
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
                 ),
@@ -56,7 +57,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
               Text(
                 'Find the perfect candidate',
                 style: TextStyle(
-                  color: Color(0xFF64748B),
+                  color: Color.fromARGB(255, 168, 187, 212),
                   fontSize: 14,
                 ),
               ),
@@ -188,7 +189,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                 height: 48,
                                 width: 48,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF2563EB),
+                                  color: primaryColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child:

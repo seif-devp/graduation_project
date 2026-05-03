@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/Home/Home_employer/presentation/cubit/home_employer_cubit.dart';
 
 class QuickActionsSection extends StatelessWidget {
@@ -33,7 +34,7 @@ class QuickActionsSection extends StatelessWidget {
                       context.push("/post_jobs_employer");
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2962FF),
+                      backgroundColor: primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
