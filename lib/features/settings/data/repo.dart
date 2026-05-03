@@ -1,6 +1,6 @@
 import 'package:graduation_project/features/settings/logic/entitiy.dart';
-
-class SettingsRepository {
+class SettingsRepository
+ {
   Future<UserEntity> getUserData() async {
     await Future.delayed(const Duration(milliseconds: 20));
     return UserEntity(

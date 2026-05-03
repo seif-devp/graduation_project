@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_project/settingsSekeer/data/repoSeeker.dart';
-import 'package:graduation_project/settingsSekeer/logic/entitiy.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
 
 part 'setting_state.dart';
 

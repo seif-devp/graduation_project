@@ -1,5 +1,5 @@
 import 'package:graduation_project/features/settings/logic/entitiy.dart';
-import 'package:graduation_project/settingsSekeer/logic/entitiy.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
 
 class SettingsSekeerRepository {
   Future<SeekerEntity> getUserData() async {
