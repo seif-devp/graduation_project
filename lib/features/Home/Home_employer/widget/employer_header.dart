@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/Home/Home_employer/logic/entity.dart';
-import 'package:graduation_project/features/Notifications/notification_employer/presentation/pages/notifications_Employer_page.dart';
 
 class EmployerHeaderSection extends StatelessWidget {
   final EmployerHomeEntity data; // استقبال الداتا هنا

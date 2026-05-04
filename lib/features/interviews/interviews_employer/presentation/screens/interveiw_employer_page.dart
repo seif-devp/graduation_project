@@ -73,14 +73,14 @@ class InterviewsPageEmployer extends StatelessWidget {
                                 const SizedBox(
                                   width: 300,
                                   child: Text(
-                                    'Keep applying! Your upcoming interview schedules will appear here.',
+                                    'check your Applicants To schedule Interview with The Best candidate.',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                                 const SizedBox(height: 20),
                                 ElevatedButton(
-                                  onPressed: () => context.go('/jobPage'),
+                                  onPressed: () => context.go('/applications_swip'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:primaryColor,
                                     elevation: 8,
@@ -90,7 +90,7 @@ class InterviewsPageEmployer extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 28, vertical: 14),
                                   ),
-                                  child: const Text('Browse Open Roles',style: TextStyle(color: Colors.white),),
+                                  child: const Text('Browse candidates Applicants',style: TextStyle(color: Colors.white),),
                                 ),
                               ],
                             ),
