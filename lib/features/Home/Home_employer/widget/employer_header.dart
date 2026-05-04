@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/Home/Home_employer/logic/entity.dart';
+import 'package:graduation_project/features/Notifications/notification_employer/presentation/pages/notifications_Employer_page.dart';
 
 class EmployerHeaderSection extends StatelessWidget {
   final EmployerHomeEntity data; // استقبال الداتا هنا
@@ -32,7 +34,9 @@ class EmployerHeaderSection extends StatelessWidget {
                   Text('Sarah', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
-              const Icon(Icons.notifications_none, color: Colors.white),
+               IconButton(onPressed: (){
+                context.go('/notificationsEmployer');
+               }, icon: Icon(Icons.notifications_none, color: Colors.white)),
             ],
           ),
           const SizedBox(height: 30),

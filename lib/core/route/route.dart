@@ -10,8 +10,10 @@ import 'package:graduation_project/features/Auth/presentation/controller/auth_cu
 import 'package:graduation_project/features/Home/home_seeker/presentation/screens/job_seeker_homeScreen.dart';
 import 'package:graduation_project/features/Home/home_seeker/presentation/Widgets/shell_layout.dart';
 import 'package:graduation_project/features/Home/Home_employer/presentation/screens/home_employer.dart';
-import 'package:graduation_project/features/interviews/presentation/screens/interveiw_page.dart';
-import 'package:graduation_project/features/interviews_employer/presentation/screens/interveiw_employer_page.dart';
+import 'package:graduation_project/features/Notifications/notification_employer/cubit/notification_Employer_cubit.dart';
+import 'package:graduation_project/features/Notifications/notification_employer/presentation/pages/notifications_Employer_page.dart';
+import 'package:graduation_project/features/interviews/interviews_seeker/presentation/screens/interveiw_page.dart';
+import 'package:graduation_project/features/interviews/interviews_employer/presentation/screens/interveiw_employer_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/domain/job_entity.dart';
@@ -26,8 +28,8 @@ import 'package:graduation_project/features/settings/settingsSekeer/presentation
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/screens/settings_page.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/screens/edit_profile_page.dart';
-import 'package:graduation_project/features/Notifications/cubit/notification_cubit.dart';
-import 'package:graduation_project/features/Notifications/presentation/pages/notifications_page.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/cubit/notification_cubit.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/presentation/pages/notifications_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/application_detail_page.dart';
 
 final router = GoRouter(
@@ -96,6 +98,13 @@ final router = GoRouter(
       builder: (context, state) => BlocProvider(
         create: (context) => NotificationCubit(),
         child: const NotificationsPage(),
+      ),
+    ), GoRoute(
+      path: '/notificationsEmployer',
+      name: 'notificationsEmployer',
+      builder: (context, state) => BlocProvider(
+        create: (context) => NotificationCubitEmployer(),
+        child: const NotificationsPageEmployer(),
       ),
     ),
 

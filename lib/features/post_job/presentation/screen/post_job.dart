@@ -249,7 +249,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                         );
                                   },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF2563EB),
+                              backgroundColor: primaryColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
