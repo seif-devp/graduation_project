@@ -19,23 +19,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late bool isEmployerSelected;
   bool isPasswordVisible = false;
 
-  // Common fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
-  // Job Seeker fields
-  final TextEditingController experienceYearsController =
-      TextEditingController();
-  final TextEditingController educationLevelController =
-      TextEditingController();
+  final TextEditingController experienceYearsController = TextEditingController();
+  final TextEditingController educationLevelController = TextEditingController();
   final TextEditingController linkedInUrlController = TextEditingController();
   final TextEditingController gitHubUrlController = TextEditingController();
   final List<String> skills = [];
   final TextEditingController skillInputController = TextEditingController();
 
-  // Employer fields
   final TextEditingController companyNameController = TextEditingController();
   final TextEditingController companySizeController = TextEditingController();
   final TextEditingController industryController = TextEditingController();
@@ -43,7 +38,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final formKey = GlobalKey<FormState>();
 
-  // ألوان الهوية البصرية
   final Color primaryDarkBlue = const Color.fromARGB(255, 3, 59, 122);
   final Color accentCyan = const Color(0xFF00F2FE);
 
@@ -81,20 +75,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
           );
         }
         if (state is AuthSuccess) {
-            if (state.role == 0) {
-              context.go('/job-seeker-home');
-            } else if (state.role == 1) {
-              context.go('/employer-home');
-            }
+          if (state.role == 0) {
+            context.goNamed('home');
+          } else if (state.role == 1) {
+            context.goNamed('home_employer');
+          }
         }
         if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Error occurred while signing up')),
+            SnackBar(content: Text(state.errorMessage)),
           );
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFF8F9FF), // نفس الخلفية الفاتحة
+        backgroundColor: const Color(0xFFF8F9FF),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -107,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(
                     fontSize: 30.sp,
                     fontWeight: FontWeight.bold,
-                    color: primaryDarkBlue, // تطعيم بالكحلي
+                    color: primaryDarkBlue,
                   ),
                 ),
                 SizedBox(height: 8.h),
@@ -116,8 +110,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(fontSize: 16.sp, color: Colors.black54),
                 ),
                 SizedBox(height: 32.h),
-
-                /// Toggle Buttons (Job Seeker / Employer)
                 Container(
                   height: 52.h,
                   decoration: BoxDecoration(
@@ -128,13 +120,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              setState(() => isEmployerSelected = false),
+                          onTap: () => setState(() => isEmployerSelected = false),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: !isEmployerSelected
-                                  ? primaryDarkBlue // الاختيار النشط بالكحلي
-                                  : Colors.transparent,
+                              color: !isEmployerSelected ? primaryDarkBlue : Colors.transparent,
                               borderRadius: BorderRadius.circular(26),
                             ),
                             child: Center(
@@ -142,9 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 'Job Seeker',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: !isEmployerSelected
-                                      ? Colors.white
-                                      : Colors.black54,
+                                  color: !isEmployerSelected ? Colors.white : Colors.black54,
                                 ),
                               ),
                             ),
@@ -153,13 +140,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              setState(() => isEmployerSelected = true),
+                          onTap: () => setState(() => isEmployerSelected = true),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: isEmployerSelected
-                                  ? primaryDarkBlue // الاختيار النشط بالكحلي
-                                  : Colors.transparent,
+                              color: isEmployerSelected ? primaryDarkBlue : Colors.transparent,
                               borderRadius: BorderRadius.circular(26),
                             ),
                             child: Center(
@@ -167,9 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 'Employer',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: isEmployerSelected
-                                      ? Colors.white
-                                      : Colors.black54,
+                                  color: isEmployerSelected ? Colors.white : Colors.black54,
                                 ),
                               ),
                             ),
@@ -180,13 +162,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 SizedBox(height: 28.h),
-
-                /// Form
                 Form(
                   key: formKey,
                   child: Column(
                     children: [
-                      // Common Fields
                       TextFormField(
                         controller: nameController,
                         validator: (value) => value == null || value.isEmpty
@@ -194,8 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'Full Name',
-                          prefixIcon: Icon(Icons.person_outline,
-                              color: primaryDarkBlue),
+                          prefixIcon: Icon(Icons.person_outline, color: primaryDarkBlue),
                           filled: true,
                           fillColor: Colors.white,
                           border: const OutlineInputBorder(
@@ -213,8 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'your.email@example.com',
-                          prefixIcon: Icon(Icons.email_outlined,
-                              color: primaryDarkBlue),
+                          prefixIcon: Icon(Icons.email_outlined, color: primaryDarkBlue),
                           filled: true,
                           fillColor: Colors.white,
                           border: const OutlineInputBorder(
@@ -232,13 +209,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'Enter your password',
-                          prefixIcon:
-                              Icon(Icons.lock_outline, color: primaryDarkBlue),
+                          prefixIcon: Icon(Icons.lock_outline, color: primaryDarkBlue),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                              isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                               color: primaryDarkBlue,
                             ),
                             onPressed: () => setState(
@@ -262,8 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                         decoration: InputDecoration(
                           hintText: 'Phone Number',
-                          prefixIcon: Icon(Icons.phone_outlined,
-                              color: primaryDarkBlue),
+                          prefixIcon: Icon(Icons.phone_outlined, color: primaryDarkBlue),
                           filled: true,
                           fillColor: Colors.white,
                           border: const OutlineInputBorder(
@@ -273,8 +246,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       SizedBox(height: 20.h),
-
-                      // Conditional Fields based on role
                       if (!isEmployerSelected) ...[
                         Text(
                           'Job Seeker Information',
@@ -293,13 +264,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               : null,
                           decoration: InputDecoration(
                             hintText: 'Years of Experience',
-                            prefixIcon: Icon(Icons.work_outline,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.work_outline, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -312,19 +281,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               : null,
                           decoration: InputDecoration(
                             hintText: 'Education Level (e.g., Bachelor)',
-                            prefixIcon: Icon(Icons.school_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.school_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
                         ),
                         SizedBox(height: 16.h),
-                        // Skills Section
                         Text(
                           'Skills',
                           style: TextStyle(
@@ -341,13 +307,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 controller: skillInputController,
                                 decoration: InputDecoration(
                                   hintText: 'Add skill',
-                                  prefixIcon:
-                                      Icon(Icons.add, color: primaryDarkBlue),
+                                  prefixIcon: Icon(Icons.add, color: primaryDarkBlue),
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(16)),
+                                    borderRadius: BorderRadius.all(Radius.circular(16)),
                                     borderSide: BorderSide.none,
                                   ),
                                 ),
@@ -366,7 +330,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: accentCyan,
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w, vertical: 12.h),
+                                  horizontal: 16.w,
+                                  vertical: 12.h,
+                                ),
                               ),
                               child: Text(
                                 'Add',
@@ -380,18 +346,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Wrap(
                             spacing: 8,
                             children: skills
-                                .map((skill) => Chip(
-                                      label: Text(skill),
-                                      onDeleted: () {
-                                        setState(() {
-                                          skills.remove(skill);
-                                        });
-                                      },
-                                      backgroundColor:
-                                          accentCyan.withOpacity(0.3),
-                                      deleteIcon: Icon(Icons.close,
-                                          color: primaryDarkBlue),
-                                    ))
+                                .map(
+                                  (skill) => Chip(
+                                    label: Text(skill),
+                                    onDeleted: () {
+                                      setState(() => skills.remove(skill));
+                                    },
+                                    backgroundColor: accentCyan.withOpacity(0.3),
+                                    deleteIcon: Icon(Icons.close, color: primaryDarkBlue),
+                                  ),
+                                )
                                 .toList(),
                           ),
                         SizedBox(height: 16.h),
@@ -400,13 +364,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           keyboardType: TextInputType.url,
                           decoration: InputDecoration(
                             hintText: 'LinkedIn URL',
-                            prefixIcon: Icon(Icons.link_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.link_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -417,13 +379,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           keyboardType: TextInputType.url,
                           decoration: InputDecoration(
                             hintText: 'GitHub URL',
-                            prefixIcon: Icon(Icons.code_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.code_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -445,13 +405,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               : null,
                           decoration: InputDecoration(
                             hintText: 'Company Name',
-                            prefixIcon: Icon(Icons.business_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.business_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -465,13 +423,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               : null,
                           decoration: InputDecoration(
                             hintText: 'Company Size (e.g., 50)',
-                            prefixIcon: Icon(Icons.group_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.group_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -484,13 +440,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               : null,
                           decoration: InputDecoration(
                             hintText: 'Industry',
-                            prefixIcon: Icon(Icons.category_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.category_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -501,13 +455,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           keyboardType: TextInputType.url,
                           decoration: InputDecoration(
                             hintText: 'Company Website',
-                            prefixIcon: Icon(Icons.language_outlined,
-                                color: primaryDarkBlue),
+                            prefixIcon: Icon(Icons.language_outlined, color: primaryDarkBlue),
                             filled: true,
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                              borderRadius: BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -516,19 +468,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                 ),
-
                 SizedBox(height: 32.h),
-
-                /// Sign Up Button
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     if (state is AuthLoading) {
                       return SizedBox(
                         width: double.infinity,
                         height: 52.h,
-                        child: Center(
-                          child: loading,
-                        ),
+                        child: Center(child: loading),
                       );
                     }
                     return SizedBox(
@@ -544,9 +491,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     name: nameController.text,
                                     phone: phoneController.text,
                                     companyName: companyNameController.text,
-                                    companySize: int.tryParse(
-                                            companySizeController.text) ??
-                                        0,
+                                    companySize: int.tryParse(companySizeController.text) ?? 0,
                                     industry: industryController.text,
                                     website: websiteController.text,
                                   );
@@ -556,12 +501,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     password: passwordController.text,
                                     name: nameController.text,
                                     phone: phoneController.text,
-                                    experienceYears: int.tryParse(
-                                            experienceYearsController.text) ??
-                                        0,
-                                    educationLevel: int.tryParse(
-                                            educationLevelController.text) ??
-                                        0,
+                                    experienceYears: int.tryParse(experienceYearsController.text) ?? 0,
+                                    educationLevel: int.tryParse(educationLevelController.text) ?? 0,
                                     skills: skills,
                                     linkedInUrl: linkedInUrlController.text,
                                     gitHubUrl: gitHubUrlController.text,
@@ -587,17 +528,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
                   },
                 ),
-
                 SizedBox(height: 24.h),
-
-                /// Social Media Section
                 Row(
                   children: [
                     const Expanded(child: Divider(thickness: 1)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: const Text('Or continue with',
-                          style: TextStyle(color: Colors.black54)),
+                      child: const Text(
+                        'Or continue with',
+                        style: TextStyle(color: Colors.black54),
+                      ),
                     ),
                     const Expanded(child: Divider(thickness: 1)),
                   ],
@@ -606,7 +546,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // زرار جوجل
                     GestureDetector(
                       onTap: () {},
                       child: Container(
@@ -633,7 +572,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     SizedBox(width: 16.w),
-                    // زرار لينكد إن
                     GestureDetector(
                       onTap: () {},
                       child: Container(
@@ -661,24 +599,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-
                 SizedBox(height: 32.h),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Already have an account? '),
                     GestureDetector(
-                      onTap: () {
-                        context.go('/login');
-                      },
+                      onTap: () => context.go('/login'),
                       child: Text(
                         'Sign In',
                         style: TextStyle(
-                          color: primaryDarkBlue, // كحلي Bold عشان تبقى متناسقة
+                          color: primaryDarkBlue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

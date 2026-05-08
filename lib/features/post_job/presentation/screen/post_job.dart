@@ -24,6 +24,8 @@ class _PostJobScreenState extends State<PostJobScreen> {
   final descriptionController = TextEditingController();
   final requirementController = TextEditingController();
 
+  DateTime? selectedExpiryDate;
+
   @override
   void dispose() {
     titleController.dispose();
@@ -36,10 +38,23 @@ class _PostJobScreenState extends State<PostJobScreen> {
     super.dispose();
   }
 
+  Future<void> _pickDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now().add(const Duration(days: 30)),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() => selectedExpiryDate = picked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostJobCubit(JobEmployerRepositoryImpl(RemoteDataPostJob())),
+      create: (context) => PostJobCubit(
+          JobEmployerRepositoryImpl(RemoteDataPostJob())),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -51,7 +66,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
               Text(
                 'Post a Job',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
                 ),
@@ -121,7 +136,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
                             Expanded(
                               child: CustomTextField(
                                 label: 'Salary Range',
-                                hint: 'e.g., \$100k - \$140k',
+                                hint: 'e.g., 5000',
                                 controller: salaryController,
                               ),
                             ),
@@ -136,14 +151,53 @@ class _PostJobScreenState extends State<PostJobScreen> {
                         const SizedBox(height: 16),
                         CustomTextField(
                           label: 'Job Description',
-                          hint:
-                              'Describe the role, responsibilities, and what you\'re looking for...',
+                          hint: 'Describe the role and responsibilities...',
                           controller: descriptionController,
                           maxLines: 4,
                         ),
                         const SizedBox(height: 16),
 
-                        // Requirements Section
+                        const Text(
+                          'Expiry Date',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1E293B),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        InkWell(
+                          onTap: () => _pickDate(context),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 14),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF8FAFC),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.calendar_today,
+                                    color: primaryColor, size: 18),
+                                const SizedBox(width: 8),
+                                Text(
+                                  selectedExpiryDate != null
+                                      ? '${selectedExpiryDate!.year}-${selectedExpiryDate!.month.toString().padLeft(2, '0')}-${selectedExpiryDate!.day.toString().padLeft(2, '0')}'
+                                      : 'Select expiry date',
+                                  style: TextStyle(
+                                    color: selectedExpiryDate != null
+                                        ? Colors.black87
+                                        : const Color(0xFF94A3B8),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Requirements
                         const Text(
                           'Requirements',
                           style: TextStyle(
@@ -194,13 +248,11 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                   color: primaryColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child:
-                                    const Icon(Icons.add, color: Colors.white),
+                                child: const Icon(Icons.add, color: Colors.white),
                               ),
                             ),
                           ],
                         ),
-
                         if (context
                             .read<PostJobCubit>()
                             .currentRequirements
@@ -216,21 +268,21 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                   .map((req) {
                                 return Chip(
                                   label: Text(req),
-                                  deleteIcon: const Icon(Icons.close, size: 16),
+                                  deleteIcon:
+                                      const Icon(Icons.close, size: 16),
                                   onDeleted: () {
                                     context
                                         .read<PostJobCubit>()
                                         .removeRequirement(req);
                                   },
                                   backgroundColor: const Color(0xFFEFF6FF),
-                                  labelStyle:
-                                      const TextStyle(color: Color(0xFF1E40AF)),
+                                  labelStyle: const TextStyle(
+                                      color: Color(0xFF1E40AF)),
                                   side: BorderSide.none,
                                 );
                               }).toList(),
                             ),
                           ),
-
                         const SizedBox(height: 32),
 
                         // Submit Button
@@ -240,14 +292,23 @@ class _PostJobScreenState extends State<PostJobScreen> {
                             onPressed: state is PostJobLoading
                                 ? null
                                 : () {
+                                    if (selectedExpiryDate == null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Please select expiry date')),
+                                      );
+                                      return;
+                                    }
                                     context.read<PostJobCubit>().submitJobPost(
                                           title: titleController.text,
                                           companyName: companyController.text,
                                           location: locationController.text,
                                           salaryRange: salaryController.text,
                                           jobType: jobTypeController.text,
-                                          description:
-                                              descriptionController.text,
+                                          description: descriptionController.text,
+                                          expiresAt: selectedExpiryDate!,
                                         );
                                   },
                             style: ElevatedButton.styleFrom(
@@ -261,7 +322,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                 ? const SizedBox(
                                     height: 24,
                                     width: 24,
-                                    child: loading
+                                    child: loading,
                                   )
                                 : const Text(
                                     'Post Job',

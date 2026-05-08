@@ -5,12 +5,10 @@ import 'post_lob_state.dart';
 
 class PostJobCubit extends Cubit<PostJobState> {
   final JobEmployerRepositoryImpl repository;
-  
 
   List<String> currentRequirements = [];
 
   PostJobCubit(this.repository) : super(PostJobInitial());
-
 
   void addRequirement(String value) {
     if (value.isNotEmpty) {
@@ -31,17 +29,18 @@ class PostJobCubit extends Cubit<PostJobState> {
     required String salaryRange,
     required String jobType,
     required String description,
+    required DateTime expiresAt,
   }) async {
     emit(PostJobLoading());
 
     final jobData = JobRequestModel(
       title: title,
-      companyName: companyName,
       description: description,
       requirements: currentRequirements,
       location: location,
       salary: salaryRange,
-      type: jobType, expiresAt: '',
+      type: jobType,
+      expiresAt: expiresAt.toUtc().toIso8601String(), 
     );
 
     final result = await repository.createJob(jobData);
@@ -51,5 +50,4 @@ class PostJobCubit extends Cubit<PostJobState> {
       (_) => emit(PostJobSuccess()),
     );
   }
-
 }

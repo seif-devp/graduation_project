@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:graduation_project/features/Auth/data/services/token_refresh_interceptor.dart';
 
 class DioFactory {
   static Dio? dio;
@@ -9,11 +10,19 @@ class DioFactory {
         baseUrl: "https://smartjop.runasp.net",
         receiveTimeout: const Duration(seconds: 20),
         connectTimeout: const Duration(seconds: 20),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       ));
 
-      dio!.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
+      dio!.interceptors.add(TokenRefreshInterceptor(dioClient: dio!));
+      dio!.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
     }
     return dio!;
+  }
+
+  static void resetDio() {
+    dio = null;
   }
 }

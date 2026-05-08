@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/features/Auth/data/services/auth_services.dart';
-import 'package:graduation_project/features/Auth/data/services/auth_services.dart' as DioFactory;
+import 'package:graduation_project/core/helpers/cache_helpers.dart';
+import 'package:graduation_project/core/networking/dio.dart';
+import 'package:graduation_project/features/Auth/data/services/auth_services.dart' as AuthServices;
 import 'package:graduation_project/features/Auth/data/services/background_token_refresh_service.dart';
 
 part 'auth_state.dart';
@@ -18,25 +19,25 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      final resp = await DioFactory.login(email: email, password: password);
+      final resp = await AuthServices.login(email: email, password: password);
       final realRole = resp.user.role;
 
-      // 1. لو اختار من الواجهة إنه شركة، بس الحساب طلع باحث عن عمل
       if (isEmployer == true && realRole == 0) {
-        emit(AuthFailure(
-            'This account belongs to a Job Seeker. Please select Job Seeker tab.'));
-        return; // نوقف الكود هنا
-      }
-
-      if (isEmployer == false && realRole == 1) {
-        emit(AuthFailure(
-            'This account belongs to an Employer. Please select Employer tab.'));
+        emit(AuthFailure('This account belongs to a Job Seeker. Please select Job Seeker tab.'));
         return;
       }
 
-      // Start background token refresh
-      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
+      if (isEmployer == false && realRole == 1) {
+        emit(AuthFailure('This account belongs to an Employer. Please select Employer tab.'));
+        return;
+      }
 
+      await CacheHelper.saveData(key: 'accessToken', value: resp.accessToken);
+      await CacheHelper.saveData(key: 'refreshToken', value: resp.refreshToken);
+      await CacheHelper.saveData(key: 'expiresAtUtc', value: resp.expiresAtUtc);
+      await CacheHelper.saveData(key: 'userRole', value: realRole);
+
+      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
       emit(AuthSuccess(role: realRole, token: resp.accessToken));
     } catch (e) {
       emit(AuthFailure('Failed to login: ${e.toString()}'));
@@ -56,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      final resp = await DioFactory.registerJobSeeker(
+      final resp = await AuthServices.registerJobSeeker(
         email: email,
         password: password,
         name: name,
@@ -68,9 +69,12 @@ class AuthCubit extends Cubit<AuthState> {
         gitHubUrl: gitHubUrl,
       );
 
-      // Start background token refresh
-      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
+      await CacheHelper.saveData(key: 'accessToken', value: resp.accessToken);
+      await CacheHelper.saveData(key: 'refreshToken', value: resp.refreshToken);
+      await CacheHelper.saveData(key: 'expiresAtUtc', value: resp.expiresAtUtc);
+      await CacheHelper.saveData(key: 'userRole', value: resp.user.role);
 
+      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
       emit(AuthSuccess(role: resp.user.role, token: resp.accessToken));
     } catch (e) {
       emit(AuthFailure('Failed to register: ${e.toString()}'));
@@ -89,7 +93,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      final resp = await DioFactory.registerEmployer(
+      final resp = await AuthServices.registerEmployer(
         email: email,
         password: password,
         name: name,
@@ -100,28 +104,30 @@ class AuthCubit extends Cubit<AuthState> {
         website: website,
       );
 
-      // Start background token refresh
-      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
+      await CacheHelper.saveData(key: 'accessToken', value: resp.accessToken);
+      await CacheHelper.saveData(key: 'refreshToken', value: resp.refreshToken);
+      await CacheHelper.saveData(key: 'expiresAtUtc', value: resp.expiresAtUtc);
+      await CacheHelper.saveData(key: 'userRole', value: resp.user.role);
 
+      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
       emit(AuthSuccess(role: resp.user.role, token: resp.accessToken));
     } catch (e) {
       emit(AuthFailure('Failed to register: ${e.toString()}'));
     }
   }
 
-  /// Logout user and stop background token refresh
   Future<void> logout() async {
     _tokenRefreshService.stopBackgroundRefresh();
     await _tokenRefreshService.clearTokens();
+    await CacheHelper.removeData(key: 'userRole');
+    DioFactory.resetDio();
     emit(AuthInitial());
   }
 
-  /// Check if user is authenticated
   bool isAuthenticated() {
     return _tokenRefreshService.isAuthenticated();
   }
 
-  /// Manually refresh tokens (for use when needed before scheduled refresh)
   Future<bool> refreshTokens() {
     return _tokenRefreshService.refreshToken();
   }

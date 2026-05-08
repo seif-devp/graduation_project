@@ -54,6 +54,11 @@ final router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/sign_up',
+      name: 'sign_up',
+      builder: (context, state) => SignUpScreen(),
+    ),
+    GoRoute(
       path: '/startup',
       name: 'startup',
       builder: (context, state) => StartUpScreen(),

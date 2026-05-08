@@ -18,8 +18,21 @@ class UserModel {
       id: json['id'] ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
-      role: json['role'] ?? 0,
+      role: _parseRole(json['role']),
       isVerified: json['isVerified'] ?? false,
     );
+  }
+
+  static int _parseRole(dynamic role) {
+    if (role is int) return role;
+    if (role is String) {
+      switch (role.toLowerCase()) {
+        case 'jobseeker': return 0;
+        case 'employer':  return 1;
+        case 'admin':     return 2;
+        default:          return 0;
+      }
+    }
+    return 0;
   }
 }

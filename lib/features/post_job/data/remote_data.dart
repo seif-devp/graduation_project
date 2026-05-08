@@ -8,13 +8,7 @@ class RemoteDataPostJob {
     await DioFactory.getDio().post(
       '/api/jobs/',
       data: jobModel.toJson(),
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer <>',
-          'Content-Type': 'application/json',
-        },
-        
-      ),
+     
     );
   }
   

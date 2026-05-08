@@ -5,8 +5,7 @@ class JobRequestModel {
   final String location;
   final String salary;
   final String type;
-  final String expiresAt;
-  final String companyName;
+  final String expiresAt; 
 
   JobRequestModel({
     required this.title,
@@ -16,7 +15,6 @@ class JobRequestModel {
     required this.salary,
     required this.type,
     required this.expiresAt,
-    required this.companyName,
   });
 
   Map<String, dynamic> toJson() {
@@ -28,7 +26,6 @@ class JobRequestModel {
       "salary": salary,
       "type": type,
       "expiresAt": expiresAt,
-      "companyName":companyName
     };
   }
 }
