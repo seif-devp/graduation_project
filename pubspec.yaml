@@ -44,6 +44,7 @@ dependencies:
   dio: ^5.9.2
   dart_either: ^2.1.0
   dartz: ^0.10.1
+  shared_preferences: ^2.5.5
     
 
 dev_dependencies:

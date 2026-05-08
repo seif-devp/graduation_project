@@ -44,10 +44,10 @@ class _SignInScreenState extends State<SignInScreen> {
           );
         }
         if (state is AuthSuccess) {
-          if (isEmployerSelected) {
-            context.goNamed('home_employer', extra: {'isEmployer': true});
+          if (state.role == 1) {
+            context.goNamed('home_employer',);
           } else {
-            context.goNamed('home', extra: {'isEmployer': false});
+            context.goNamed('home',);
           }
         }
         if (state is AuthFailure) {
@@ -228,7 +228,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             context.read<AuthCubit>().login(
                                   email: emailController.text,
                                   password: passwordController.text,
-                                  isEmployer: isEmployerSelected,
+                                  isEmployer: isEmployerSelected, 
+                                  
                                 );
                           }
                         },
