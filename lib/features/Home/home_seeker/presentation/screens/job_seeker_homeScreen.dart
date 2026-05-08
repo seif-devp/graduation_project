@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/core/const/widgets.dart';
+import 'package:graduation_project/features/Home/home_seeker/Data/remote_source_recomendion.dart';
+import 'package:graduation_project/features/Home/home_seeker/Data/repo_imp_recomend.dart';
 import 'package:graduation_project/features/Home/home_seeker/presentation/Widgets/Suggested.dart';
 import 'package:graduation_project/features/Home/home_seeker/presentation/Widgets/header.dart';
 import 'package:graduation_project/features/Home/home_seeker/presentation/Widgets/job_card.dart';
@@ -17,7 +19,6 @@ class JobSeekerHomeScreen extends StatefulWidget {
 
 class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
     with TickerProviderStateMixin {
-  int currentIndex = 6;
   late ScrollController _scrollController;
   late AnimationController _collapseController;
 
@@ -34,17 +35,12 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
 
   void _onScroll() {
     final direction = _scrollController.position.userScrollDirection;
-
     if (direction == ScrollDirection.reverse) {
-      // Scrolling DOWN -> Collapse
-      if (!_collapseController.isAnimating &&
-          _collapseController.value != 1.0) {
+      if (!_collapseController.isAnimating && _collapseController.value != 1.0) {
         _collapseController.forward();
       }
     } else if (direction == ScrollDirection.forward) {
-      // Scrolling UP -> Expand
-      if (!_collapseController.isAnimating &&
-          _collapseController.value != 0.0) {
+      if (!_collapseController.isAnimating && _collapseController.value != 0.0) {
         _collapseController.reverse();
       }
     }
@@ -60,8 +56,11 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    // هنا التعديل الجوهري: حقن الـ Repo والـ DataSource جوه الكيوبت
     return BlocProvider(
-      create: (context) => JobSeekerCubit()..loadJobs(),
+      create: (context) => JobSeekerCubit(
+        HomeSeekerRepoImpl(HomeSeekerRemoteDataSource()),
+      )..loadJobs(),
       child: Scaffold(
         backgroundColor: Colors.grey[100],
         body: Column(
@@ -69,30 +68,29 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
             HeaderWidget(collapseAnimation: _collapseController),
             BlocBuilder<JobSeekerCubit, JobState>(
               builder: (context, state) {
+                // حالة التحميل
                 if (state is JobLoading) {
                   return const Expanded(child: Center(child: loading));
                 }
 
+                // حالة النجاح وعرض الداتا
                 if (state is JobLoaded) {
                   return Expanded(
                     child: ListView.builder(
                       controller: _scrollController,
-                      physics: const AlwaysScrollableScrollPhysics(
-                        parent:
-                            BouncingScrollPhysics(), // بتدي نعومة أكتر في الـ iOS والـ Web
-                      ),
-                      padding: EdgeInsets.all(16),
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.all(16),
                       itemCount: state.jobs.length,
                       itemBuilder: (context, index) {
                         final job = state.jobs[index];
-
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (index == 0) ...[
-                              SectionTitle(),
-                              SizedBox(height: 12),
+                              const SectionTitle(),
+                              const SizedBox(height: 12),
                             ],
+                            // الكارت بياخد بيانات الـ JobModel اللي جاية من الـ Swagger
                             JobCard(job: job),
                           ],
                         );
@@ -101,11 +99,19 @@ class _JobSeekerHomeScreenState extends State<JobSeekerHomeScreen>
                   );
                 }
 
+                // حالة الخطأ
                 if (state is JobError) {
-                  return Center(child: Text(state.message));
+                  return Expanded(
+                    child: Center(
+                      child: Text(
+                        state.message,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  );
                 }
 
-                return SizedBox();
+                return const SizedBox();
               },
             ),
           ],

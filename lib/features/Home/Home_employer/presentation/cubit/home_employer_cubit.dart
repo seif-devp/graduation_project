@@ -1,23 +1,35 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/features/Home/Home_employer/logic/entity.dart';
-import 'package:graduation_project/features/Home/Home_employer/presentation/cubit/home_employer_state.dart';
+import 'package:graduation_project/features/Home/Home_employer/data/repo_imp.dart';
+import 'home_employer_state.dart';
 
 class EmployerHomeCubit extends Cubit<EmployerHomeState> {
-  EmployerHomeCubit([employerHomeRepository]) : super(EmployerHomeInitial());
+  final EmployerHomeRepository repo;
 
-  void getdata() async {
-    emit(EmployerHomeLoading());
-    try {
-      // Use repository integration here. For now return zeroed stats.
-      emit(EmployerHomeLoaded(EmployerHomeEntity(
-        activeJobs: 0,
-        applicantsCount: 0,
-        interviewsCount: 0,
-        newApplicants: 0,
-        interviewsToday: 0,
-      )));
-    } catch (e) {
-      emit(EmployerHomeError("Error loading data"));
-    }
+  EmployerHomeCubit(this.repo) : super(EmployerHomeInitial());
+
+  Future<void> fetchHomeDataAndJobs() async {
+    emit(MyJobsLoading());
+    
+    // جلب بيانات الإحصائيات والوظائف معاً
+    final stats = await repo.getHomeData();
+    final jobsResult = await repo.getJobs();
+
+    jobsResult.fold(
+      (failure) => emit(MyJobsError(failure.message)),
+      (jobsList) => emit(MyJobsSuccess(jobsList: jobsList, stats: stats)),
+    );
+  }
+
+  Future<void> removeJob(String jobId) async {
+    emit(DeleteJobLoading());
+    final result = await repo.deleteJob(jobId);
+    
+    result.fold(
+      (failure) => emit(DeleteJobError(failure.message)),
+      (success) {
+        emit(DeleteJobSuccess());
+        fetchHomeDataAndJobs(); // تحديث القائمة فوراً بعد الحذف
+      },
+    );
   }
 }

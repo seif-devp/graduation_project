@@ -1,20 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_state.dart';
+import 'package:graduation_project/features/post_job/data/model_request.dart';
+import 'package:graduation_project/features/post_job/data/repo_imp_.dart';
+import 'post_lob_state.dart';
 
 class PostJobCubit extends Cubit<PostJobState> {
-  PostJobCubit() : super(PostJobInitial());
+  final JobEmployerRepositoryImpl repository;
+  
 
   List<String> currentRequirements = [];
 
-  void addRequirement(String requirement) {
-    if (requirement.trim().isNotEmpty) {
-      currentRequirements.add(requirement.trim());
+  PostJobCubit(this.repository) : super(PostJobInitial());
+
+
+  void addRequirement(String value) {
+    if (value.isNotEmpty) {
+      currentRequirements.add(value);
       emit(PostJobRequirementsUpdated(List.from(currentRequirements)));
     }
   }
 
-  void removeRequirement(String requirement) {
-    currentRequirements.remove(requirement);
+  void removeRequirement(String value) {
+    currentRequirements.remove(value);
     emit(PostJobRequirementsUpdated(List.from(currentRequirements)));
   }
 
@@ -26,14 +32,24 @@ class PostJobCubit extends Cubit<PostJobState> {
     required String jobType,
     required String description,
   }) async {
-    if (title.isEmpty || companyName.isEmpty || description.isEmpty) {
-      emit(const PostJobFailure("Please fill all required fields."));
-      return;
-    }
-
     emit(PostJobLoading());
-    // TODO: integrate with backend. For now return failure to avoid
-    // shipping fake success behavior.
-    emit(const PostJobFailure('Not implemented: connect to job service'));
+
+    final jobData = JobRequestModel(
+      title: title,
+      companyName: companyName,
+      description: description,
+      requirements: currentRequirements,
+      location: location,
+      salary: salaryRange,
+      type: jobType, expiresAt: '',
+    );
+
+    final result = await repository.createJob(jobData);
+
+    result.fold(
+      (failure) => emit(PostJobFailure(failure.message)),
+      (_) => emit(PostJobSuccess()),
+    );
   }
+
 }

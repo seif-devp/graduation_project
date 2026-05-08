@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/core/widgets/text_field_post_job.dart';
+import 'package:graduation_project/features/post_job/data/remote_data.dart';
+import 'package:graduation_project/features/post_job/data/repo_imp_.dart';
 import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_cubit.dart';
 import 'package:graduation_project/features/post_job/presentation/cubit/post_lob_state.dart';
 
@@ -37,7 +39,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostJobCubit(),
+      create: (context) => PostJobCubit(JobEmployerRepositoryImpl(RemoteDataPostJob())),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

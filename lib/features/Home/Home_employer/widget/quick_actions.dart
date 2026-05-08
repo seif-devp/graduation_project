@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
+import 'package:graduation_project/features/Home/Home_employer/data/remote_data_source_eployer.dart';
+import 'package:graduation_project/features/Home/Home_employer/data/repo_imp.dart';
 import 'package:graduation_project/features/Home/Home_employer/presentation/cubit/home_employer_cubit.dart';
 
 class QuickActionsSection extends StatelessWidget {
@@ -11,7 +13,7 @@ class QuickActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EmployerHomeCubit(),
+      create: (context) => EmployerHomeCubit(EmployerHomeRepository(RemoteDataSourceEployer())),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -68,17 +70,17 @@ class QuickActionsSection extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        context.goNamed('applications_swip');
+                        context.push('/my_job_employer');
                       },
                       child: Column(
                         children: [
                           Icon(
-                            Icons.search,
+                            Icons.list_alt,
                             color: Colors.grey[800],
                           ),
                           SizedBox(height: 8.h),
                           Text(
-                            'Search Resumes',
+                            "My Jobs",
                             style: TextStyle(
                                 color: Colors.grey[800],
                                 fontWeight: FontWeight.w600),

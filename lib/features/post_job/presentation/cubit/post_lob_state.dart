@@ -28,3 +28,12 @@ class PostJobRequirementsUpdated extends PostJobState {
   @override
   List<Object> get props => [requirements];
 }
+
+  class DeleteJobLoading extends PostJobState {}
+
+class DeleteJobSuccess extends PostJobState {}
+
+class DeleteJobError extends PostJobState {
+  final String message;
+  const DeleteJobError(this.message);
+}

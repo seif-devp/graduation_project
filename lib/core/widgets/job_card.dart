@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_project/features/job_list/domain/job_entity.dart';
+import 'package:graduation_project/features/job_list/data/models/job_model_response.dart';
+
 
 class JobCardwidget extends StatefulWidget {
   const JobCardwidget({super.key, required this.job});
-  final JobEntity job;
+  final JobModelResponse job;
 
   @override
   State<JobCardwidget> createState() => _JobCardwidgetState();
@@ -41,11 +42,9 @@ class _JobCardwidgetState extends State<JobCardwidget> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  child: Text(
-                    widget.job.percent,
-                    style: TextStyle(color: Colors.white, fontSize: 12.sp),
+        
                   ),
-                ),
+      
                 //
                 IconButton(
                   onPressed: () {
@@ -67,7 +66,7 @@ class _JobCardwidgetState extends State<JobCardwidget> {
             ),
             SizedBox(height: 5.h),
             Text(
-              widget.job.company,
+              widget.job.companyName,
               style: TextStyle(color: Colors.grey, fontSize: 18.sp),
             ),
             SizedBox(height: 20.h),
@@ -75,7 +74,6 @@ class _JobCardwidgetState extends State<JobCardwidget> {
             SizedBox(height: 8.h),
             _infoRow(Icons.attach_money, widget.job.salary),
             SizedBox(height: 8.h),
-            _infoRow(Icons.access_time, widget.job.date),
           ],
         ),
       ),

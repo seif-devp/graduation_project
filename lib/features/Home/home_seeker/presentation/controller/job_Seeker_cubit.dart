@@ -1,12 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/Home/home_seeker/Data/repo_imp_recomend.dart';
+
 import 'package:graduation_project/features/Home/home_seeker/presentation/controller/job_Seeker_state.dart';
 
 class JobSeekerCubit extends Cubit<JobState> {
-  JobSeekerCubit() : super(JobInitial());
+  final HomeSeekerRepoImpl repo;
+  JobSeekerCubit(this.repo) : super(JobInitial());
 
-  void loadJobs() async {
-    // TODO: wire this to a repository / API. For now emit empty list.
+  Future<void> loadJobs() async {
     emit(JobLoading());
-    emit(const JobLoaded([]));
+    final result = await repo.getJobsRecomend();
+    result.fold(
+      (failure) => emit(JobError(failure.message)),
+      (jobsList) => emit(JobLoaded(jobsList)),
+    );
   }
 }

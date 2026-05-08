@@ -1,18 +1,20 @@
-class JobEntity {
 
-   final String title;
-  final String company;
+class JobEntity {
+  final String id;
+  final String title;
+  final String companyName;
   final String location;
   final String salary;
-  final String percent;
-  final String date;
+  final String type;
+  final String companyLogoUrl;
 
   JobEntity({
+    required this.id,
     required this.title,
-    required this.company,
+    required this.companyName,
     required this.location,
     required this.salary,
-    required this.percent,
-    required this.date,
+    required this.type,
+    required this.companyLogoUrl,
   });
 }

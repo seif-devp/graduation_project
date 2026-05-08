@@ -7,6 +7,10 @@ import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_sc
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/startup_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/controller/auth_cubit.dart';
+import 'package:graduation_project/features/Home/Home_employer/data/remote_data_source_eployer.dart';
+import 'package:graduation_project/features/Home/Home_employer/data/repo_imp.dart';
+import 'package:graduation_project/features/Home/Home_employer/presentation/cubit/home_employer_cubit.dart';
+import 'package:graduation_project/features/Home/Home_employer/presentation/screens/my_jobs.dart';
 import 'package:graduation_project/features/Home/home_seeker/presentation/screens/job_seeker_homeScreen.dart';
 import 'package:graduation_project/features/Home/home_seeker/presentation/Widgets/shell_layout.dart';
 import 'package:graduation_project/features/Home/Home_employer/presentation/screens/home_employer.dart';
@@ -15,8 +19,8 @@ import 'package:graduation_project/features/Notifications/notification_employer/
 import 'package:graduation_project/features/interviews/interviews_seeker/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/interviews/interviews_employer/presentation/screens/interveiw_employer_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
+import 'package:graduation_project/features/job_details/data/model_detail.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
-import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
@@ -76,7 +80,7 @@ final router = GoRouter(
       path: '/job_details',
       name: 'job_details',
       builder: (context, state) =>
-          JobDetailsPage(job: state.extra as JobEntity),
+          JobDetailsPage(job: state.extra as JobDetailsModel),
     ),
     GoRoute(
       path: '/alerts',
@@ -99,7 +103,8 @@ final router = GoRouter(
         create: (context) => NotificationCubit(),
         child: const NotificationsPage(),
       ),
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/notificationsEmployer',
       name: 'notificationsEmployer',
       builder: (context, state) => BlocProvider(
@@ -137,14 +142,14 @@ final router = GoRouter(
           builder: (context, state) => InterviewsPage(),
         ),
         GoRoute(
-            path: '/settingsSeeker',
-            name: 'settingsSeeker',
-            builder: (context, state) => BlocProvider(
-              create: (context) =>
-                  SettingsSeekerCubit(SettingsSekeerRepository())..loadSettingsData(),
-              child: const SettingsPageSeeker(),
-            ),
+          path: '/settingsSeeker',
+          name: 'settingsSeeker',
+          builder: (context, state) => BlocProvider(
+            create: (context) => SettingsSeekerCubit(SettingsSekeerRepository())
+              ..loadSettingsData(),
+            child: const SettingsPageSeeker(),
           ),
+        ),
         GoRoute(
             path: '/profile',
             name: 'profile',
@@ -152,6 +157,15 @@ final router = GoRouter(
       ],
 
       ////////////// shell bta3 employer
+    ),
+
+    GoRoute(
+      path: '/my_job_employer',
+      name: 'my_job_employer',
+      builder: (context, state) => BlocProvider(
+        create: (context) => EmployerHomeCubit(EmployerHomeRepository(RemoteDataSourceEployer())),
+        child: MyJobsScreen(),
+      ),
     ),
     ShellRoute(
         builder: (context, state, child) {

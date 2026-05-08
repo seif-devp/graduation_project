@@ -1,36 +1,35 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:graduation_project/features/job_list/domain/job_entity.dart';
-import 'package:graduation_project/features/job_list/domain/job_use_case.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/job_list/data/job_repo_imp.dart';
+import 'job_list_state.dart';
 
-part 'job_list_state.dart';
+class JobSeekerCubit extends Cubit<JobSeekerState> {
+  final JobSeekerRepositoryImpl repository;
 
-class JobListCubit extends Cubit<JobListState> {
-  final JobUseCase jobUseCase;
-  List<JobEntity> allJobs = [];
+  JobSeekerCubit(this.repository) : super(JobSeekerInitial());
 
-  JobListCubit(this.jobUseCase) : super(JobListInitial());
-
-  Future<void> fetchJob() async {
-    emit(JobListLoading());
-    try {
-      allJobs = await jobUseCase.getJobList();
-      emit(JobListSuccess(allJobs));
-    } catch (e) {
-      emit(JobListFailure("Error"));
-    }
+  Future<void> fetchJobs() async {
+    emit(GetJobsLoading());
+    final result = await repository.getJobs();
+    result.fold(
+      (failure) => emit(GetJobsError(failure.message)),
+      (jobs) => emit(GetJobsSuccess(jobs)),
+    );
   }
 
-  void filterJobs({String? location, String? salary, String? title}) {
-    final filtered = allJobs.where((job) {
-  
-      bool matchesLocation = location == null || job.location == location;
-      bool matchesSalary = salary == null || job.salary == salary;
-      bool matchesTitle = title == null || job.title.contains(title);
+  Future<void> filterJobs({String? title, String? location, String? salary,String? type,}) async {
+    emit(GetJobsLoading());
+    
+    final result = await repository.getJobs(
+      keyword: title,
+      location: location,
+      salary: salary,
+      type: type,
+      
+    );
 
-      return matchesLocation && matchesSalary && matchesTitle;
-    }).toList();
-
-    emit(JobListSuccess(filtered));
+    result.fold(
+      (failure) => emit(GetJobsError(failure.message)),
+      (jobs) => emit(GetJobsSuccess(jobs)),
+    );
   }
 }
