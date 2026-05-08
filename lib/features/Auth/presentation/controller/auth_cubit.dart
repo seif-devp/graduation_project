@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/Auth/data/services/auth_services.dart';
+import 'package:graduation_project/features/Auth/data/services/auth_services.dart' as DioFactory;
 import 'package:graduation_project/features/Auth/data/services/background_token_refresh_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthServices authServices = AuthServices();
   final BackgroundTokenRefreshService _tokenRefreshService =
       BackgroundTokenRefreshService();
 
@@ -18,7 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      final resp = await authServices.login(email: email, password: password);
+      final resp = await DioFactory.login(email: email, password: password);
       final realRole = resp.user.role;
 
       // 1. لو اختار من الواجهة إنه شركة، بس الحساب طلع باحث عن عمل
@@ -56,7 +56,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      final resp = await authServices.registerJobSeeker(
+      final resp = await DioFactory.registerJobSeeker(
         email: email,
         password: password,
         name: name,
@@ -89,7 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoading());
     try {
-      final resp = await authServices.registerEmployer(
+      final resp = await DioFactory.registerEmployer(
         email: email,
         password: password,
         name: name,
