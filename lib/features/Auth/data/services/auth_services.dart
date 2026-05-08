@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:graduation_project/core/helpers/cache_helpers.dart';
 import 'package:graduation_project/features/Auth/data/models/response.dart';
+import 'package:graduation_project/features/Auth/data/services/token_refresh_interceptor.dart';
 
 class AuthServices {
   final String url = 'https://smartjop.runasp.net';
@@ -10,11 +11,14 @@ class AuthServices {
     dio = Dio(
       BaseOptions(
         baseUrl: url,
-        connectTimeout: const Duration(seconds: 10), 
+        connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         contentType: 'application/json',
       ),
     );
+
+    // Add token refresh interceptor
+    dio.interceptors.add(TokenRefreshInterceptor(dioClient: dio));
   }
 
   /// Register a job seeker with all their information
@@ -44,15 +48,20 @@ class AuthServices {
 
     try {
       final response = await dio.post('/api/auth/register', data: data);
-      
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         final authResponse = AuthResponseModel.fromJson(response.data);
-        await CacheHelper.saveData(key: 'accessToken', value: authResponse.accessToken);
-        await CacheHelper.saveData(key: 'refreshToken', value: authResponse.refreshToken);
-        
-        return authResponse; 
+        await CacheHelper.saveData(
+            key: 'accessToken', value: authResponse.accessToken);
+        await CacheHelper.saveData(
+            key: 'refreshToken', value: authResponse.refreshToken);
+        await CacheHelper.saveData(
+            key: 'expiresAtUtc', value: authResponse.expiresAtUtc);
+
+        return authResponse;
       } else {
-        throw Exception('Failed to register job seeker: ${response.statusMessage}');
+        throw Exception(
+            'Failed to register job seeker: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       final errorMsg = e.response?.data ?? e.message;
@@ -84,19 +93,24 @@ class AuthServices {
 
     try {
       final response = await dio.post('/api/auth/register', data: data);
-      
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         final authResponse = AuthResponseModel.fromJson(response.data);
-        await CacheHelper.saveData(key: 'accessToken', value: authResponse.accessToken);
-        await CacheHelper.saveData(key: 'refreshToken', value: authResponse.refreshToken);
-        
+        await CacheHelper.saveData(
+            key: 'accessToken', value: authResponse.accessToken);
+        await CacheHelper.saveData(
+            key: 'refreshToken', value: authResponse.refreshToken);
+        await CacheHelper.saveData(
+            key: 'expiresAtUtc', value: authResponse.expiresAtUtc);
+
         return authResponse;
       } else {
-        throw Exception('Failed to register employer: ${response.statusMessage}'); 
+        throw Exception(
+            'Failed to register employer: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       final errorMsg = e.response?.data ?? e.message;
-      throw Exception('Failed to register employer: $errorMsg'); 
+      throw Exception('Failed to register employer: $errorMsg');
     }
   }
 
@@ -112,13 +126,17 @@ class AuthServices {
 
     try {
       final response = await dio.post('/api/auth/login', data: data);
-      
+
       if (response.statusCode == 200) {
         final authResponse = AuthResponseModel.fromJson(response.data);
-        await CacheHelper.saveData(key: 'accessToken', value: authResponse.accessToken);
-        await CacheHelper.saveData(key: 'refreshToken', value: authResponse.refreshToken);
-        
-        return authResponse; 
+        await CacheHelper.saveData(
+            key: 'accessToken', value: authResponse.accessToken);
+        await CacheHelper.saveData(
+            key: 'refreshToken', value: authResponse.refreshToken);
+        await CacheHelper.saveData(
+            key: 'expiresAtUtc', value: authResponse.expiresAtUtc);
+
+        return authResponse;
       } else {
         throw Exception('Failed to login: ${response.statusMessage}');
       }

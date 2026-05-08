@@ -1,39 +1,48 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/Auth/data/services/auth_services.dart';
+import 'package:graduation_project/features/Auth/data/services/background_token_refresh_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthServices authServices = AuthServices();
+  final BackgroundTokenRefreshService _tokenRefreshService =
+      BackgroundTokenRefreshService();
+
   AuthCubit() : super(AuthInitial());
 
-Future<void> login({
-  required String email,
-  required String password,
-  required bool isEmployer, 
-}) async {
-  emit(AuthLoading());
-  try {
-    final resp = await authServices.login(email: email, password: password);
-    final realRole = resp.user.role; 
+  Future<void> login({
+    required String email,
+    required String password,
+    required bool isEmployer,
+  }) async {
+    emit(AuthLoading());
+    try {
+      final resp = await authServices.login(email: email, password: password);
+      final realRole = resp.user.role;
 
-    // 1. لو اختار من الواجهة إنه شركة، بس الحساب طلع باحث عن عمل
-    if (isEmployer == true && realRole == 0) {
-      emit(AuthFailure('This account belongs to a Job Seeker. Please select Job Seeker tab.'));
-      return; // نوقف الكود هنا
-    }
-    
-    if (isEmployer == false && realRole == 1) {
-      emit(AuthFailure('This account belongs to an Employer. Please select Employer tab.'));
-      return;
-    }
+      // 1. لو اختار من الواجهة إنه شركة، بس الحساب طلع باحث عن عمل
+      if (isEmployer == true && realRole == 0) {
+        emit(AuthFailure(
+            'This account belongs to a Job Seeker. Please select Job Seeker tab.'));
+        return; // نوقف الكود هنا
+      }
 
-    emit(AuthSuccess(role: realRole, token: resp.accessToken));
-    
-  } catch (e) {
-    emit(AuthFailure('Failed to login: ${e.toString()}'));
+      if (isEmployer == false && realRole == 1) {
+        emit(AuthFailure(
+            'This account belongs to an Employer. Please select Employer tab.'));
+        return;
+      }
+
+      // Start background token refresh
+      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
+
+      emit(AuthSuccess(role: realRole, token: resp.accessToken));
+    } catch (e) {
+      emit(AuthFailure('Failed to login: ${e.toString()}'));
+    }
   }
-}
+
   Future<void> registerJobSeeker({
     required String email,
     required String password,
@@ -47,7 +56,7 @@ Future<void> login({
   }) async {
     emit(AuthLoading());
     try {
-      final resp=await authServices.registerJobSeeker(
+      final resp = await authServices.registerJobSeeker(
         email: email,
         password: password,
         name: name,
@@ -58,6 +67,10 @@ Future<void> login({
         linkedInUrl: linkedInUrl,
         gitHubUrl: gitHubUrl,
       );
+
+      // Start background token refresh
+      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
+
       emit(AuthSuccess(role: resp.user.role, token: resp.accessToken));
     } catch (e) {
       emit(AuthFailure('Failed to register: ${e.toString()}'));
@@ -76,7 +89,7 @@ Future<void> login({
   }) async {
     emit(AuthLoading());
     try {
-      final resp=await authServices.registerEmployer(
+      final resp = await authServices.registerEmployer(
         email: email,
         password: password,
         name: name,
@@ -86,9 +99,30 @@ Future<void> login({
         industry: industry,
         website: website,
       );
+
+      // Start background token refresh
+      _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
+
       emit(AuthSuccess(role: resp.user.role, token: resp.accessToken));
     } catch (e) {
       emit(AuthFailure('Failed to register: ${e.toString()}'));
     }
+  }
+
+  /// Logout user and stop background token refresh
+  Future<void> logout() async {
+    _tokenRefreshService.stopBackgroundRefresh();
+    await _tokenRefreshService.clearTokens();
+    emit(AuthInitial());
+  }
+
+  /// Check if user is authenticated
+  bool isAuthenticated() {
+    return _tokenRefreshService.isAuthenticated();
+  }
+
+  /// Manually refresh tokens (for use when needed before scheduled refresh)
+  Future<bool> refreshTokens() {
+    return _tokenRefreshService.refreshToken();
   }
 }
