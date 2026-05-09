@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:graduation_project/core/helpers/cache_helpers.dart';
 import 'package:graduation_project/core/networking/dio.dart';
 import 'package:graduation_project/features/Auth/data/models/response.dart';
-import 'package:graduation_project/features/Auth/data/services/token_refresh_interceptor.dart';
 
 /// Register a job seeker with all their information
 Future<AuthResponseModel> registerJobSeeker({

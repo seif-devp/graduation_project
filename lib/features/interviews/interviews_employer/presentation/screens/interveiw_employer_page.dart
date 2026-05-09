@@ -15,9 +15,10 @@ class InterviewsPageEmployer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => InterviewCubitEmployer(
-        RepoImpEmployer(),
-      )..loadInterviews(),
+      create: (_) => InterviewCubitEmployer(InterviewsRepositoryImpl())
+      //TODO don't forget to pass the required parameters to loadInterviewsOneJob
+        ..loadInterviewsOneJob('8c901fbd-8cc1-4544-bf51-d892ed5ce2a2', 1,
+            10), // Added required parameters
       child: Scaffold(
         body: SafeArea(
           child: BlocBuilder<InterviewCubitEmployer, InterviewStateEmployer>(
@@ -29,81 +30,79 @@ class InterviewsPageEmployer extends StatelessWidget {
                 return Center(child: Text(state.message));
               }
               if (state is InterviewsEmployerEmpty) {
-                
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Interviews',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF1A1D23)),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          'Upcoming scheduled meetings',
-                          style: TextStyle(fontSize: 13.sp, color: Colors.grey),
-                        ),
-                        SizedBox(height: 40.h),
-                        Expanded(
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 96,
-                                  height: 96,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade50,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(Icons.calendar_today,
-                                      size: 36, color: Colors.blue.shade400),
+                return Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Interviews',
+                        style: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF1A1D23)),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Upcoming scheduled meetings',
+                        style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                      ),
+                      SizedBox(height: 40.h),
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 96,
+                                height: 96,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade50,
+                                  shape: BoxShape.circle,
                                 ),
-                                const SizedBox(height: 20),
-                                const Text('No Interviews Scheduled',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 8),
-                                const SizedBox(
-                                  width: 300,
-                                  child: Text(
-                                    'check your Applicants To schedule Interview with The Best candidate.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
+                                child: Icon(Icons.calendar_today,
+                                    size: 36, color: Colors.blue.shade400),
+                              ),
+                              const SizedBox(height: 20),
+                              const Text('No Interviews Scheduled',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 8),
+                              const SizedBox(
+                                width: 300,
+                                child: Text(
+                                  'check your Applicants To schedule Interview with The Best candidate.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.grey),
                                 ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: () => context.go('/applications_swip'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:primaryColor,
-                                    elevation: 8,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 28, vertical: 14),
-                                  ),
-                                  child: const Text('Browse candidates Applicants',style: TextStyle(color: Colors.white),),
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () =>
+                                    context.go('/applications_swip'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: primaryColor,
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 28, vertical: 14),
                                 ),
-                              ],
-                            ),
+                                child: const Text(
+                                  'Browse candidates Applicants',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                
-
-                
-              }
-              else if(state is InterviewEmployerLoaded){
+                      ),
+                    ],
+                  ),
+                );
+              } else if (state is InterviewEmployerLoaded) {
                 return Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
