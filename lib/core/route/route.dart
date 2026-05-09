@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/widgets/employer_navigation_bar.dart';
+import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
+import 'package:graduation_project/features/Applicants/data/repo_application.dart';
+import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
 import 'package:graduation_project/features/Applicants/presentation/screen/application_screen.dart';
+import 'package:graduation_project/features/Applicants/presentation/screen/view_job.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/startup_screen.dart';
@@ -202,9 +206,12 @@ final router = GoRouter(
               name: 'post_jobs_employer',
               builder: (context, state) => PostJobScreen()),
           GoRoute(
-            path: '/applications_swip',
-            name: 'applications_swip',
-            builder: (context, state) => ApplicantsScreen(),
+            path: '/JobPage_employer',
+            name: 'JobPage_employer',
+            builder: (context, state) => BlocProvider(
+              create: (context) => ApplicantsCubit(ApplicantsRepository(ApplicantsRemoteDataSource())),
+            child: JobPageEmployer(),
+            ),
           ),
           GoRoute(
             path: '/interview_employer',

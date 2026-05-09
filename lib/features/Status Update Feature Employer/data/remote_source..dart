@@ -1,13 +1,13 @@
 import 'package:graduation_project/core/networking/dio.dart';
-import 'package:graduation_project/features/Applicants/data/model_view_data.dart';
+import 'package:graduation_project/features/Status%20Update%20Feature%20Employer/data/model.dart';
 
 class ApplicantsRemoteDataSource {
-  Future<List<ApplicationModel>> getApplicantsByJob(String jobId) async {
+  Future<List<ApplicantResponseModel>> getApplicantsByJob(String jobId) async {
     final response = await DioFactory.getDio().get(
       '/api/applications/job/$jobId',
     );
     final items = response.data['items'] as List;
-    return items.map((e) => ApplicationModel.fromJson(e)).toList();
+    return items.map((e) => ApplicantResponseModel.fromJson(e)).toList();
   }
 
   Future<void> updateStatus(String applicationId, String status) async {

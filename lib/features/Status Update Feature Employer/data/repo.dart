@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:graduation_project/core/networking/errors.dart';
-import 'package:graduation_project/features/Applicants/data/model_view_data.dart';
-import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
+import 'package:graduation_project/features/Status%20Update%20Feature%20Employer/data/model.dart';
+import 'package:graduation_project/features/Status%20Update%20Feature%20Employer/data/remote_source..dart';
 
 class ApplicantsRepository {
   final ApplicantsRemoteDataSource remoteDataSource;
 
   ApplicantsRepository(this.remoteDataSource);
 
-  Future<Either<Failure, List<ApplicationModel>>> getApplicants(
+  Future<Either<Failure, List<ApplicantResponseModel>>> getApplicants(
       String jobId) async {
     try {
       final result = await remoteDataSource.getApplicantsByJob(jobId);
