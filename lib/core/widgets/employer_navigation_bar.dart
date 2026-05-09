@@ -11,15 +11,28 @@ class EmployerBottomNavBar extends StatelessWidget {
 
     int currentIndex = 0;
 
+    /// Home
     if (location.startsWith('/home_employer')) {
       currentIndex = 0;
-    } else if (location.startsWith('/post_jobs_employer')) {
+    }
+
+    /// Post Jobs
+    else if (location.startsWith('/post_jobs_employer')) {
       currentIndex = 1;
-    } else if (location.startsWith('/applications_swip')) {
+    }
+
+    /// Applicants
+    else if (location.startsWith('/JobPage_employer')) {
       currentIndex = 2;
-    } else if (location.startsWith('/interview_employer')) {
+    }
+
+    /// Interviews
+    else if (location.startsWith('/interview_employer')) {
       currentIndex = 3;
-    } else if (location.startsWith('/settings')) {
+    }
+
+    /// Settings
+    else if (location.startsWith('/settings')) {
       currentIndex = 4;
     }
 
@@ -28,19 +41,38 @@ class EmployerBottomNavBar extends StatelessWidget {
       onTap: (index) {
         switch (index) {
           case 0:
-            context.goNamed('home_employer');
+            context.goNamed(
+              'home_employer',
+            );
+
             break;
+
           case 1:
-            context.goNamed('post_jobs_employer');
+            context.goNamed(
+              'post_jobs_employer',
+            );
+
             break;
+
           case 2:
-            context.goNamed('applications_swip');
+            context.goNamed(
+              'JobPage_employer',
+            );
+
             break;
+
           case 3:
-            context.goNamed('interview_employer');
+            context.goNamed(
+              'interview_employer',
+            );
+
             break;
+
           case 4:
-            context.goNamed('settings');
+            context.goNamed(
+              'settings',
+            );
+
             break;
         }
       },
@@ -50,14 +82,26 @@ class EmployerBottomNavBar extends StatelessWidget {
       selectedFontSize: 12,
       unselectedFontSize: 12,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline), label: 'Post Jobs'),
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.people_outline), label: 'Applicants'),
+          icon: Icon(Icons.add_circle_outline),
+          label: 'Post Jobs',
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined), label: 'Interviews'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+          icon: Icon(Icons.people_outline),
+          label: 'Applicants',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today_outlined),
+          label: 'Interviews',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Setting',
+        ),
       ],
     );
   }

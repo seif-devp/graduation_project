@@ -1,6 +1,5 @@
-
-class JobModelResponse  {
- final String id;
+class JobModelResponse {
+  final String id;
   final String title;
   final String companyName;
   final String? companyLogoUrl;
@@ -11,6 +10,7 @@ class JobModelResponse  {
   final String type;
   final String postedAt;
   final int applicationCount;
+  final String employerId; // ✅ ضيفنا employerId
 
   JobModelResponse({
     required this.id,
@@ -24,6 +24,7 @@ class JobModelResponse  {
     required this.type,
     required this.postedAt,
     required this.applicationCount,
+    required this.employerId, // ✅
   });
 
   factory JobModelResponse.fromJson(Map<String, dynamic> json) {
@@ -39,6 +40,7 @@ class JobModelResponse  {
       type: json['type'] ?? '',
       postedAt: json['postedAt'] ?? '',
       applicationCount: json['applicationCount'] ?? 0,
+      employerId: json['employerId'] ?? '', // ✅
     );
   }
 }
