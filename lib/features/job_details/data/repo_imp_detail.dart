@@ -14,7 +14,9 @@ class JobDetailsRepo extends RepointerfaceDetail {
       final response = await remoteDataSource.getJobById(id);
       return Right(response);
     } catch (e) {
-      return Left(ServerFailure("تعذر تحميل تفاصيل الوظيفة"));
+      
+      print("❌ Error in JobDetailsRepo: $e"); 
+      return Left(ServerFailure("تعذر تحميل تفاصيل الوظيفة: ${e.toString()}"));
     }
   }
 }

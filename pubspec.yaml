@@ -45,6 +45,7 @@ dependencies:
   dart_either: ^2.1.0
   dartz: ^0.10.1
   shared_preferences: ^2.5.5
+  file_picker: ^11.0.2
     
 
 dev_dependencies:

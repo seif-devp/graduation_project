@@ -22,8 +22,10 @@ import 'package:graduation_project/features/job_application_progress/presentatio
 import 'package:graduation_project/features/job_details/data/model_detail.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
+import 'package:graduation_project/features/joob_seeker_applications/presentation/screens/page.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
+import 'package:graduation_project/features/resume/presentation/screen/page.dart';
 import 'package:graduation_project/features/settings/setting_employer/data/repo.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
@@ -59,6 +61,16 @@ final router = GoRouter(
       builder: (context, state) => SignUpScreen(),
     ),
     GoRoute(
+      path: '/job_seeker_applications',
+      name: 'job_seeker_applications',
+      builder: (context, state) => MyApplicationsPage(),
+    ),
+    GoRoute(
+      path: '/resume_upload',
+      name: 'resume_upload',
+      builder: (context, state) => ResumeUploadScreen(),
+    ),
+    GoRoute(
       path: '/startup',
       name: 'startup',
       builder: (context, state) => StartUpScreen(),
@@ -85,7 +97,7 @@ final router = GoRouter(
       path: '/job_details',
       name: 'job_details',
       builder: (context, state) =>
-          JobDetailsPage(job: state.extra as JobDetailsModel),
+          JobDetailsPage(jobId: (state.extra as dynamic).id.toString()),
     ),
     GoRoute(
       path: '/alerts',

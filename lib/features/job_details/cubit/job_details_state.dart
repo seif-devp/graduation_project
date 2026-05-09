@@ -11,3 +11,9 @@ class JobDetailsError extends JobDetailsState {
   final String message;
   JobDetailsError(this.message);
 }
+class ApplyJobLoading extends JobDetailsState {}
+class ApplyJobSuccess extends JobDetailsState {}
+class ApplyJobError extends JobDetailsState {
+  final String message;
+  ApplyJobError(this.message);
+}
