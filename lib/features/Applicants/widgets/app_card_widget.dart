@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/Applicants/data/model_view_data.dart';
+import 'package:graduation_project/features/Applicants/logic/entity.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
+import 'package:graduation_project/features/Applicants/widgets/schedule_inerview_dialog.dart';
 
 class ApplicantCard extends StatelessWidget {
   final ApplicationModel applicant;
@@ -71,18 +73,34 @@ class ApplicantCard extends StatelessWidget {
                 () => context.read<ApplicantsCubit>().swipeLeft(),
               ),
               // ✅ Interview
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_month_outlined, size: 18.sp),
-                    SizedBox(width: 6.w),
-                    Text('Interview', style: TextStyle(fontSize: 13.sp)),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ScheduleInterviewDialog(
+                      applicant: ApplicantEntity(
+                        appliedDate: applicant.appliedAt,
+                        matchScore: applicant.aiMatchScore,
+                        id: applicant.id,
+                        name: applicant.seekerName,
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.calendar_month_outlined, size: 18.sp),
+                      SizedBox(width: 6.w),
+                      Text('Interview', style: TextStyle(fontSize: 13.sp)),
+                    ],
+                  ),
                 ),
               ),
               // ✅ Shortlist
