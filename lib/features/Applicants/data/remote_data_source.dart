@@ -7,7 +7,14 @@ class ApplicantsRemoteDataSource {
       '/api/applications/job/$jobId',
     );
     final items = response.data['items'] as List;
-    return items.map((e) => ApplicationModel.fromJson(e)).toList();
+
+    return items
+        .map((e) => ApplicationModel.fromJson(e))
+        // ✅ بنشوف كل اللي مش Rejected ومش Shortlisted
+        .where((applicant) =>
+            applicant.status != 'Rejected' &&
+            applicant.status != 'Shortlisted')
+        .toList();
   }
 
   Future<void> updateStatus(String applicationId, String status) async {

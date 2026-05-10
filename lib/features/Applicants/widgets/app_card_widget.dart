@@ -64,13 +64,11 @@ class ApplicantCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // ✅ Reject
-              _buildCircleButton(
-                Icons.thumb_down_alt_outlined,
-                Colors.red,
-                () => context.read<ApplicantsCubit>().swipeLeft(),
+                _buildCircleButton(
+                Icons.thumb_up_alt_outlined,
+                Colors.green,
+                () => context.read<ApplicantsCubit>().swipeRight(),
               ),
-              // ✅ Interview
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                 decoration: BoxDecoration(
@@ -86,10 +84,10 @@ class ApplicantCard extends StatelessWidget {
                 ),
               ),
               // ✅ Shortlist
-              _buildCircleButton(
-                Icons.thumb_up_alt_outlined,
-                Colors.green,
-                () => context.read<ApplicantsCubit>().swipeRight(),
+                _buildCircleButton(
+                Icons.thumb_down_alt_outlined,
+                Colors.red,
+                () => context.read<ApplicantsCubit>().swipeLeft(),
               ),
             ],
           ),
