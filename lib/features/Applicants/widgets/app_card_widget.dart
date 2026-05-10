@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/Applicants/data/model_view_data.dart';
+import 'package:graduation_project/features/Applicants/logic/entity.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
+import 'package:graduation_project/features/Applicants/widgets/schedule_inerview_dialog.dart';
 
 class ApplicantCard extends StatelessWidget {
   final ApplicationModel applicant;
@@ -69,18 +71,36 @@ class ApplicantCard extends StatelessWidget {
                 Colors.green,
                 () => context.read<ApplicantsCubit>().swipeRight(),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_month_outlined, size: 18.sp),
-                    SizedBox(width: 6.w),
-                    Text('Interview', style: TextStyle(fontSize: 13.sp)),
-                  ],
+              // ✅ Interview
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ScheduleInterviewDialog(
+                      applicant: ApplicantEntity(
+                        appliedDate: applicant.appliedAt,
+                        matchScore: applicant.aiMatchScore,
+                        id: applicant.id,
+                        name: applicant.seekerName,
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.calendar_month_outlined, size: 18.sp),
+                      SizedBox(width: 6.w),
+                      Text('Interview', style: TextStyle(fontSize: 13.sp)),
+                    ],
+                  ),
+
                 ),
               ),
               // ✅ Shortlist
@@ -112,8 +132,10 @@ class ApplicantCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TextStyle(color: Colors.grey.shade600, fontSize: 10.sp)),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp)),
+          Text(title,
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 10.sp)),
+          Text(value,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp)),
         ],
       ),
     );
@@ -130,7 +152,8 @@ class ApplicantCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TextStyle(color: Colors.grey.shade600, fontSize: 10.sp)),
+          Text(title,
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 10.sp)),
           SizedBox(height: 6.h),
           Row(
             children: [
@@ -143,7 +166,9 @@ class ApplicantCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.w),
-              Text('$score%', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
+              Text('$score%',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
             ],
           ),
         ],
