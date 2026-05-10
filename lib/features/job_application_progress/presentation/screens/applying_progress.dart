@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/cubit/application_progress_cubit.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/cubit/application_progress_state.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/widgets/application_card.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/widgets/application_detail_widget.dart';
+import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
+import 'package:graduation_project/features/job_details/cubit/job_details_state.dart';
+import 'package:graduation_project/features/job_details/data/remote_detail_source.dart';
+import 'package:graduation_project/features/job_details/data/repo_imp_detail.dart';
 
 class ApplicationProgressScreen extends StatefulWidget {
   const ApplicationProgressScreen({super.key});
@@ -106,8 +111,7 @@ class _ApplicationProgressScreenState extends State<ApplicationProgressScreen> {
                           if (index >= state.applications.length) {
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 16.h),
-                              child: const Center(
-                                  child: CircularProgressIndicator()),
+                              child: const Center(child: loading),
                             );
                           }
 
@@ -149,30 +153,112 @@ class _ApplicationProgressScreenState extends State<ApplicationProgressScreen> {
                             status: status,
                             appliedDate: formattedDate,
                             onTap: () {
+                              // 1. نجيب الـ jobId بس من موديل التقديم
+                              final String? currentJobId =
+                                  app.jobId?.toString();
+
+                              if (currentJobId == null ||
+                                  currentJobId == 'null') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Job ID is missing.')),
+                                );
+                                return;
+                              }
+
                               showModalBottomSheet(
                                 context: context,
-                                isScrollControlled:
-                                    true, // ⚠️ السطر ده مهم جداً عشان الـ DraggableScrollableSheet ياخد راحته في الشاشة
-                                backgroundColor: Colors
-                                    .transparent, // عشان الحواف المدورة اللي إنت عاملها في الديزاين تبان مظبوط
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
                                 builder: (context) {
-                                  return ApplicationDetailWidget(
-                                    jobTitle: jobTitle,
-                                    companyName: companyName,
-                                    // تأكد من طريقة استخراج الداتا هنا حسب استجابة الـ API عندك
-                                    location: app.location ?? 'Unknown',
-                                    salary: app.salary?.toString() ??
-                                        'Not specified',
-                                    status: status,
-                                    appliedDate: formattedDate,
-                                    description: app.description ??
-                                        'No description available.',
-                                    // لو الـ requirements راجعة كـ List<dynamic> لازم نحولها لـ List<String>
-                                    requirements:
-                                        (app.requirements as List<dynamic>?)
-                                                ?.map((e) => e.toString())
-                                                .toList() ??
-                                            [],
+                                  // 3. نستدعي الكيوبت اللي بيجيب الـ JobModel
+                                  return BlocProvider(
+                                    create: (context) => JobDetailsCubit(
+                                        JobDetailsRepo(
+                                            JobDetailsRemoteDataSource()))
+                                      ..fetchJobDetails(currentJobId),
+                                    child: BlocBuilder<JobDetailsCubit,
+                                        JobDetailsState>(
+                                      builder: (context, state) {
+                                        // حالة التحميل: بنعرض مسار تحميل جوه البوب أب
+                                        if (state is JobDetailsLoading) {
+                                          return DraggableScrollableSheet(
+                                            initialChildSize: 0.9,
+                                            builder: (_, __) => Container(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            20)),
+                                              ),
+                                              child:
+                                                  const Center(child: loading),
+                                            ),
+                                          );
+                                        }
+
+                                        // حالة النجاح: الداتا رجعت في الـ JobModel وهنعرضها
+                                        else if (state is JobDetailsSuccess) {
+                                          final jobData = state
+                                              .job; // 👈 ده بقى الـ JobModel الصح
+
+                                          return ApplicationDetailWidget(
+                                            // بنستخدم الداتا من jobData، ولو فاضية بناخد اللي كانت في كارت التقديم
+                                            jobTitle: jobData.title.isNotEmpty
+                                                ? jobData.title
+                                                : jobTitle,
+                                            companyName:
+                                                jobData.companyName.isNotEmpty
+                                                    ? jobData.companyName
+                                                    : companyName,
+                                            location:
+                                                jobData.location.isNotEmpty
+                                                    ? jobData.location
+                                                    : 'Unknown',
+                                            salary: jobData.salary.isNotEmpty
+                                                ? jobData.salary
+                                                : 'Not specified',
+
+                                            // دول بناخدهم من التقديم نفسه عشان مش في المودل بتاع الوظيفة
+                                            status: status,
+                                            appliedDate: formattedDate,
+
+                                            description: jobData
+                                                    .description.isNotEmpty
+                                                ? jobData.description
+                                                : 'No description available.',
+                                            requirements:
+                                                jobData.requirements.isNotEmpty
+                                                    ? jobData.requirements
+                                                    : [],
+                                          );
+                                        }
+
+                                        // حالة الخطأ
+                                        else if (state is JobDetailsError) {
+                                          return DraggableScrollableSheet(
+                                            initialChildSize: 0.5,
+                                            builder: (_, __) => Container(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            20)),
+                                              ),
+                                              child: Center(
+                                                child: Text(state.message,
+                                                    style: const TextStyle(
+                                                        color: Colors.red)),
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        return const SizedBox.shrink();
+                                      },
+                                    ),
                                   );
                                 },
                               );
@@ -181,8 +267,9 @@ class _ApplicationProgressScreenState extends State<ApplicationProgressScreen> {
                         },
                       ),
                     );
+                  } else {
+                    return const SizedBox.shrink();
                   }
-                  return const SizedBox.shrink();
                 },
               ),
             ),
