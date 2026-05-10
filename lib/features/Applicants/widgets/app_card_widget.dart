@@ -66,11 +66,10 @@ class ApplicantCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // ✅ Reject
-              _buildCircleButton(
-                Icons.thumb_down_alt_outlined,
-                Colors.red,
-                () => context.read<ApplicantsCubit>().swipeLeft(),
+                _buildCircleButton(
+                Icons.thumb_up_alt_outlined,
+                Colors.green,
+                () => context.read<ApplicantsCubit>().swipeRight(),
               ),
               // ✅ Interview
               GestureDetector(
@@ -107,13 +106,14 @@ class ApplicantCard extends StatelessWidget {
                       Text('Interview', style: TextStyle(fontSize: 13.sp)),
                     ],
                   ),
+
                 ),
               ),
               // ✅ Shortlist
-              _buildCircleButton(
-                Icons.thumb_up_alt_outlined,
-                Colors.green,
-                () => context.read<ApplicantsCubit>().swipeRight(),
+                _buildCircleButton(
+                Icons.thumb_down_alt_outlined,
+                Colors.red,
+                () => context.read<ApplicantsCubit>().swipeLeft(),
               ),
             ],
           ),

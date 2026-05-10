@@ -4,6 +4,7 @@ class ApplicationModel {
   final String? seekerAvatarUrl;
   final int aiMatchScore;
   final String appliedAt;
+  final String status;
 
   ApplicationModel({
     required this.id,
@@ -11,6 +12,7 @@ class ApplicationModel {
     this.seekerAvatarUrl,
     required this.aiMatchScore,
     required this.appliedAt,
+    required this.status,
   });
 
   factory ApplicationModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class ApplicationModel {
       seekerAvatarUrl: json['seekerAvatarUrl'],
       aiMatchScore: (json['aiMatchScore'] ?? 0).toInt(),
       appliedAt: json['appliedAt'] ?? '',
+      status: json['status'] ?? 'Pending', 
     );
   }
 }
