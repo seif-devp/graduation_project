@@ -77,7 +77,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 6.w,
+                    width: 64.w,
                     height: 64.h,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
