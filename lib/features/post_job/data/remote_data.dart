@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:graduation_project/core/networking/dio.dart';
 import 'package:graduation_project/features/post_job/data/model_request.dart';
 

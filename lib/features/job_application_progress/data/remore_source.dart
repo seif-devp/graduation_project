@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:graduation_project/core/networking/dio.dart';
-import 'package:graduation_project/features/joob_seeker_applications/data/paginated.dart';
+import 'package:graduation_project/features/job_application_progress/data/paginated.dart';
 
 class SeekerApplicationRemoteDataSource {
   final Dio dio = DioFactory.getDio();

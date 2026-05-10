@@ -75,14 +75,20 @@ class ApplicantCard extends StatelessWidget {
               // ✅ Interview
               GestureDetector(
                 onTap: () {
+                  final cubit = context.read<ApplicantsCubit>();
                   showDialog(
                     context: context,
-                    builder: (context) => ScheduleInterviewDialog(
-                      applicant: ApplicantEntity(
-                        appliedDate: applicant.appliedAt,
-                        matchScore: applicant.aiMatchScore,
-                        id: applicant.id,
-                        name: applicant.seekerName,
+                    useRootNavigator:
+                        false, // <-- Keeps the popup on the same tree
+                    builder: (context) => BlocProvider.value(
+                      value: cubit,
+                      child: ScheduleInterviewDialog(
+                        applicant: ApplicantEntity(
+                          appliedDate: applicant.appliedAt,
+                          matchScore: applicant.aiMatchScore,
+                          id: applicant.id,
+                          name: applicant.seekerName,
+                        ),
                       ),
                     ),
                   );

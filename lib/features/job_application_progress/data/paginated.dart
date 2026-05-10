@@ -1,4 +1,4 @@
-import 'package:graduation_project/features/joob_seeker_applications/data/model.dart';
+import 'package:graduation_project/features/job_application_progress/data/model.dart';
 
 
 

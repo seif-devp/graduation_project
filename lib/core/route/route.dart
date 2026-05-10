@@ -23,10 +23,11 @@ import 'package:graduation_project/features/Notifications/notification_employer/
 import 'package:graduation_project/features/interviews/interviews_seeker/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/interviews/interviews_employer/presentation/screens/interveiw_employer_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
-import 'package:graduation_project/features/job_details/data/model_detail.dart';
+import 'package:graduation_project/features/job_application_progress/data/repo.dart';
+import 'package:graduation_project/features/job_application_progress/data/remore_source.dart';
+import 'package:graduation_project/features/job_application_progress/presentation/cubit/application_progress_cubit.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
-import 'package:graduation_project/features/joob_seeker_applications/presentation/screens/page.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/resume/presentation/screen/page.dart';
@@ -64,11 +65,7 @@ final router = GoRouter(
       name: 'sign_up',
       builder: (context, state) => SignUpScreen(),
     ),
-    GoRoute(
-      path: '/job_seeker_applications',
-      name: 'job_seeker_applications',
-      builder: (context, state) => MyApplicationsPage(),
-    ),
+
     GoRoute(
       path: '/resume_upload',
       name: 'resume_upload',
@@ -155,7 +152,12 @@ final router = GoRouter(
         GoRoute(
           path: '/applying',
           name: 'applying',
-          builder: (context, state) => ApplicationProgressScreen(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => ApplicationProgressCubit(
+                SeekerApplicationRepoImpl(SeekerApplicationRemoteDataSource()))
+              ..getMyApplications(),
+            child: ApplicationProgressScreen(),
+          ),
         ),
         GoRoute(
           path: '/interview',
@@ -184,7 +186,8 @@ final router = GoRouter(
       path: '/my_job_employer',
       name: 'my_job_employer',
       builder: (context, state) => BlocProvider(
-        create: (context) => EmployerHomeCubit(EmployerHomeRepository(RemoteDataSourceEployer())),
+        create: (context) => EmployerHomeCubit(
+            EmployerHomeRepository(RemoteDataSourceEployer())),
         child: MyJobsScreen(),
       ),
     ),
@@ -209,8 +212,9 @@ final router = GoRouter(
             path: '/JobPage_employer',
             name: 'JobPage_employer',
             builder: (context, state) => BlocProvider(
-              create: (context) => ApplicantsCubit(ApplicantsRepository(ApplicantsRemoteDataSource())),
-            child: JobPageEmployer(),
+              create: (context) => ApplicantsCubit(
+                  ApplicantsRepository(ApplicantsRemoteDataSource())),
+              child: JobPageEmployer(),
             ),
           ),
           GoRoute(

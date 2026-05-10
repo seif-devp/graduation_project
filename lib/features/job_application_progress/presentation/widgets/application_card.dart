@@ -5,8 +5,8 @@ import 'package:graduation_project/features/job_application_progress/presentatio
 class ApplicationCard extends StatelessWidget {
   final String jobTitle;
   final String companyName;
-  final String logoUrl;
-  final double matchPercentage;
+  final String? logoUrl;
+  final String matchPercentage;
   final String status; // 'sent', 'viewed', 'interview', 'rejected', 'accepted'
   final String appliedDate;
   final VoidCallback? onTap;
@@ -15,7 +15,7 @@ class ApplicationCard extends StatelessWidget {
     super.key,
     required this.jobTitle,
     required this.companyName,
-    required this.logoUrl,
+     this.logoUrl,
     required this.matchPercentage,
     required this.status,
     required this.appliedDate,
@@ -140,7 +140,7 @@ class ApplicationCard extends StatelessWidget {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          '${matchPercentage.toInt()}%',
+                          '$matchPercentage%',
                           style: TextStyle(
                             fontSize: 13..sp,
                             fontWeight: FontWeight.w600,

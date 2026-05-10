@@ -1,5 +1,5 @@
-import 'package:graduation_project/features/joob_seeker_applications/data/paginated.dart';
-import 'package:graduation_project/features/joob_seeker_applications/data/remore_source.dart';
+import 'package:graduation_project/features/job_application_progress/data/paginated.dart';
+import 'package:graduation_project/features/job_application_progress/data/remore_source.dart';
 
 class SeekerApplicationRepoImpl {
   final SeekerApplicationRemoteDataSource remoteDataSource;
