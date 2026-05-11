@@ -12,8 +12,7 @@ class ApplicantsRemoteDataSource {
         .map((e) => ApplicationModel.fromJson(e))
         // ✅ بنشوف كل اللي مش Rejected ومش Shortlisted
         .where((applicant) =>
-            applicant.status != 'Rejected' &&
-            applicant.status != 'Shortlisted')
+            applicant.status != 'Rejected' && applicant.status != 'accepted')
         .toList();
   }
 

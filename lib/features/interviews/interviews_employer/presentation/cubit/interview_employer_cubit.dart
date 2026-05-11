@@ -13,16 +13,35 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
       String jobId, int page, int pageSize) async {
     emit(InterviewEmployerLoading());
     try {
-      final List<InterviewEntityEmployer> interviews;
-      interviews =
+      final interviews =
           await repositoryemployer.getInterviewsByJobId(jobId, page, pageSize);
-      emit(InterviewEmployerLoaded(interviews));
+          
       if (interviews.isEmpty) {
         emit(InterviewsEmployerEmpty());
+      } else {
+        emit(InterviewEmployerLoaded(interviews));
       }
     } catch (e) {
-      //TODO don't forget handel error state
+      emit(InterviewsEmployerEmpty());
+    }
+  }
+
+  Future<void> loadAllInterviews(
+      List<String> jobIds, int page, int pageSize) async {
+    emit(InterviewEmployerLoading());
+    try {
+      final interviews =
+          await repositoryemployer.getallInterviews(jobIds, page, pageSize);
+          
+      if (interviews.isEmpty) {
+        emit(InterviewsEmployerEmpty());
+      } else {
+        interviews.sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
+        emit(InterviewEmployerLoaded(interviews));
+      }
+    } catch (e) {
       emit(InterviewEmployerError(e.toString()));
     }
   }
+  
 }

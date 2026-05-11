@@ -9,7 +9,6 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
 
   ApplicantsCubit(this.repository) : super(const ApplicantsState());
 
-
   Future<void> fetchAllJobs() async {
     emit(state.copyWith(jobsStatus: JobsStatus.loading));
     try {
@@ -46,7 +45,7 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
   }
 
   Future<void> swipeRight() async {
-    await _updateAndNext('Shortlisted');
+    await _updateAndNext('accepted');
   }
 
   Future<void> swipeLeft() async {

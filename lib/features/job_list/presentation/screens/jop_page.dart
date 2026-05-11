@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/colors.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/core/widgets/job_card.dart';
 import 'package:graduation_project/features/job_list/data/job_repo_imp.dart';
 import 'package:graduation_project/features/job_list/data/remote_data_source.dart';
@@ -23,16 +25,16 @@ class _JobPageState extends State<JobPage> {
       // الربط الصحيح بالـ UseCase والـ Repository
       create: (context) => JobSeekerCubit((JobSeekerRepositoryImpl(JobsRemoteDataSource())))..fetchJobs(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(215, 248, 242, 242),
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: primaryColor,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Discover Jobs",
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 22.sp)),
               Text("AI-matched positions for you",
@@ -42,7 +44,7 @@ class _JobPageState extends State<JobPage> {
           actions: [
             Builder(builder: (context) {
               return IconButton(
-                icon: Icon(Icons.tune, color: Colors.blue.shade700),
+                icon: Icon(Icons.tune, color: primaryColor),
                 onPressed: () => _showFilterSheet(context),
               );
             }),
@@ -52,7 +54,7 @@ class _JobPageState extends State<JobPage> {
         body: BlocBuilder<JobSeekerCubit, JobSeekerState>(
           builder: (context, state) {
             if (state is GetJobsLoading) {
-              return const Center(child: CircularProgressIndicator()); // اتأكد ان Loading widget متعرفة عندك
+              return const Center(child: loading); 
             }
             if (state is GetJobsSuccess) {
               return ListView.builder(

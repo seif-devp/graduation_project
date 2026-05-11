@@ -31,4 +31,19 @@ class InterviewsRepositoryImpl implements InterviewsRepository {
       rethrow;
     }
   }
+  @override
+  Future<List<InterviewEntityEmployer>> getallInterviews(
+      List<String> jobIds, int page, int pageSize) async {
+    try {
+      final futures = jobIds.map((jobId) => getInterviewsByJobId(jobId, page, pageSize));
+      
+      final List<List<InterviewEntityEmployer>> results = await Future.wait(futures);
+      
+      final List<InterviewEntityEmployer> flattenedInterviews = results.expand((list) => list).toList();
+      
+      return flattenedInterviews;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

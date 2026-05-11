@@ -28,6 +28,15 @@ class SplashScreen extends StatelessWidget {
               children: [
                 Column(
                   children: [
+                    Text(
+                      'WorkIfy',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                     Lottie.asset(
                       'assets/icons/splash.json',
                       width: 200.w,
@@ -39,8 +48,8 @@ class SplashScreen extends StatelessWidget {
                   'A Chance To Shine',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w300,
                     color: Color(0xFF00F2FE),
                   ),
                 )
