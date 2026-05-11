@@ -9,7 +9,6 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
 
   ApplicantsCubit(this.repository) : super(const ApplicantsState());
 
-
   Future<void> fetchAllJobs() async {
     emit(state.copyWith(jobsStatus: JobsStatus.loading));
     try {
