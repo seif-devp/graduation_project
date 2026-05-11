@@ -16,10 +16,9 @@ class InterviewsPageEmployer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => InterviewCubitEmployer(InterviewsRepositoryImpl())
-      //TODO don't forget to pass the required parameters to loadInterviewsOneJobForloop on all jobs and request its interviews
-      
-        ..loadInterviewsOneJob('', 1,
-            10), // Added required parameters
+        //TODO don't forget to pass the required parameters to loadInterviewsOneJobForloop on all jobs and request its interviews
+
+        ..loadInterviewsOneJob('', 1, 10), // Added required parameters
       child: Scaffold(
         body: SafeArea(
           child: BlocBuilder<InterviewCubitEmployer, InterviewStateEmployer>(

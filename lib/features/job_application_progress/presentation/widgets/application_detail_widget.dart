@@ -79,7 +79,7 @@ class ApplicationDetailWidget extends StatelessWidget {
                   Container(
                     width: 64.w,
                     height: 64.h,
-                    decoration: BoxDecoration(
+                    decoration: BoxDecoration(  
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
                     ),

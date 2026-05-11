@@ -46,7 +46,7 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
   }
 
   Future<void> swipeRight() async {
-    await _updateAndNext('Shortlisted');
+    await _updateAndNext('accepted');
   }
 
   Future<void> swipeLeft() async {

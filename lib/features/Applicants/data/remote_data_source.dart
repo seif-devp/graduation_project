@@ -13,7 +13,7 @@ class ApplicantsRemoteDataSource {
         // ✅ بنشوف كل اللي مش Rejected ومش Shortlisted
         .where((applicant) =>
             applicant.status != 'Rejected' &&
-            applicant.status != 'Shortlisted')
+            applicant.status != 'accepted')
         .toList();
   }
 

@@ -9,7 +9,6 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
   InterviewCubitEmployer(this.repositoryemployer)
       : super(InterviewEmployerInitial());
 
-  // 1. دي اللي هتستخدمها جوه شاشة تفاصيل وظيفة معينة
   Future<void> loadInterviewsOneJob(
       String jobId, int page, int pageSize) async {
     emit(InterviewEmployerLoading());
@@ -23,11 +22,10 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
         emit(InterviewEmployerLoaded(interviews));
       }
     } catch (e) {
-      emit(InterviewEmployerError(e.toString()));
+      emit(InterviewsEmployerEmpty());
     }
   }
 
-  // 2. دي اللي هتستخدمها في الشاشة الرئيسية (الـ Dashboard) لكل الوظايف
   Future<void> loadAllInterviews(
       List<String> jobIds, int page, int pageSize) async {
     emit(InterviewEmployerLoading());
@@ -45,4 +43,5 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
       emit(InterviewEmployerError(e.toString()));
     }
   }
+  
 }
