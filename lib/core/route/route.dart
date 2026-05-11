@@ -5,7 +5,6 @@ import 'package:graduation_project/core/widgets/employer_navigation_bar.dart';
 import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
 import 'package:graduation_project/features/Applicants/data/repo_application.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
-import 'package:graduation_project/features/Applicants/presentation/screen/application_screen.dart';
 import 'package:graduation_project/features/Applicants/presentation/screen/view_job.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';

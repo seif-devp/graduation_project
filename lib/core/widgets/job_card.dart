@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/job_list/data/models/job_model_response.dart';
 
 
@@ -39,7 +40,7 @@ class _JobCardwidgetState extends State<JobCardwidget> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: primaryColor,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
         
@@ -62,7 +63,7 @@ class _JobCardwidgetState extends State<JobCardwidget> {
             SizedBox(height: 15.h),
             Text(
               widget.job.title,
-              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold,color: primaryColor),
             ),
             SizedBox(height: 5.h),
             Text(

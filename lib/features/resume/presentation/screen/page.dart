@@ -2,6 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/colors.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/resume/data/remote.dart';
 import 'package:graduation_project/features/resume/data/repo.dart';
 
@@ -28,7 +30,6 @@ class _ResumeUploadView extends StatelessWidget {
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
 
-    // ✅ نتأكد إن الـ widget لسه موجود قبل نستخدم الـ context
     if (!context.mounted) return;
 
     if (result != null && result.files.single.path != null) {
@@ -41,12 +42,12 @@ class _ResumeUploadView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FB),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
         elevation: 0,
         title: Text(
           'Upload CV',
           style: TextStyle(
-            color: Colors.black,
+            color: const Color.fromARGB(191, 255, 255, 255),
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -86,7 +87,7 @@ class _ResumeUploadView extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
-                      color: const Color(0xFF1D61FF),
+                      color: primaryColor,
                       width: 2,
                     ),
                   ),
@@ -95,7 +96,7 @@ class _ResumeUploadView extends StatelessWidget {
                       Icon(
                         Icons.upload_file_outlined,
                         size: 64.sp,
-                        color: const Color(0xFF1D61FF),
+                        color:primaryColor,
                       ),
                       SizedBox(height: 16.h),
                       Text(
@@ -115,16 +116,14 @@ class _ResumeUploadView extends StatelessWidget {
                       ),
                       SizedBox(height: 24.h),
                       if (state is ResumeLoading)
-                        const CircularProgressIndicator(
-                          color: Color(0xFF1D61FF),
-                        )
+                        loading
                       else
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () => _pickAndUpload(context),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1D61FF),
+                              backgroundColor: primaryColor,
                               padding: EdgeInsets.symmetric(vertical: 16.h),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.r),

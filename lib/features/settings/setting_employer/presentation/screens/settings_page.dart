@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/settings/setting_employer/data/repo.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
-
+import 'package:graduation_project/core/const/colors.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -26,7 +26,7 @@ class SettingsPage extends StatelessWidget {
           }
 
           return Scaffold(
-            backgroundColor: bgColor,
+            backgroundColor: primaryColor,
             body: SafeArea(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),

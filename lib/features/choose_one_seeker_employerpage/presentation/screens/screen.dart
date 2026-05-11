@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/choose_one_seeker_employerpage/presentation/cubit/choose_cubit.dart';
 import 'package:graduation_project/features/choose_one_seeker_employerpage/presentation/cubit/choose_state.dart';
 
@@ -31,6 +32,7 @@ class ApplicantDetailsScreen
             const Color(0xFFF8F9FF),
 
         appBar: AppBar(
+          backgroundColor: primaryColor,
           title: const Text(
             'Applicant Details',
           ),
@@ -123,7 +125,7 @@ class ApplicantDetailsScreen
                       ),
 
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: primaryColor,
 
                         borderRadius:
                             BorderRadius.circular(

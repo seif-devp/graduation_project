@@ -9,19 +9,39 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
   InterviewCubitEmployer(this.repositoryemployer)
       : super(InterviewEmployerInitial());
 
+  // 1. دي اللي هتستخدمها جوه شاشة تفاصيل وظيفة معينة
   Future<void> loadInterviewsOneJob(
       String jobId, int page, int pageSize) async {
     emit(InterviewEmployerLoading());
     try {
-      final List<InterviewEntityEmployer> interviews;
-      interviews =
+      final interviews =
           await repositoryemployer.getInterviewsByJobId(jobId, page, pageSize);
-      emit(InterviewEmployerLoaded(interviews));
+          
       if (interviews.isEmpty) {
         emit(InterviewsEmployerEmpty());
+      } else {
+        emit(InterviewEmployerLoaded(interviews));
       }
     } catch (e) {
-      //TODO don't forget handel error state
+      emit(InterviewEmployerError(e.toString()));
+    }
+  }
+
+  // 2. دي اللي هتستخدمها في الشاشة الرئيسية (الـ Dashboard) لكل الوظايف
+  Future<void> loadAllInterviews(
+      List<String> jobIds, int page, int pageSize) async {
+    emit(InterviewEmployerLoading());
+    try {
+      final interviews =
+          await repositoryemployer.getallInterviews(jobIds, page, pageSize);
+          
+      if (interviews.isEmpty) {
+        emit(InterviewsEmployerEmpty());
+      } else {
+        interviews.sort((a, b) => a.scheduledAt.compareTo(b.scheduledAt));
+        emit(InterviewEmployerLoaded(interviews));
+      }
+    } catch (e) {
       emit(InterviewEmployerError(e.toString()));
     }
   }
