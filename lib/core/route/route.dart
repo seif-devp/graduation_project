@@ -5,7 +5,6 @@ import 'package:graduation_project/core/widgets/employer_navigation_bar.dart';
 import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
 import 'package:graduation_project/features/Applicants/data/repo_application.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
-import 'package:graduation_project/features/Applicants/presentation/screen/application_screen.dart';
 import 'package:graduation_project/features/Applicants/presentation/screen/view_job.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_in_screen.dart';
 import 'package:graduation_project/features/Auth/presentation/Screens/sign_up_screen.dart';
@@ -20,6 +19,9 @@ import 'package:graduation_project/features/Home/home_seeker/presentation/Widget
 import 'package:graduation_project/features/Home/Home_employer/presentation/screens/home_employer.dart';
 import 'package:graduation_project/features/Notifications/notification_employer/cubit/notification_Employer_cubit.dart';
 import 'package:graduation_project/features/Notifications/notification_employer/presentation/pages/notifications_Employer_page.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/data/remote_data.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/data/repo.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/presentation/cubit/note_cubit.dart';
 import 'package:graduation_project/features/interviews/interviews_seeker/presentation/screens/interveiw_page.dart';
 import 'package:graduation_project/features/interviews/interviews_employer/presentation/screens/interveiw_employer_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/applying_progress.dart';
@@ -39,7 +41,6 @@ import 'package:graduation_project/features/settings/settingsSekeer/presentation
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/screens/settings_page.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/screens/edit_profile_page.dart';
-import 'package:graduation_project/features/Notifications/notification_seeker/cubit/notification_cubit.dart';
 import 'package:graduation_project/features/Notifications/notification_seeker/presentation/pages/notifications_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/application_detail_page.dart';
 
@@ -114,28 +115,13 @@ final router = GoRouter(
       },
     ),
 
-    GoRoute(
-      path: '/notifications',
-      name: 'notifications',
-      builder: (context, state) => BlocProvider(
-        create: (context) => NotificationCubit(),
-        child: const NotificationsPage(),
-      ),
-    ),
-    GoRoute(
-      path: '/notificationsEmployer',
-      name: 'notificationsEmployer',
-      builder: (context, state) => BlocProvider(
-        create: (context) => NotificationCubitEmployer(),
-        child: const NotificationsPageEmployer(),
-      ),
-    ),
-
     ///////// shell bta3 job seeker
 
     ShellRoute(
       builder: (context, state, child) => BlocProvider(
-        create: (context) => NotificationCubit()..loadUnradCount(),
+        create: (context) => NotificationCubit(
+            NotificationRepository(NotificationRemoteDataSource()))
+          ..fetchNotifications(),
         child: ShellLayout(child: child),
       ),
       routes: [
@@ -143,6 +129,11 @@ final router = GoRouter(
           path: '/home',
           name: 'home',
           builder: (context, state) => JobSeekerHomeScreen(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          name: 'notifications',
+          builder: (context, state) => const NotificationsPage(),
         ),
         GoRoute(
           path: '/jobPage',
@@ -193,9 +184,13 @@ final router = GoRouter(
     ),
     ShellRoute(
         builder: (context, state, child) {
-          return Scaffold(
-            body: child,
-            bottomNavigationBar: const EmployerBottomNavBar(),
+          return BlocProvider(
+            create: (context) =>
+                NotificationCubitEmployer()..fetchNotifications(),
+            child: Scaffold(
+              body: child,
+              bottomNavigationBar: const EmployerBottomNavBar(),
+            ),
           );
         },
         routes: [
@@ -221,6 +216,14 @@ final router = GoRouter(
             path: '/interview_employer',
             name: 'interview_employer',
             builder: (context, state) => InterviewsPageEmployer(),
+          ),
+          GoRoute(
+            path: '/notificationsEmployer',
+            name: 'notificationsEmployer',
+            builder: (context, state) => BlocProvider(
+              create: (context) => NotificationCubitEmployer(),
+              child: const NotificationsPageEmployer(),
+            ),
           ),
           GoRoute(
             path: '/settings',

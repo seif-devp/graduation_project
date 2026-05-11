@@ -10,7 +10,6 @@ import 'package:graduation_project/features/Home/Home_employer/widget/employer_h
 import 'package:graduation_project/features/Home/Home_employer/widget/quick_actions.dart';
 import 'package:graduation_project/features/Home/Home_employer/widget/recent_activity.dart';
 
-
 class EmployerHomeScreen extends StatelessWidget {
   const EmployerHomeScreen({super.key});
 
@@ -19,7 +18,7 @@ class EmployerHomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => EmployerHomeCubit(EmployerHomeRepository(RemoteDataSourceEployer()))
         ..fetchHomeDataAndJobs(),
-      child: Builder( 
+      child: Builder(
         builder: (context) {
           return Scaffold(
             backgroundColor: const Color(0xFFF8FAFC),
@@ -32,43 +31,68 @@ class EmployerHomeScreen extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                // إعداد بيانات افتراضية عشان الشاشة متضربش لو الداتا لسه مجتش
                 final stats = state is MyJobsSuccess ? state.stats : EmployerHomeEntity(
                   activeJobs: 0, newApplicants: 0, interviewsToday: 0, interviewsCount: 0, applicantsCount: 0,
                 );
-                final jobs = state is MyJobsSuccess ? state.jobsList : [];
+                
+                final allJobs = state is MyJobsSuccess ? state.jobsList : [];
+                final recentJobs = allJobs.take(3).toList();
 
                 return SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      EmployerHeaderSection(data: stats), // كدا مش هياخد Null أبداً
+                      EmployerHeaderSection(data: stats),
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-                        child: const QuickActionsSection(), // تأكد من تغيير النص لـ My Jobs جوه الودجت
+                        child: const QuickActionsSection(), 
                       ),
-
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: jobs.length,
-                          itemBuilder: (context, index) {
-                            final job = jobs[index];
-                            return Card(
-                              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-                              child: ListTile(
-                                leading: const Icon(Icons.work_outline, color: Color(0xFF0052D4)),
-                                title: Text(job.title ?? "بدون عنوان"), // استخدام . وليس []
-                                subtitle: Text(job.location ?? "غير محدد"),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.delete_outline, color: Colors.red),
-                                  onPressed: () => context.read<EmployerHomeCubit>().removeJob(job.id.toString()),
-                                ),
-                              ),
-                            );
-                          },
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: Text(
+                          "Recent Activity",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
                         ),
-                      const RecentActivitySection(),
+                      ),
+                      SizedBox(height: 12.h),
+                      recentJobs.isEmpty 
+                        ? const RecentActivitySection() 
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: recentJobs.length,
+                            itemBuilder: (context, index) {
+                              final job = recentJobs[index];
+                              return Card(
+                                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                                elevation: 0.5,
+                                child: ListTile(
+                                  leading: Container(
+                                    padding: EdgeInsets.all(8.w),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF0052D4).withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: const Icon(Icons.work_outline, color: Color(0xFF0052D4)),
+                                  ),
+                                  title: Text(job.title ?? "بدون عنوان", style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  subtitle: Text(job.companyName ?? "غير محدد"),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.delete_outline, color: Colors.red),
+                                    onPressed: () => context.read<EmployerHomeCubit>().removeJob(job.id.toString()),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                      
                       SizedBox(height: 20.h),
                     ],
                   ),

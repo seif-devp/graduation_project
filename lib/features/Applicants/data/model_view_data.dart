@@ -1,3 +1,5 @@
+import 'package:graduation_project/features/Applicants/logic/entity.dart';
+
 class ApplicationModel {
   final String id;
   final String seekerName;
@@ -25,4 +27,11 @@ class ApplicationModel {
       status: json['status'] ?? 'Pending', 
     );
   }
+  ApplicantEntity toEntity() {
+  return ApplicantEntity(
+    id: id,
+    name: seekerName, matchScore: aiMatchScore, appliedDate: '',
+    // كمل باقي الحقول اللي موجودة في الـ Entity بتاعك
+  );
+}
 }

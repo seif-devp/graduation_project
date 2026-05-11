@@ -8,8 +8,20 @@ sealed class NotificationStateEmployer extends Equatable {
 }
 
 final class NotificationInitial extends NotificationStateEmployer {}
-final class NotificationLoading extends NotificationStateEmployer{}
+final class NotificationLoading extends NotificationStateEmployer {}
+final class NotificationFailed extends NotificationStateEmployer {
+  final String message;
+  const NotificationFailed(this.message);
+  @override
+  List<Object> get props => [message];
+}
 class NotificationCountLoaded extends NotificationStateEmployer {
   final int unreadCount;
-  NotificationCountLoaded({required this.unreadCount});
+  final List<NotificationModel> notifications;
+  const NotificationCountLoaded({
+    required this.unreadCount,
+    required this.notifications,
+  });
+  @override
+  List<Object> get props => [unreadCount, notifications];
 }

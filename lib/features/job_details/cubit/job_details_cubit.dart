@@ -13,9 +13,10 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
   );
 
   JobDetailsModel? _currentJob;
-  
-  // ✅ getter عشان الـ UI يوصله
+  bool _hasApplied = false; 
+
   JobDetailsModel? get currentJob => _currentJob;
+  bool get hasApplied => _hasApplied;
 
   JobDetailsCubit(this.repo) : super(JobDetailsInitial());
 
@@ -51,7 +52,11 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
         emit(ApplyJobError(failure.message));
         if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
       },
-      (_) => emit(ApplyJobSuccess()),
+      (_) {
+        _hasApplied = true; 
+        emit(ApplyJobSuccess());
+        if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
+      },
     );
   }
 }

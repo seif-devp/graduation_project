@@ -39,8 +39,9 @@ class JobDetailsPage extends StatelessWidget {
             if (state is ApplyJobSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("Applied Successfully!"),
+                  content: Text("Applied Successfully! ✅"),
                   backgroundColor: Colors.green,
+                  duration: Duration(seconds: 2),
                 ),
               );
             }
@@ -73,7 +74,8 @@ class JobDetailsPage extends StatelessWidget {
                 state is ApplyJobSuccess ||
                 state is ApplyJobError) {
               final job = context.read<JobDetailsCubit>().currentJob;
-              if (job != null) return _buildBody(context, job, state);
+              final hasApplied = context.read<JobDetailsCubit>().hasApplied;
+              if (job != null) return _buildBody(context, job, state, hasApplied);
             }
 
             if (state is JobDetailsError) {
@@ -92,7 +94,12 @@ class JobDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, JobDetailsModel fullJob, JobDetailsState state) {
+  Widget _buildBody(
+    BuildContext context,
+    JobDetailsModel fullJob,
+    JobDetailsState state,
+    bool hasApplied,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
       child: Column(
@@ -175,13 +182,15 @@ class JobDetailsPage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1D61FF),
+                backgroundColor: hasApplied
+                    ? Colors.grey
+                    : const Color(0xFF1D61FF),
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
-              onPressed: state is ApplyJobLoading
+              onPressed: hasApplied || state is ApplyJobLoading
                   ? null
                   : () => context.read<JobDetailsCubit>().applyToJob(fullJob.id),
               child: state is ApplyJobLoading
@@ -193,9 +202,9 @@ class JobDetailsPage extends StatelessWidget {
                         strokeWidth: 2,
                       ),
                     )
-                  : const Text(
-                      "Apply Now",
-                      style: TextStyle(
+                  : Text(
+                      hasApplied ? "Applied ✅" : "Apply Now",
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

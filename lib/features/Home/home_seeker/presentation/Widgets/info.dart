@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_project/features/Notifications/notification_seeker/cubit/notification_cubit.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/presentation/cubit/note_cubit.dart';
+import 'package:graduation_project/features/Notifications/notification_seeker/presentation/cubit/note_state.dart';
 
 class UserInfo extends StatelessWidget {
   const UserInfo({super.key});
@@ -21,8 +22,10 @@ class UserInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Good Afternoon",
-                  style: TextStyle(color: Colors.white70, fontSize: 12.sp)),
+              Text(
+                "Good Afternoon",
+                style: TextStyle(color: Colors.white70, fontSize: 12.sp),
+              ),
               Text(
                 "Sarah Johnson",
                 maxLines: 1,
@@ -37,10 +40,11 @@ class UserInfo extends StatelessWidget {
           ),
         ),
         BlocBuilder<NotificationCubit, NotificationState>(
-          builder: (_, state) {
+          builder: (context, state) {
+            // ✅ بنحسب من الـ state مباشرة
             int count = 0;
-            if (state is NotificationCountLoaded) {
-              count = state.unreadCount;
+            if (state is NotificationSuccess) {
+              count = state.notifications.where((n) => !n.isRead).length;
             }
 
             return IconButton(
@@ -56,8 +60,10 @@ class UserInfo extends StatelessWidget {
                   ),
                 ),
                 backgroundColor: const Color.fromARGB(255, 31, 8, 79),
-                child: const Icon(Icons.notifications_active_outlined,
-                    color: Colors.white),
+                child: const Icon(
+                  Icons.notifications_active_outlined,
+                  color: Colors.white,
+                ),
               ),
             );
           },
