@@ -48,17 +48,7 @@ class EmployerHomeScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
                         child: const QuickActionsSection(), 
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        child: Text(
-                          "Recent Activity",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
+                    
                       SizedBox(height: 12.h),
                       recentJobs.isEmpty 
                         ? const RecentActivitySection() 

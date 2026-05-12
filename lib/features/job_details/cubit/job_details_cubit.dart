@@ -13,7 +13,7 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
   );
 
   JobDetailsModel? _currentJob;
-  bool _hasApplied = false; 
+  bool _hasApplied = false;
 
   JobDetailsModel? get currentJob => _currentJob;
   bool get hasApplied => _hasApplied;
@@ -33,6 +33,12 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
   }
 
   Future<void> applyToJob(String jobId) async {
+    await CacheHelper.removeData(key: 'resumeId');
+    emit(ApplyJobError('Please upload your CV first'));
+    if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
+  }
+
+  Future<void> submitWithResume(String jobId) async {
     final resumeId = CacheHelper.getData(key: 'resumeId');
 
     if (resumeId == null || resumeId.isEmpty) {
@@ -53,7 +59,7 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
         if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
       },
       (_) {
-        _hasApplied = true; 
+        _hasApplied = true;
         emit(ApplyJobSuccess());
         if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
       },

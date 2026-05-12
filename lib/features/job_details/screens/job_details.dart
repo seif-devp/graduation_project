@@ -49,11 +49,12 @@ class JobDetailsPage extends StatelessWidget {
               if (state.message == 'Please upload your CV first') {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text("Please upload your CV first"),
+                    content: Text("Please upload your CV"),
                     backgroundColor: Colors.orange,
                   ),
                 );
-                context.push('/resume_upload');
+                // ✅ بنبعت الـ jobId للـ upload screen
+                context.push('/resume_upload', extra: jobId);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -182,9 +183,7 @@ class JobDetailsPage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: hasApplied
-                    ? Colors.grey
-                    : const Color(0xFF1D61FF),
+                backgroundColor: hasApplied ? Colors.grey : const Color(0xFF1D61FF),
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),

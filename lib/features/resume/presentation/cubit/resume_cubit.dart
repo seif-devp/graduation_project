@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/apply_now_seeker.dart/data/remote_source.dart';
+import 'package:graduation_project/features/apply_now_seeker.dart/data/repo.dart';
 import 'package:graduation_project/features/resume/data/model.dart';
 import 'package:graduation_project/features/resume/data/repo.dart';
 
@@ -9,12 +11,29 @@ class ResumeCubit extends Cubit<ResumeState> {
 
   ResumeCubit(this.repository) : super(ResumeInitial());
 
-  Future<void> uploadResume(String filePath) async {
+  // ✅ فانكشن واحدة بس مع jobId اختياري
+  Future<void> uploadResume(String filePath, {String? jobId}) async {
     emit(ResumeLoading());
     final result = await repository.uploadResume(filePath);
     result.fold(
       (failure) => emit(ResumeFailure(failure.message)),
-      (resume) => emit(ResumeSuccess(resume)),
+      (resume) async {
+        if (jobId != null) {
+          // ✅ بعمل apply تلقائي بعد الـ upload
+          final applyResult = await ApplicationRepository(
+            ApplicationRemoteDataSource(),
+          ).submitApplication(
+            jobId: jobId,
+            resumeId: resume.id,
+          );
+          applyResult.fold(
+            (failure) => emit(ResumeFailure(failure.message)),
+            (_) => emit(ResumeSuccess(resume)),
+          );
+        } else {
+          emit(ResumeSuccess(resume));
+        }
+      },
     );
   }
 }

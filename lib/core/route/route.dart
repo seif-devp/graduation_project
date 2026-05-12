@@ -70,7 +70,10 @@ final router = GoRouter(
     GoRoute(
       path: '/resume_upload',
       name: 'resume_upload',
-      builder: (context, state) => ResumeUploadScreen(),
+      builder: (context, state) {
+        final jobId = state.extra as String?;
+        return ResumeUploadScreen(jobId: jobId);
+      },
     ),
     GoRoute(
       path: '/startup',

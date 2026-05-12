@@ -6,34 +6,51 @@ import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/resume/data/remote.dart';
 import 'package:graduation_project/features/resume/data/repo.dart';
-
 import 'package:graduation_project/features/resume/presentation/cubit/resume_cubit.dart';
 
 class ResumeUploadScreen extends StatelessWidget {
-  const ResumeUploadScreen({super.key});
+  // ✅ بنستقبل الـ jobId
+  final String? jobId;
+
+  const ResumeUploadScreen({super.key, this.jobId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ResumeCubit(ResumeRepository(ResumeRemoteDataSource())),
-      child: const _ResumeUploadView(),
+      child: _ResumeUploadView(jobId: jobId),
     );
   }
 }
 
 class _ResumeUploadView extends StatelessWidget {
-  const _ResumeUploadView();
+  final String? jobId;
+
+  const _ResumeUploadView({this.jobId});
 
   Future<void> _pickAndUpload(BuildContext context) async {
+    final cubit = context.read<ResumeCubit>();
+
     final result = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
+      type: FileType.any,
+      allowMultiple: false,
     );
 
     if (!context.mounted) return;
 
-    if (result != null && result.files.single.path != null) {
-      context.read<ResumeCubit>().uploadResume(result.files.single.path!);
+    if (result != null && result.files.isNotEmpty) {
+      final path = result.files.first.path;
+      if (path != null) {
+        // ✅ بنبعت الـ jobId عشان يعمل apply بعد الـ upload
+        cubit.uploadResume(path, jobId: jobId);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not access file. Try a different file.'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
     }
   }
 
@@ -59,7 +76,7 @@ class _ResumeUploadView extends StatelessWidget {
           if (state is ResumeSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('CV uploaded successfully!'),
+                content: Text('CV uploaded & Applied successfully! ✅'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -86,17 +103,14 @@ class _ResumeUploadView extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(
-                      color: primaryColor,
-                      width: 2,
-                    ),
+                    border: Border.all(color: primaryColor, width: 2),
                   ),
                   child: Column(
                     children: [
                       Icon(
                         Icons.upload_file_outlined,
                         size: 64.sp,
-                        color:primaryColor,
+                        color: primaryColor,
                       ),
                       SizedBox(height: 16.h),
                       Text(
@@ -109,10 +123,7 @@ class _ResumeUploadView extends StatelessWidget {
                       SizedBox(height: 8.h),
                       Text(
                         'Supported formats: PDF, DOC, DOCX',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 14.sp, color: Colors.grey),
                       ),
                       SizedBox(height: 24.h),
                       if (state is ResumeLoading)
@@ -130,7 +141,7 @@ class _ResumeUploadView extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Choose File',
+                              'Choose File & Apply',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.sp,

@@ -1,11 +1,38 @@
 import 'dart:convert';
+import 'package:dio/dio.dart'; // تأكد من عمل import للـ dio عشان الـ DioException
 import 'package:graduation_project/core/helpers/cache_helpers.dart';
 import 'package:graduation_project/core/networking/dio.dart';
 import 'package:graduation_project/features/job_list/data/models/job_model_response.dart';
 
 class RemoteDataSourceEployer {
   Future<void> deleteJob(String id) async {
-    await DioFactory.getDio().delete('/api/jobs/$id');
+    try {
+      // ضفت الـ Token هنا احتياطي لو الباك إند بيطلبه في الـ Delete
+      final token = CacheHelper.getData(key: 'accessToken') as String?;
+      
+      await DioFactory.getDio().delete(
+        '/api/jobs/$id',
+        options: Options(
+          headers: {
+            if (token != null) 'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+    } on DioException catch (e) {
+      // طباعة الخطأ كامل في الكونسول
+      print('=================== DELETE JOB ERROR ===================');
+      print('URI: ${e.requestOptions.uri}');
+      print('Status Code: ${e.response?.statusCode}');
+      print('Status Message: ${e.response?.statusMessage}');
+      print('Response Data: ${e.response?.data}');
+      print('========================================================');
+      
+      // بنعمل rethrow عشان الـ Repo والـ Cubit يلقطوا الخطأ ويعرضوا رسالة لليوزر
+      rethrow; 
+    } catch (e) {
+      print('Unexpected Error: $e');
+      rethrow;
+    }
   }
 
   Future<List<JobModelResponse>> getJobs() async {
@@ -33,7 +60,6 @@ class RemoteDataSourceEployer {
         .map((e) => JobModelResponse.fromJson(e))
         .toList();
 
-    // ✅ فلترة الوظايف بتاعت الـ employer ده بس
     if (currentEmployerId != null) {
       return allJobs
           .where((job) => job.employerId == currentEmployerId)

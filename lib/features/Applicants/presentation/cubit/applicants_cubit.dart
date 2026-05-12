@@ -27,7 +27,6 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
     }
   }
 
-  // ✅ جيب الـ applicants بتاع وظيفة معينة
   Future<void> loadApplicants(String jobId) async {
     emit(state.copyWith(isLoading: true));
     final result = await repository.getApplicants(jobId);
