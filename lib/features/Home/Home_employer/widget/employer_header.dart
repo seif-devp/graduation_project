@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
+import 'package:graduation_project/core/helpers/cache_helpers.dart';
 import 'package:graduation_project/features/Home/Home_employer/logic/entity.dart';
 
 class EmployerHeaderSection extends StatelessWidget {
@@ -26,11 +27,11 @@ class EmployerHeaderSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Good morning,', style: TextStyle(color: Colors.white70)),
-                  Text('Sarah', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                  const Text('Good morning,', style: TextStyle(color: Colors.white70)),
+                  Text(CacheHelper.getData(key: 'name'), style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
                IconButton(onPressed: (){

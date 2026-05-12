@@ -36,6 +36,7 @@ Future<AuthResponseModel> registerJobSeeker({
       final authResponse = AuthResponseModel.fromJson(response.data);
       await CacheHelper.saveData(
           key: 'accessToken', value: authResponse.accessToken);
+          await CacheHelper.saveData(key: 'name', value: authResponse.user.name); // حفظ الاسم في الكاش
       await CacheHelper.saveData(
           key: 'refreshToken', value: authResponse.refreshToken);
       await CacheHelper.saveData(
@@ -82,11 +83,13 @@ Future<AuthResponseModel> registerEmployer({
       final authResponse = AuthResponseModel.fromJson(response.data);
       await CacheHelper.saveData(
           key: 'accessToken', value: authResponse.accessToken);
+      await CacheHelper.saveData(key: 'name', value: authResponse.user.name); 
+
       await CacheHelper.saveData(
           key: 'refreshToken', value: authResponse.refreshToken);
       await CacheHelper.saveData(
           key: 'expiresAtUtc', value: authResponse.expiresAtUtc);
-
+      
       return authResponse;
     } else {
       throw Exception('Failed to register employer: ${response.statusMessage}');
@@ -112,6 +115,7 @@ Future<AuthResponseModel> login({
         await DioFactory.getDio().post('/api/auth/login', data: data);
     if (response.statusCode == 200) {
       final authResponse = AuthResponseModel.fromJson(response.data);
+      await CacheHelper.saveData(key: 'name', value: authResponse.user.name);
       await CacheHelper.saveData(
           key: 'accessToken', value: authResponse.accessToken);
       await CacheHelper.saveData(

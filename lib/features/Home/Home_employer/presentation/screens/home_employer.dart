@@ -16,52 +16,60 @@ class EmployerHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EmployerHomeCubit(EmployerHomeRepository(RemoteDataSourceEployer()))
-        ..fetchHomeDataAndJobs(),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            backgroundColor: const Color(0xFFF8FAFC),
-            body: BlocConsumer<EmployerHomeCubit, EmployerHomeState>(
-              listener: (context, state) {
-                if (state is DeleteJobSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('تم حذف الوظيفة'), backgroundColor: Colors.green),
-                  );
-                }
-              },
-              builder: (context, state) {
-                final stats = state is MyJobsSuccess ? state.stats : EmployerHomeEntity(
-                  activeJobs: 0, newApplicants: 0, interviewsToday: 0, interviewsCount: 0, applicantsCount: 0,
+      create: (context) =>
+          EmployerHomeCubit(EmployerHomeRepository(RemoteDataSourceEployer()))
+            ..fetchHomeDataAndJobs(),
+      child: Builder(builder: (context) {
+        return Scaffold(
+          backgroundColor: const Color(0xFFF8FAFC),
+          body: BlocConsumer<EmployerHomeCubit, EmployerHomeState>(
+            listener: (context, state) {
+              if (state is DeleteJobSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('تم حذف الوظيفة'),
+                      backgroundColor: Colors.green),
                 );
-                
-                final allJobs = state is MyJobsSuccess ? state.jobsList : [];
-                final recentJobs = allJobs.take(3).toList();
+              }
+            },
+            builder: (context, state) {
+              final stats = state is MyJobsSuccess
+                  ? state.stats
+                  : EmployerHomeEntity(
+                      activeJobs: 0,
+                      newApplicants: 0,
+                      interviewsToday: 0,
+                      interviewsCount: 0,
+                      applicantsCount: 0,
+                    );
 
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      EmployerHeaderSection(data: stats),
+              final allJobs = state is MyJobsSuccess ? state.jobsList : [];
+              final recentJobs = allJobs.take(3).toList();
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-                        child: const QuickActionsSection(), 
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        child: Text(
-                          "Recent Activity",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    EmployerHeaderSection(data: stats),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 24.h),
+                      child: const QuickActionsSection(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Text(
+                        "Recent Activity",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
                       ),
-                      SizedBox(height: 12.h),
-                      recentJobs.isEmpty 
-                        ? const RecentActivitySection() 
+                    ),
+                    SizedBox(height: 12.h),
+                    recentJobs.isEmpty
+                        ? const RecentActivitySection()
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -70,38 +78,45 @@ class EmployerHomeScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final job = recentJobs[index];
                               return Card(
-                                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20.w, vertical: 8.h),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.r)),
                                 elevation: 0.5,
                                 child: ListTile(
                                   leading: Container(
                                     padding: EdgeInsets.all(8.w),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF0052D4).withOpacity(0.1),
+                                      color: const Color(0xFF0052D4)
+                                          .withOpacity(0.1),
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
-                                    child: const Icon(Icons.work_outline, color: Color(0xFF0052D4)),
+                                    child: const Icon(Icons.work_outline,
+                                        color: Color(0xFF0052D4)),
                                   ),
-                                  title: Text(job.title ?? "بدون عنوان", style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  title: Text(job.title ?? "بدون عنوان",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   subtitle: Text(job.companyName ?? "غير محدد"),
                                   trailing: IconButton(
-                                    icon: const Icon(Icons.delete_outline, color: Colors.red),
-                                    onPressed: () => context.read<EmployerHomeCubit>().removeJob(job.id.toString()),
+                                    icon: const Icon(Icons.delete_outline,
+                                        color: Colors.red),
+                                    onPressed: () => context
+                                        .read<EmployerHomeCubit>()
+                                        .removeJob(job.id.toString()),
                                   ),
                                 ),
                               );
                             },
                           ),
-                      
-                      SizedBox(height: 20.h),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        }
-      ),
+                    SizedBox(height: 20.h),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }

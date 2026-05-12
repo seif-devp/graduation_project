@@ -30,7 +30,35 @@ class SettingsSeekerCubit extends Cubit<SettingsState> {
     context.go('/login');
   }
 
-  void editProfile(BuildContext context) {
-    context.push('/edit_profile');
+  void editProfile(BuildContext context) async {
+    final didUpdate = await context.push('/edit_profile', extra: state.user);
+    
+    if (didUpdate == true) {
+      loadSettingsData(); 
+    }
+  }
+
+  // 2. ضيف الدالة الجديدة دي للحفظ
+  Future<void> saveProfileChanges({
+    required String name,
+    required String phone,
+    required String bio,
+    required BuildContext context,
+  }) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      await repository.updateBasicProfile(name: name, phone: phone, bio: bio);
+
+      emit(state.copyWith(isLoading: false));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile Updated Successfully!')));
+
+      // نرجعه للشاشة اللي قبلها ونبعت true عشان يعمل ريفريش
+      context.pop(true);
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
   }
 }

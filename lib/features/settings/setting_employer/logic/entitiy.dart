@@ -5,21 +5,34 @@ class UserEntity {
   final String bio;
   final bool isLightMode;
 
+  // الحقول الجديدة الخاصة بالشركة
+  final String? companyName;
+  final String? companySize;
+  final String? industry;
+  final String? website;
+
   UserEntity({
     required this.name,
     required this.email,
     required this.phone,
     required this.bio,
     required this.isLightMode,
+    this.companyName,
+    this.companySize,
+    this.industry,
+    this.website,
   });
 
-  // بنعمل copyWith عشان نقدر نغير الـ Theme بسهولة
   UserEntity copyWith({
     String? name,
     String? email,
     String? phone,
     String? bio,
     bool? isLightMode,
+    String? companyName,
+    String? companySize,
+    String? industry,
+    String? website,
   }) {
     return UserEntity(
       name: name ?? this.name,
@@ -27,6 +40,10 @@ class UserEntity {
       phone: phone ?? this.phone,
       bio: bio ?? this.bio,
       isLightMode: isLightMode ?? this.isLightMode,
+      companyName: companyName ?? this.companyName,
+      companySize: companySize ?? this.companySize,
+      industry: industry ?? this.industry,
+      website: website ?? this.website,
     );
   }
 }
