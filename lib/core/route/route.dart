@@ -31,12 +31,15 @@ import 'package:graduation_project/features/job_application_progress/presentatio
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
-import 'package:graduation_project/features/profile/presentation/screens/profile_screen.dart';
+import 'package:graduation_project/features/profile/profile_seeker/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/resume/presentation/screen/page.dart';
 import 'package:graduation_project/features/settings/setting_employer/data/repo.dart';
+import 'package:graduation_project/features/settings/setting_employer/logic/entitiy.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingSeeker_cubit.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/screens/edit_profile_page_seeker.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/presentation/screens/settings_page.dart';
 import 'package:graduation_project/features/splash_screen/screen/splash_screen.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/screens/settings_page.dart';
@@ -96,7 +99,28 @@ final router = GoRouter(
     GoRoute(
       path: '/edit_profile',
       name: 'edit_profile',
-      builder: (context, state) => EditProfilePage(),
+      builder: (context, state) {
+        final user = state.extra as SeekerEntity?;
+        
+        return BlocProvider(
+          create: (context) => SettingsSeekerCubit(SettingsSekeerRepository()),
+          child: EditProfilePageSeeker(user: user),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/edit_profile_employer',
+      name: 'edit_profile_employer',
+      builder: (context, state) {
+        // 1. نستقبل داتا الشركة اللي مبعوتة
+        final user = state.extra as UserEntity?; 
+        
+        // 2. نعمل Cubit جديد خاص بشاشة التعديل دي بس
+        return BlocProvider(
+          create: (context) => SettingsCubit(SettingsRepository()),
+          child: EditProfilePageEmployer(user: user), // ونباصي الداتا للشاشة
+        );
+      },
     ),
     GoRoute(
       path: '/job_details',

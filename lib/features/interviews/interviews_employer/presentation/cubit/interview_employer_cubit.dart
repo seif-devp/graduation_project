@@ -15,7 +15,7 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
     try {
       final interviews =
           await repositoryemployer.getInterviewsByJobId(jobId, page, pageSize);
-          
+
       if (interviews.isEmpty) {
         emit(InterviewsEmployerEmpty());
       } else {
@@ -32,7 +32,7 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
     try {
       final interviews =
           await repositoryemployer.getallInterviews(jobIds, page, pageSize);
-          
+
       if (interviews.isEmpty) {
         emit(InterviewsEmployerEmpty());
       } else {
@@ -43,5 +43,4 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
       emit(InterviewEmployerError(e.toString()));
     }
   }
-  
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/helpers/cache_helpers.dart';
 import 'package:graduation_project/features/Notifications/notification_seeker/presentation/cubit/note_cubit.dart';
 import 'package:graduation_project/features/Notifications/notification_seeker/presentation/cubit/note_state.dart';
 
@@ -27,7 +28,7 @@ class UserInfo extends StatelessWidget {
                 style: TextStyle(color: Colors.white70, fontSize: 12.sp),
               ),
               Text(
-                "Sarah Johnson",
+                CacheHelper.getData(key: 'name'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

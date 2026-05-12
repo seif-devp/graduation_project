@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
+import 'package:graduation_project/core/const/widgets.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingSeeker_cubit.dart';
 
 class EditProfilePageSeeker extends StatefulWidget {
-  const EditProfilePageSeeker({super.key});
+  final SeekerEntity? user; // استقبلنا اليوزر هنا
+
+  const EditProfilePageSeeker({super.key, this.user});
 
   @override
   State<EditProfilePageSeeker> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePageSeeker> {
-  final TextEditingController _nameCtrl =
-      TextEditingController(text: 'Sarah Johnson');
-  final TextEditingController _emailCtrl =
-      TextEditingController(text: 'sarah.johnson@email.com');
-  final TextEditingController _phoneCtrl =
-      TextEditingController(text: '+1 (555) 123-4567');
-  final TextEditingController _bioCtrl = TextEditingController(
-      text: 'Senior Frontend Developer with 5+ years experience');
+  late final TextEditingController _nameCtrl;
+  late final TextEditingController _emailCtrl;
+  late final TextEditingController _phoneCtrl;
+  late final TextEditingController _bioCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    // بنربط الداتا اللي جاية من الـ API بالحقول
+    _nameCtrl = TextEditingController(text: widget.user?.name ?? '');
+    _emailCtrl = TextEditingController(text: widget.user?.email ?? '');
+    _phoneCtrl = TextEditingController(text: widget.user?.phone ?? '');
+    _bioCtrl = TextEditingController(text: widget.user?.bio ?? '');
+  }
 
   @override
   void dispose() {
@@ -33,11 +45,7 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        leading: BackButton(
-          onPressed: () => context.pop(),
-          style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white)),
-        ),
+        leading: const BackButton(color: Colors.white),
         title: const Text(
           'Edit Profile',
           style: TextStyle(color: Colors.white),
@@ -99,7 +107,9 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                               controller: _nameCtrl, label: 'Full Name'),
                           const SizedBox(height: 14),
                           _buildTextField(
-                              controller: _emailCtrl, label: 'Email'),
+                              controller: _emailCtrl,
+                              label: 'Email',
+                              isReadOnly: true),
                           const SizedBox(height: 14),
                           _buildTextField(
                               controller: _phoneCtrl, label: 'Phone Number'),
@@ -131,9 +141,6 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                           const SizedBox(height: 12),
                           _buildResumeTile(
                               'Sarah_Johnson_Resume_2026.pdf', '15/01/2026'),
-                          const SizedBox(height: 10),
-                          _buildResumeTile(
-                              'Sarah_Johnson_Resume_Tech.pdf', '20/01/2026'),
                         ],
                       ),
                     ),
@@ -158,26 +165,43 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // TODO: save changes (call API / persist)
-                              context.pop();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF2F6FF6),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 14),
-                              child: Text(
-                                'Save Changes',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                          child:
+                              BlocBuilder<SettingsSeekerCubit, SettingsState>(
+                                  builder: (context, state) {
+                            return ElevatedButton(
+                              onPressed: state.isLoading
+                                  ? null
+                                  : () {
+                                      // نداء الـ API
+                                      context
+                                          .read<SettingsSeekerCubit>()
+                                          .saveProfileChanges(
+                                            name: _nameCtrl.text,
+                                            phone: _phoneCtrl.text,
+                                            bio: _bioCtrl.text,
+                                            context: context,
+                                          );
+                                    },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2F6FF6),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
                               ),
-                            ),
-                          ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                child: state.isLoading
+                                    ? const SizedBox(
+                                        height: 20, width: 20, child: loading)
+                                    : const Text(
+                                        'Save Changes',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                              ),
+                            );
+                          }),
                         ),
                       ],
                     ),
@@ -192,11 +216,12 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
     );
   }
 
-  Widget _buildTextField(
-      {required TextEditingController controller,
-      required String label,
-      int maxLines = 1}) {
-    // Match design: label above field, rounded filled input area
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    int maxLines = 1,
+    bool isReadOnly = false,
+  }) {
     final lightFill = const Color(0xFFF3F7FA);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,6 +235,7 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
         TextField(
           controller: controller,
           maxLines: maxLines,
+          readOnly: isReadOnly, // تفعيل القراءة فقط
           decoration: InputDecoration(
             isDense: true,
             contentPadding:
@@ -223,7 +249,11 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                 ? lightFill
                 : Colors.grey.shade800,
           ),
-          style: const TextStyle(fontSize: 14),
+          style: TextStyle(
+              fontSize: 14,
+              color:
+                  isReadOnly ? Colors.grey : null // لو مقفول نخليه لونه رمادي
+              ),
         ),
       ],
     );

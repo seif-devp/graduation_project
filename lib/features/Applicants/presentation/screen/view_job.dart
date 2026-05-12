@@ -14,61 +14,35 @@ class JobPageEmployer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ApplicantsCubit(
-        ApplicantsRepository(ApplicantsRemoteDataSource()),
-      )..fetchAllJobs(),
+      create: (context) =>
+          ApplicantsCubit(ApplicantsRepository(ApplicantsRemoteDataSource()))
+            ..fetchAllJobs(),
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text(
-            'Manage Your Jobs',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: AppBar(title: const Text('Manage Your Jobs')),
         body: BlocBuilder<ApplicantsCubit, ApplicantsState>(
           builder: (context, state) {
-            if (state.jobsStatus == JobsStatus.loading) {
+            if (state.jobsStatus == JobsStatus.loading)
               return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state.jobsStatus == JobsStatus.error) {
-              return Center(
-                child: Text(
-                  state.errorMessage ?? 'Something went wrong',
-                  style: const TextStyle(color: Colors.red),
-                ),
-              );
-            }
-
-            if (state.jobs.isEmpty) {
-              return const Center(child: Text('No Jobs Found'));
-            }
-
             return ListView.builder(
               padding: EdgeInsets.all(16.w),
               itemCount: state.jobs.length,
               itemBuilder: (context, index) {
                 final job = state.jobs[index];
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
-                  child: JobCardwidgetEmployer(
-                    job: job,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => BlocProvider(
-                            create: (_) => ApplicantsCubit(
-                              ApplicantsRepository(ApplicantsRemoteDataSource()),
-                            ),
-                            child: ApplicantsScreen(jobId: job.id),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                return JobCardwidgetEmployer(
+                  job: job,
+                  onTap: () async {
+                    // الانتظار حتى العودة من شاشة المتقدمين
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ApplicantsScreen(jobId: job.id),
+                      ),
+                    );
+                    // تحديث القائمة فور العودة لمسح المتقدمين الذين تم قبولهم/رفضهم
+                    if (context.mounted) {
+                      context.read<ApplicantsCubit>().fetchAllJobs();
+                    }
+                  },
                 );
               },
             );
