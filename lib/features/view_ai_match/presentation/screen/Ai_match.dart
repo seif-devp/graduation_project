@@ -2,152 +2,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AiMatch extends StatelessWidget {
-  const AiMatch({super.key});
+  final double score;
+  final List<String> matchedSkills;
+  final List<String> missingSkills;
+
+  const AiMatch({
+    super.key,
+    required this.score,
+    required this.matchedSkills,
+    required this.missingSkills,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      backgroundColor: Colors.white,
-      insetPadding: EdgeInsets.all(20.w),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
       child: Padding(
         padding: EdgeInsets.all(20.w),
         child: Column(
-          mainAxisSize: MainAxisSize.min, 
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-         
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("AI Match Analysis", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: EdgeInsets.all(4.w),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue.shade200),
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Icon(Icons.close, size: 18.sp, color: Colors.blue),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 24.h),
-
-            Center(
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                
-                      SizedBox(
-                        width: 85.w,
-                        height: 85.w,
-                        child: CircularProgressIndicator(
-                          value: 1,
-                          strokeWidth: 6.w,
-                          color: Colors.blue.withOpacity(0.1),
-                        ),
-                      ),
-                      
-                      SizedBox(
-                        width: 85.w,
-                        height: 85.w,
-                        child: CircularProgressIndicator(
-                          value: 0.85,
-                          strokeWidth: 6.w,
-                          color: Colors.blue,
-                          backgroundColor: Colors.transparent,
-                        ),
-                      ),
-
-                      Text("85%", style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, color: Colors.blue)),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Text("Match Score", style: TextStyle(fontSize: 14.sp, color: Colors.grey)),
-                ],
-              ),
-            ),
-            SizedBox(height: 24.h),
-
-            Row(
-              children: [
-                Icon(Icons.check_circle_outline, color: Colors.green, size: 20.sp),
-                SizedBox(width: 8.w),
-                Text("Why You Match", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            Text("•  5+ years of React experience", style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700)),
-            SizedBox(height: 4.h),
-            Text("•  Strong TypeScript proficiency", style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700)),
-            SizedBox(height: 4.h),
-            Text("•  Previous work on enterprise applications", style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700)),
-            SizedBox(height: 20.h),
-
-            Row(
-              children: [
-                Icon(Icons.check_circle_outline, color: Colors.green, size: 20.sp),
-                SizedBox(width: 8.w),
-                Text("Matching Skills", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(20.r)),
-                  child: Text("React", style: TextStyle(color: Colors.green, fontSize: 12.sp)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(20.r)),
-                  child: Text("TypeScript", style: TextStyle(color: Colors.green, fontSize: 12.sp)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(20.r)),
-                  child: Text("Node.js", style: TextStyle(color: Colors.green, fontSize: 12.sp)),
-                ),
+                IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: Colors.blue)),
               ],
             ),
             SizedBox(height: 20.h),
-
-            // 5. قسم Missing Skills
-            Row(
+            Stack(
+              alignment: Alignment.center,
               children: [
-                Icon(Icons.highlight_off, color: Colors.deepOrange, size: 20.sp),
-                SizedBox(width: 8.w),
-                Text("Missing Skills", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: 100.w, height: 100.w,
+                  child: CircularProgressIndicator(
+                    value: score / 100,
+                    strokeWidth: 8,
+                    backgroundColor: Colors.blue.shade50,
+                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                ),
+                Text("${score.toInt()}%", style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, color: Colors.blue)),
               ],
             ),
             SizedBox(height: 10.h),
-            Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(color: Colors.deepOrange.withOpacity(0.1), borderRadius: BorderRadius.circular(20.r)),
-                  child: Text("GraphQL", style: TextStyle(color: Colors.deepOrange, fontSize: 12.sp)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(color: Colors.deepOrange.withOpacity(0.1), borderRadius: BorderRadius.circular(20.r)),
-                  child: Text("Redux", style: TextStyle(color: Colors.deepOrange, fontSize: 12.sp)),
-                ),
-              ],
-            ),
+            const Text("Match Score", style: TextStyle(color: Colors.grey)),
+            SizedBox(height: 25.h),
+            _buildSectionHeader(Icons.check_circle_outline, "Why You Match", Colors.green),
+            _buildBulletPoint("Matched with ${matchedSkills.length} key requirements"),
+            SizedBox(height: 15.h),
+            _buildSectionHeader(Icons.check_circle_outline, "Matching Skills", Colors.green),
+            Wrap(spacing: 8, children: matchedSkills.map((s) => _buildChip(s, Colors.green.shade50, Colors.green)).toList()),
+            SizedBox(height: 15.h),
+            _buildSectionHeader(Icons.cancel_outlined, "Missing Skills", Colors.red),
+            Wrap(spacing: 8, children: missingSkills.map((s) => _buildChip(s, Colors.red.shade50, Colors.red)).toList()),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildSectionHeader(IconData icon, String title, Color color) {
+    return Row(children: [Icon(icon, color: color, size: 20), SizedBox(width: 8.w), Text(title, style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold))]);
+  }
+
+  Widget _buildBulletPoint(String text) {
+    return Padding(padding: EdgeInsets.only(left: 28.w, top: 5.h), child: Row(children: [const Text("• "), Expanded(child: Text(text, style: TextStyle(color: Colors.grey.shade700, fontSize: 13.sp)))]));
+  }
+
+  Widget _buildChip(String label, Color bgColor, Color textColor) {
+    return Chip(label: Text(label, style: TextStyle(color: textColor, fontSize: 11.sp)), backgroundColor: bgColor, side: BorderSide.none, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)));
   }
 }

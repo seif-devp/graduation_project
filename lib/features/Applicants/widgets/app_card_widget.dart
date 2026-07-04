@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/features/Applicants/data/model_view_data.dart';
-import 'package:graduation_project/features/Applicants/logic/entity.dart';
-import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
-import 'package:graduation_project/features/Applicants/widgets/schedule_inerview_dialog.dart';
+import 'package:graduation_project/features/Applicants/data/model_view_data.dart'; 
 
 class ApplicantCard extends StatelessWidget {
-  final ApplicationModel applicant;
+  final ApplicationModel applicant; 
+
   const ApplicantCard({super.key, required this.applicant});
 
   @override
   Widget build(BuildContext context) {
+    final int score = applicant.aiMatchScore;
+    final double progressValue = score / 100.0;
+
     return Container(
-      padding: EdgeInsets.all(16.w),
+      width: double.infinity,
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(25.r),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 8))
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
       child: Column(
@@ -30,126 +32,161 @@ class ApplicantCard extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
               decoration: BoxDecoration(
-                  color: const Color(0xFF1E40AF),
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: Text('${applicant.aiMatchScore}% Match',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.bold)),
+                color: const Color(0xFF1D61FF),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Text(
+                "$score% Match",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.sp,
+                ),
+              ),
             ),
           ),
-          CircleAvatar(
-              radius: 40.r,
-              backgroundColor: Colors.blue.shade50,
-              child:
-                  Icon(Icons.person, size: 40.sp, color: Colors.blue.shade200)),
-          SizedBox(height: 12.h),
-          Text(applicant.seekerName,
-              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
-          SizedBox(height: 20.h),
-          _buildInfoBox('Applied', applicant.appliedAt),
           SizedBox(height: 10.h),
-          _buildScoreBox('Match Score', applicant.aiMatchScore),
-          SizedBox(height: 25.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildCircleButton(Icons.thumb_up_alt_outlined, Colors.green,
-                  () => context.read<ApplicantsCubit>().swipeRight()),
-              GestureDetector(
-                onTap: () {
-                  final cubit = context.read<ApplicantsCubit>();
-                  showDialog(
-                    context: context,
-                    useRootNavigator: false,
-                    builder: (context) => BlocProvider.value(
-                      value: cubit,
-                      child: ScheduleInterviewDialog(
-                        applicant: ApplicantEntity(
-                          appliedDate: applicant.appliedAt,
-                          matchScore: applicant.aiMatchScore,
-                          id: applicant.id,
-                          name: applicant.seekerName,
+
+          CircleAvatar(
+            radius: 50.r,
+            backgroundColor: const Color(0xFFE3F2FD),
+            backgroundImage: applicant.seekerAvatarUrl.isNotEmpty 
+                ? NetworkImage(applicant.seekerAvatarUrl) 
+                : null,
+            child: applicant.seekerAvatarUrl.isEmpty 
+                ? Icon(Icons.person, color: const Color(0xFF1D61FF), size: 50.r)
+                : null,
+          ),
+          SizedBox(height: 12.h),
+
+          Text(
+            applicant.seekerName,
+            style: TextStyle(
+              fontSize: 22.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 16.h),
+
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF4F6FA),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Applied",
+                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade500),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  applicant.appliedAt.toString().split('.')[0],
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16.h),
+
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(14.w),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF4F6FA),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Match Score",
+                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade500),
+                ),
+                SizedBox(height: 8.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6.r),
+                        child: LinearProgressIndicator(
+                          value: progressValue,
+                          minHeight: 8.h,
+                          backgroundColor: Colors.grey.shade300,
+                          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF1D61FF)),
                         ),
                       ),
                     ),
-                  );
-                },
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(12.r)),
-                  child: Row(children: [
-                    Icon(Icons.calendar_month_outlined, size: 18.sp),
+                    SizedBox(width: 12.w),
+                    Text(
+                      "$score%",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 24.h),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFD32F2F),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: const Icon(Icons.thumb_down, color: Colors.white),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE0E0E0),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: Colors.grey.shade400, width: 1),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.calendar_month, color: Colors.black, size: 18),
                     SizedBox(width: 6.w),
-                    Text('Interview', style: TextStyle(fontSize: 13.sp))
-                  ]),
+                    Text(
+                      "Interview",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              _buildCircleButton(Icons.thumb_down_alt_outlined, Colors.red,
-                  () => context.read<ApplicantsCubit>().swipeLeft()),
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF388E3C),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: const Icon(Icons.thumb_up, color: Colors.white),
+              ),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildInfoBox(String title, String value) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(14.w),
-      decoration: BoxDecoration(
-          color: const Color(0xFFF1F5F9),
-          borderRadius: BorderRadius.circular(12.r)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title,
-            style: TextStyle(color: Colors.grey.shade600, fontSize: 10.sp)),
-        Text(value,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp)),
-      ]),
-    );
-  }
-
-  Widget _buildScoreBox(String title, int score) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(14.w),
-      decoration: BoxDecoration(
-          color: const Color(0xFFF1F5F9),
-          borderRadius: BorderRadius.circular(12.r)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title,
-            style: TextStyle(color: Colors.grey.shade600, fontSize: 10.sp)),
-        SizedBox(height: 6.h),
-        Row(children: [
-          Expanded(
-              child: LinearProgressIndicator(
-                  value: score / 100,
-                  minHeight: 6.h,
-                  backgroundColor: Colors.grey.shade300,
-                  valueColor: const AlwaysStoppedAnimation(Color(0xFF1E40AF)))),
-          SizedBox(width: 10.w),
-          Text('$score%',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp)),
-        ]),
-      ]),
-    );
-  }
-
-  Widget _buildCircleButton(IconData icon, Color color, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(12.r)),
-        child: Icon(icon, color: Colors.white, size: 22.sp),
       ),
     );
   }

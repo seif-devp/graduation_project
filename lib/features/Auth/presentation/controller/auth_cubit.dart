@@ -120,6 +120,8 @@ class AuthCubit extends Cubit<AuthState> {
     _tokenRefreshService.stopBackgroundRefresh();
     await _tokenRefreshService.clearTokens();
     await CacheHelper.removeData(key: 'userRole');
+    await CacheHelper.removeData(key: 'resumeId'); // ✅
+    await CacheHelper.removeData(key: 'cvPath');   // ✅
     DioFactory.resetDio();
     emit(AuthInitial());
   }

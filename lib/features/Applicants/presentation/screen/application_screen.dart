@@ -37,13 +37,17 @@ class ApplicantsScreen extends StatelessWidget {
               if (state.errorMessage != null) return Center(child: Text(state.errorMessage!));
               if (state.applicants.isEmpty) return const EmptyView();
 
+              if (state.currentIndex >= state.applicants.length) {
+                return const EmptyView();
+              }
+
               final current = state.applicants[state.currentIndex];
 
               return Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Dismissible(
-                    key: ValueKey(current.id),
+                    key: Key(current.id.isEmpty ? 'applicant_${state.currentIndex}' : current.id),
                     onDismissed: (direction) {
                       if (direction == DismissDirection.startToEnd) {
                         context.read<ApplicantsCubit>().swipeRight();

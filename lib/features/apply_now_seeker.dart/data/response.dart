@@ -41,9 +41,9 @@ class ApplicationResponseModel {
       resumeId: json['resumeId'] ?? '',
       resumeFileName: json['resumeFileName'] ?? '',
       status: json['status'] ?? '',
-      aiMatchScore: json['aiMatchScore'] ?? 0,
-      appliedAt: DateTime.parse(json['appliedAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      aiMatchScore: (json['aiMatchScore'] ?? json['aiScore'] ?? 0 as num).toInt(), // ✅ تحويل آمن لمنع الـ 0%
+      appliedAt: json['appliedAt'] != null ? DateTime.parse(json['appliedAt']) : DateTime.now(),
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : DateTime.now(),
     );
   }
 }

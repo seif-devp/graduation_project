@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_state.dart';
+import 'package:graduation_project/features/Status%20Update%20Feature%20Employer/presentation/cubit/update_cubit.dart' hide ApplicantsCubit;
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});

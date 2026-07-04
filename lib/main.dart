@@ -4,7 +4,7 @@ import 'package:graduation_project/work.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
   // Initialize all app services
   await AppInitializer().initialize();
 

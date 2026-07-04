@@ -15,6 +15,10 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
   JobDetailsModel? _currentJob;
   bool _hasApplied = false;
 
+  double? matchScore;
+  List<String> matchedSkills = [];
+  List<String> missingSkills = [];
+
   JobDetailsModel? get currentJob => _currentJob;
   bool get hasApplied => _hasApplied;
 
@@ -32,37 +36,60 @@ class JobDetailsCubit extends Cubit<JobDetailsState> {
     );
   }
 
-  Future<void> applyToJob(String jobId) async {
-    await CacheHelper.removeData(key: 'resumeId');
-    emit(ApplyJobError('Please upload your CV first'));
-    if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
-  }
-
-  Future<void> submitWithResume(String jobId) async {
-    final resumeId = CacheHelper.getData(key: 'resumeId');
-
-    if (resumeId == null || resumeId.isEmpty) {
-      emit(ApplyJobError('Please upload your CV first'));
-      if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
-      return;
-    }
-
+  Future<void> uploadAndSubmitApplication({
+    required String jobId,
+    required String cvPath,
+    required String jobDescription,
+  }) async {
     emit(ApplyJobLoading());
-    final result = await applicationRepository.submitApplication(
-      jobId: jobId,
-      resumeId: resumeId,
+
+    int finalAiScore = 0;
+
+    // 1️⃣ حساب الـ AI من سيرفر البايثون
+    final aiResult = await applicationRepository.getAiMatchScore(cvPath, jobDescription);
+    aiResult.fold(
+      (failure) {
+        finalAiScore = 0; 
+      },
+      (data) {
+        // حماية التحويل من dynamic لـ double ثم تقريبه لـ int صريح لـ .NET
+        var rawScore = data['match_score'] ?? 0;
+        matchScore = rawScore is num ? rawScore.toDouble() : double.tryParse(rawScore.toString()) ?? 0.0;
+        
+        matchedSkills = List<String>.from(data['matched_skills'] ?? []);
+        missingSkills = List<String>.from(data['missing_skills'] ?? []);
+        
+        finalAiScore = matchScore!.round(); // ✅ السكور الفعلي الدقيق
+      },
     );
 
-    result.fold(
-      (failure) {
+    // 2️⃣ الرفع للـ .NET
+    final uploadResult = await applicationRepository.uploadResumeToDotNet(cvPath);
+
+    await uploadResult.fold(
+      (failure) async {
         emit(ApplyJobError(failure.message));
-        if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
       },
-      (_) {
-        _hasApplied = true;
-        emit(ApplyJobSuccess());
-        if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
+      (realResumeId) async {
+        await CacheHelper.saveData(key: 'resumeId', value: realResumeId);
+
+        // 3️⃣ تقديم الطلب النهائي بالسكور الصحيح تماماً ليظهر عند الأمبلوير
+        final submitResult = await applicationRepository.submitApplication(
+          jobId: jobId,
+          resumeId: realResumeId,
+          aiScore: finalAiScore, 
+        );
+
+        submitResult.fold(
+          (failure) => emit(ApplyJobError(failure.message)),
+          (_) {
+            _hasApplied = true;
+            emit(ApplyJobSuccess());
+          },
+        );
       },
     );
+
+    if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
   }
 }

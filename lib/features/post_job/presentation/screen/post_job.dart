@@ -158,7 +158,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
                         const SizedBox(height: 16),
 
                         const Text(
-                          'Expiry Date',
+                          'Deadline',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,

@@ -1,37 +1,40 @@
-import 'package:graduation_project/features/Applicants/logic/entity.dart';
-
 class ApplicationModel {
-  final String id;
+  final String id; 
   final String seekerName;
-  final String? seekerAvatarUrl;
-  final int aiMatchScore;
-  final String appliedAt;
-  final String status;
+  final String seekerAvatarUrl;
+  final String status; 
+  final int aiMatchScore; 
+  final DateTime appliedAt;
 
   ApplicationModel({
     required this.id,
     required this.seekerName,
-    this.seekerAvatarUrl,
+    required this.seekerAvatarUrl,
+    required this.status,
     required this.aiMatchScore,
     required this.appliedAt,
-    required this.status,
   });
 
   factory ApplicationModel.fromJson(Map<String, dynamic> json) {
+    int extractedScore = 0;
+    try {
+      final rawScore = json['aiMatchScore'] ?? json['aiScore'] ?? json['matchScore'] ?? json['score'] ?? json['matchPercentage'];
+      if (rawScore != null) {
+        extractedScore = double.parse(rawScore.toString()).toInt();
+      }
+    } catch (e) {
+      extractedScore = 0; 
+    }
+
     return ApplicationModel(
-      id: json['id'] ?? '',
-      seekerName: json['seekerName'] ?? 'No Name',
-      seekerAvatarUrl: json['seekerAvatarUrl'],
-      aiMatchScore: (json['aiMatchScore'] ?? 0).toInt(),
-      appliedAt: json['appliedAt'] ?? '',
-      status: json['status'] ?? 'Pending', 
+      id: json['id']?.toString() ?? '', 
+      seekerName: json['seekerName'] ?? json['name'] ?? 'user',
+      seekerAvatarUrl: json['seekerAvatarUrl'] ?? json['avatarUrl'] ?? '',
+      status: json['status']?.toString() ?? 'Sent', 
+      aiMatchScore: extractedScore,
+      appliedAt: json['appliedAt'] != null 
+          ? DateTime.tryParse(json['appliedAt'].toString()) ?? DateTime.now()
+          : DateTime.now(),
     );
   }
-  ApplicantEntity toEntity() {
-  return ApplicantEntity(
-    id: id,
-    name: seekerName, matchScore: aiMatchScore, appliedDate: '',
-    // كمل باقي الحقول اللي موجودة في الـ Entity بتاعك
-  );
-}
 }

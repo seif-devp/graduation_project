@@ -45,12 +45,13 @@ dependencies:
   dart_either: ^2.1.0
   dartz: ^0.10.1
   shared_preferences: ^2.5.5
-  file_picker: ^11.0.2
+  file_picker: ^8.1.4
     
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -93,3 +94,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/ffiinal_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21

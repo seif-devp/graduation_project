@@ -19,13 +19,15 @@ class ResumeCubit extends Cubit<ResumeState> {
       (failure) => emit(ResumeFailure(failure.message)),
       (resume) async {
         if (jobId != null) {
-          // ✅ بعمل apply تلقائي بعد الـ upload
+          // ✅ بعمل apply تلقائي بعد الـ upload مع إعطاء aiScore قيمة صفرية لمنع الإيرور
           final applyResult = await ApplicationRepository(
             ApplicationRemoteDataSource(),
           ).submitApplication(
             jobId: jobId,
             resumeId: resume.id,
+            aiScore: 0, // 👈 دي اللي كانت ناقصة ومسببة الخط الأحمر عندك
           );
+          
           applyResult.fold(
             (failure) => emit(ResumeFailure(failure.message)),
             (_) => emit(ResumeSuccess(resume)),
