@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
 import 'package:graduation_project/features/Applicants/data/repo_application.dart';
+import 'package:graduation_project/features/Applicants/logic/entity.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_state.dart';
 import 'package:graduation_project/features/Applicants/widgets/app_card_widget.dart';
 import 'package:graduation_project/features/Applicants/widgets/appbar.dart';
 import 'package:graduation_project/features/Applicants/widgets/empty_veiw.dart';
+import 'package:graduation_project/features/Applicants/widgets/schedule_inerview_dialog.dart';
 import 'package:graduation_project/features/Applicants/widgets/swip.dart';
 
 class ApplicantsScreen extends StatelessWidget {
@@ -25,16 +27,22 @@ class ApplicantsScreen extends StatelessWidget {
         backgroundColor: const Color(0xFFF8F9FF),
         appBar: const HomeAppBar(),
         body: BlocListener<ApplicantsCubit, ApplicantsState>(
-          listenWhen: (p, c) => p.currentIndex != c.currentIndex || p.applicants.length != c.applicants.length,
+          listenWhen: (p, c) =>
+              p.currentIndex != c.currentIndex ||
+              p.applicants.length != c.applicants.length,
           listener: (context, state) {
-            if (state.applicants.isNotEmpty && state.currentIndex < state.applicants.length) {
-              context.read<ApplicantsCubit>().markAsViewed(state.applicants[state.currentIndex]);
+            if (state.applicants.isNotEmpty &&
+                state.currentIndex < state.applicants.length) {
+              context
+                  .read<ApplicantsCubit>()
+                  .markAsViewed(state.applicants[state.currentIndex]);
             }
           },
           child: BlocBuilder<ApplicantsCubit, ApplicantsState>(
             builder: (context, state) {
               if (state.isLoading) return const Center(child: loading);
-              if (state.errorMessage != null) return Center(child: Text(state.errorMessage!));
+              if (state.errorMessage != null)
+                return Center(child: Text(state.errorMessage!));
               if (state.applicants.isEmpty) return const EmptyView();
 
               if (state.currentIndex >= state.applicants.length) {
@@ -43,21 +51,52 @@ class ApplicantsScreen extends StatelessWidget {
 
               final current = state.applicants[state.currentIndex];
 
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Dismissible(
-                    key: Key(current.id.isEmpty ? 'applicant_${state.currentIndex}' : current.id),
-                    onDismissed: (direction) {
-                      if (direction == DismissDirection.startToEnd) {
-                        context.read<ApplicantsCubit>().swipeRight();
-                      } else {
-                        context.read<ApplicantsCubit>().swipeLeft();
-                      }
-                    },
-                    background: const SwipeIndicator(icon: Icons.check, color: Colors.red, alignment: Alignment.centerLeft),
-                    secondaryBackground: const SwipeIndicator(icon: Icons.close, color: Colors.green, alignment: Alignment.centerRight),
-                    child: ApplicantCard(applicant: current),
+              return SafeArea(
+                child: SingleChildScrollView(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                  child: Center(
+                    child: Dismissible(
+                      key: Key(current.id.isEmpty
+                          ? 'applicant_${state.currentIndex}'
+                          : current.id),
+                      onDismissed: (direction) {
+                        if (direction == DismissDirection.startToEnd) {
+                          context.read<ApplicantsCubit>().swipeRight();
+                        } else {
+                          context.read<ApplicantsCubit>().swipeLeft();
+                        }
+                      },
+                      background: const SwipeIndicator(
+                          icon: Icons.check,
+                          color: Colors.green,
+                          alignment: Alignment.centerLeft),
+                      secondaryBackground: const SwipeIndicator(
+                          icon: Icons.close,
+                          color: Colors.red,
+                          alignment: Alignment.centerRight),
+                      child: ApplicantCard(
+                        applicant: current,
+                        onReject: () =>
+                            context.read<ApplicantsCubit>().swipeLeft(),
+                        onAccept: () =>
+                            context.read<ApplicantsCubit>().swipeRight(),
+                        onInterview: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ScheduleInterviewDialog(
+                              applicant: ApplicantEntity(
+                                id: current.id,
+                                name: current.seekerName,
+                                matchScore: current.aiMatchScore,
+                                appliedDate:
+                                    current.appliedAt.toString().split('.')[0],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               );
