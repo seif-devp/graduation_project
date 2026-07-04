@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/features/Applicants/data/model_view_data.dart'; 
+import 'package:graduation_project/features/Applicants/data/model_view_data.dart';
 
 class ApplicantCard extends StatelessWidget {
-  final ApplicationModel applicant; 
+  final ApplicationModel applicant;
+  final VoidCallback? onReject;
+  final VoidCallback? onAccept;
+  final VoidCallback? onInterview;
 
-  const ApplicantCard({super.key, required this.applicant});
+  const ApplicantCard({
+    super.key,
+    required this.applicant,
+    this.onReject,
+    this.onAccept,
+    this.onInterview,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +57,17 @@ class ApplicantCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
-
           CircleAvatar(
             radius: 50.r,
             backgroundColor: const Color(0xFFE3F2FD),
-            backgroundImage: applicant.seekerAvatarUrl.isNotEmpty 
-                ? NetworkImage(applicant.seekerAvatarUrl) 
+            backgroundImage: applicant.seekerAvatarUrl.isNotEmpty
+                ? NetworkImage(applicant.seekerAvatarUrl)
                 : null,
-            child: applicant.seekerAvatarUrl.isEmpty 
+            child: applicant.seekerAvatarUrl.isEmpty
                 ? Icon(Icons.person, color: const Color(0xFF1D61FF), size: 50.r)
                 : null,
           ),
           SizedBox(height: 12.h),
-
           Text(
             applicant.seekerName,
             style: TextStyle(
@@ -70,7 +77,6 @@ class ApplicantCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(12.w),
@@ -83,7 +89,8 @@ class ApplicantCard extends StatelessWidget {
               children: [
                 Text(
                   "Applied",
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade500),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade500),
                 ),
                 SizedBox(height: 4.h),
                 Text(
@@ -98,7 +105,6 @@ class ApplicantCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-
           Container(
             width: double.infinity,
             padding: EdgeInsets.all(14.w),
@@ -111,7 +117,8 @@ class ApplicantCard extends StatelessWidget {
               children: [
                 Text(
                   "Match Score",
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade500),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade500),
                 ),
                 SizedBox(height: 8.h),
                 Row(
@@ -123,7 +130,8 @@ class ApplicantCard extends StatelessWidget {
                           value: progressValue,
                           minHeight: 8.h,
                           backgroundColor: Colors.grey.shade300,
-                          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF1D61FF)),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                              Color(0xFF1D61FF)),
                         ),
                       ),
                     ),
@@ -142,47 +150,60 @@ class ApplicantCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24.h),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD32F2F),
-                  borderRadius: BorderRadius.circular(12.r),
+              InkWell(
+                onTap: onReject,
+                borderRadius: BorderRadius.circular(12.r),
+                child: Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD32F2F),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: const Icon(Icons.thumb_down, color: Colors.white),
                 ),
-                child: const Icon(Icons.thumb_down, color: Colors.white),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE0E0E0),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(color: Colors.grey.shade400, width: 1),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.calendar_month, color: Colors.black, size: 18),
-                    SizedBox(width: 6.w),
-                    Text(
-                      "Interview",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
+              InkWell(
+                onTap: onInterview,
+                borderRadius: BorderRadius.circular(12.r),
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE0E0E0),
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(color: Colors.grey.shade400, width: 1),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.calendar_month,
+                          color: Colors.black, size: 18),
+                      SizedBox(width: 6.w),
+                      Text(
+                        "Interview",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF388E3C),
-                  borderRadius: BorderRadius.circular(12.r),
+              InkWell(
+                onTap: onAccept,
+                borderRadius: BorderRadius.circular(12.r),
+                child: Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF388E3C),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: const Icon(Icons.thumb_up, color: Colors.white),
                 ),
-                child: const Icon(Icons.thumb_up, color: Colors.white),
               ),
             ],
           ),
