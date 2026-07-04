@@ -7,7 +7,7 @@ class SettingsState {
   final bool isDarkMode;
 
   SettingsState({
-    this.isLoading = true,
+    this.isLoading = false,
     this.user,
     this.errorMessage,
     this.isDarkMode = false,

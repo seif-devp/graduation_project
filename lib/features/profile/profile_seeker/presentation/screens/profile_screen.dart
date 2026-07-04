@@ -8,15 +8,35 @@ import 'package:graduation_project/features/profile/profile_seeker/data/models/p
 import 'package:graduation_project/features/profile/profile_seeker/data/services/profile_services.dart';
 import 'package:graduation_project/features/profile/profile_seeker/presentation/cubit/profile_cubit.dart';
 import 'package:graduation_project/features/profile/profile_seeker/presentation/cubit/profile_state.dart';
+import 'package:graduation_project/features/profile/profile_seeker/widgets/resumes_section.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
+
+// عمل الـ Imports الصحيحة لفيتشر الـ Resume والـ Widget الجديد
+import 'package:graduation_project/features/resume/data/remote.dart';
+import 'package:graduation_project/features/resume/data/repo.dart';
+import 'package:graduation_project/features/resume/presentation/cubit/resume_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProfileCubit(ProfileServices())..fetchUserProfile(),
+    return MultiBlocProvider(
+      providers: [
+        // 1. بروفايدر البروفايل الحالي الخاص بك
+        BlocProvider(
+          create: (context) =>
+              ProfileCubit(ProfileServices())..fetchUserProfile(),
+        ),
+        // 2. بروفايدر السير الذاتية المحدث، ويقوم بجلب الداتا تلقائياً فور فتح الشاشة
+        BlocProvider(
+          create: (context) => ResumeCubit(
+            ResumeRepository(
+              ResumeRemoteDataSource(),
+            ),
+          )..getResumes(),
+        ),
+      ],
       child: Scaffold(
         backgroundColor: const Color(0xFFF8FAFC),
         body: BlocBuilder<ProfileCubit, ProfileState>(
@@ -101,58 +121,10 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 16.h),
                           ],
-                          Frame(
-                            title: "My Resumes",
-                            icon: Icons.description_outlined,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TextButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.upload, size: 18),
-                                      label: const Text("Upload"),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.h),
-                                ResumeItem(
-                                  name: "Sarah_Johnson_Resum...",
-                                  date: "Uploaded 1/15/2026",
-                                  actions: [
-                                    IconButton(
-                                      icon: const Icon(Icons.download_outlined,
-                                          color: Colors.grey),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete_outline,
-                                          color: Colors.redAccent),
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10.h),
-                                ResumeItem(
-                                  name: "Sarah_Johnson_Resum...",
-                                  date: "Uploaded 1/20/2026",
-                                  actions: [
-                                    IconButton(
-                                      icon: const Icon(Icons.download_outlined,
-                                          color: Colors.grey),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete_outline,
-                                          color: Colors.redAccent),
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+
+                          // استدعاء الـ Widget المستقل والنظيف الخاص بالسير الذاتية هنا ببيانات حقيقية بالكامل
+                          const ResumesSection(),
+
                           SizedBox(height: 16.h),
                           const Frame(
                             title: "Quick Stats",
@@ -173,6 +145,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+// الكود بالأسفل يظل ثابتاً كما صممته أنت تماماً لخدمة الشاشة والـ Widgets المساعدة للـ Profile والـ Resumes
 
 class ProfileHeader extends StatelessWidget {
   final ProfileModel user;
@@ -231,7 +205,7 @@ class ProfileHeader extends StatelessWidget {
             style: TextStyle(color: Colors.white70, fontSize: 14.sp),
           ),
           SizedBox(height: 10.h),
-         OutlinedButton(
+          OutlinedButton(
             onPressed: () async {
               final seekerData = SeekerEntity(
                 name: user.name,
@@ -241,8 +215,9 @@ class ProfileHeader extends StatelessWidget {
                 isLightMode: true,
               );
 
-              final didUpdate = await context.push('/edit_profile', extra: seekerData);
-              
+              final didUpdate =
+                  await context.push('/edit_profile', extra: seekerData);
+
               if (didUpdate == true) {
                 // ignore: use_build_context_synchronously
                 context.read<ProfileCubit>().fetchUserProfile();
@@ -319,7 +294,10 @@ class ResumeItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: const TextStyle(fontWeight: FontWeight.w500)),
+                Text(name,
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
                 Text(date,
                     style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
               ],
