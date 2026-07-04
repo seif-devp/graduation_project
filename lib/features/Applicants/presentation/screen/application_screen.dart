@@ -55,8 +55,8 @@ class ApplicantsScreen extends StatelessWidget {
                         context.read<ApplicantsCubit>().swipeLeft();
                       }
                     },
-                    background: const SwipeIndicator(icon: Icons.check, color: Colors.green, alignment: Alignment.centerLeft),
-                    secondaryBackground: const SwipeIndicator(icon: Icons.close, color: Colors.red, alignment: Alignment.centerRight),
+                    background: const SwipeIndicator(icon: Icons.check, color: Colors.red, alignment: Alignment.centerLeft),
+                    secondaryBackground: const SwipeIndicator(icon: Icons.close, color: Colors.green, alignment: Alignment.centerRight),
                     child: ApplicantCard(applicant: current),
                   ),
                 ),
