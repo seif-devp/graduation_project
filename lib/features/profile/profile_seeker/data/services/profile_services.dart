@@ -8,7 +8,7 @@ class ProfileServices {
   Future<ProfileModel> getUserProfile() async {
     try {
       final response = await dio.get('/api/users/me');
-      
+
       if (response.statusCode == 200) {
         return ProfileModel.fromJson(response.data);
       } else {
@@ -19,4 +19,6 @@ class ProfileServices {
       throw Exception('Error: $errorMsg');
     }
   }
+
+  
 }

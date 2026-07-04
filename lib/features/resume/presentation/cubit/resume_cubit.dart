@@ -11,10 +11,22 @@ class ResumeCubit extends Cubit<ResumeState> {
 
   ResumeCubit(this.repository) : super(ResumeInitial());
 
-  // ✅ فانكشن واحدة بس مع jobId اختياري
-  Future<void> uploadResume(String filePath, {String? jobId}) async {
-    emit(ResumeLoading());
+  // ✅ جلب السير الذاتية (للبروفايل)
+  Future<void> getResumes() async {
+    emit(GetResumesLoading());
+    final result = await repository.getResumes();
+    result.fold(
+      (failure) => emit(GetResumesFailure(failure.message)),
+      (resumes) => emit(GetResumesSuccess(resumes)),
+    );
+  }
+
+  // ✅ رفع سيرة ذاتية (بتشتغل في الـ Apply وفي الـ Profile)
+  Future<void> uploadResume(String filePath, {String? jobId, bool isFromProfile = false}) async {
+    emit(isFromProfile ? ResumeActionLoading() : ResumeLoading());
+    
     final result = await repository.uploadResume(filePath);
+    
     result.fold(
       (failure) => emit(ResumeFailure(failure.message)),
       (resume) async {
@@ -33,8 +45,40 @@ class ResumeCubit extends Cubit<ResumeState> {
             (_) => emit(ResumeSuccess(resume)),
           );
         } else {
-          emit(ResumeSuccess(resume));
+          // لو الرفع جاي من شاشة البروفايل، نحدث القائمة
+          if (isFromProfile) {
+            emit(ResumeActionSuccess("تم رفع السيرة الذاتية بنجاح"));
+            getResumes(); // تحديث تلقائي
+          } else {
+            emit(ResumeSuccess(resume)); // دي عشان الشاشة القديمة
+          }
         }
+      },
+    );
+  }
+
+  // ✅ حذف سيرة ذاتية
+  Future<void> deleteResume(String id) async {
+    emit(ResumeActionLoading());
+    final result = await repository.deleteResume(id);
+    result.fold(
+      (failure) => emit(ResumeFailure(failure.message)),
+      (_) {
+        emit(ResumeActionSuccess("تم حذف السيرة الذاتية بنجاح"));
+        getResumes(); // تحديث القائمة بعد الحذف
+      },
+    );
+  }
+
+  // ✅ تعيين سيرة ذاتية كافتراضية
+  Future<void> setDefaultResume(String id) async {
+    emit(ResumeActionLoading());
+    final result = await repository.setDefaultResume(id);
+    result.fold(
+      (failure) => emit(ResumeFailure(failure.message)),
+      (_) {
+        emit(ResumeActionSuccess("تم تعيين السيرة الذاتية كافتراضية"));
+        getResumes(); // تحديث القائمة
       },
     );
   }
