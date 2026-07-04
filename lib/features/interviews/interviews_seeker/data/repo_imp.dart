@@ -15,7 +15,7 @@ class RepoImp implements Repo {
 
       if (response.statusCode == 200) {
         final List<dynamic> items = response.data['items'];
-        
+
         return items.map((json) => InterviewModel.fromJson(json)).toList();
       } else {
         throw Exception('Failed to fetch interviews');
@@ -26,13 +26,14 @@ class RepoImp implements Repo {
       throw Exception(errorMessage);
     }
   }
+
   Future<void> acceptInterview(String id) async {
-    await _dio.patch('/api/interviews/$id/accept');
+    await _dio.patch('/api/interviews/$id/accepted');
   }
 
   @override
   Future<void> rejectInterview(String id) async {
-    await _dio.patch('/api/interviews/$id/reject');
+    await _dio.patch('/api/interviews/$id/rejected');
   }
 
   @override
