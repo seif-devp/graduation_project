@@ -154,15 +154,16 @@ class ApplicantCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                onTap: onReject,
+                ///////// on accepet
+                onTap: onAccept,
                 borderRadius: BorderRadius.circular(12.r),
                 child: Container(
                   padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD32F2F),
+                    color: const Color(0xFF388E3C),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: const Icon(Icons.thumb_down, color: Colors.white),
+                  child: const Icon(Icons.thumb_up, color: Colors.white),
                 ),
               ),
               InkWell(
@@ -194,15 +195,15 @@ class ApplicantCard extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: onAccept,
+                onTap: onReject,
                 borderRadius: BorderRadius.circular(12.r),
                 child: Container(
                   padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF388E3C),
+                    color: const Color(0xFFD32F2F),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: const Icon(Icons.thumb_up, color: Colors.white),
+                  child: const Icon(Icons.thumb_down, color: Colors.white),
                 ),
               ),
             ],
