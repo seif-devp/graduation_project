@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/features/chat_bot/chat_bot.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/Home/Home_employer/data/remote_data_source_eployer.dart';
 import 'package:graduation_project/features/Home/Home_employer/data/repo_imp.dart';
 import 'package:graduation_project/features/Home/Home_employer/logic/entity.dart';
@@ -27,7 +29,7 @@ class EmployerHomeScreen extends StatelessWidget {
               if (state is DeleteJobSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                      content: Text('تم حذف الوظيفة'),
+                      content: Text("Job Removed"),
                       backgroundColor: Colors.green),
                 );
               }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
 import 'package:graduation_project/features/Applicants/data/repo_application.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
@@ -18,7 +19,9 @@ class JobPageEmployer extends StatelessWidget {
           ApplicantsCubit(ApplicantsRepository(ApplicantsRemoteDataSource()))
             ..fetchAllJobs(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Manage Your Jobs')),
+        appBar: AppBar(
+          title: const Text('Manage Your Jobs'),
+        ),
         body: BlocBuilder<ApplicantsCubit, ApplicantsState>(
           builder: (context, state) {
             if (state.jobsStatus == JobsStatus.loading)

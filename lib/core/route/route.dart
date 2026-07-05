@@ -47,7 +47,12 @@ import 'package:graduation_project/features/settings/setting_employer/presentati
 import 'package:graduation_project/features/Notifications/notification_seeker/presentation/pages/notifications_page.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/screens/application_detail_page.dart';
 
+// ✅ Global navigator key: بيسمحلنا نفتح شاشات (زي الـ Chat Bot) من أي مكان
+// في التطبيق من غير ما نعتمد على الـ context بتاع شاشة معينة.
+final rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final router = GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: '/',
   routes: [
     GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
@@ -101,8 +106,7 @@ final router = GoRouter(
       path: '/edit_profile',
       name: 'edit_profile',
       builder: (context, state) {
-        final extra = state.extra;
-        final user = extra is SeekerEntity ? extra : null;
+        final user = state.extra as SeekerEntity?;
 
         return BlocProvider(
           create: (context) => SettingsSeekerCubit(SettingsSekeerRepository()),
@@ -114,9 +118,10 @@ final router = GoRouter(
       path: '/edit_profile_employer',
       name: 'edit_profile_employer',
       builder: (context, state) {
-        final extra = state.extra;
-        final user = extra is UserEntity ? extra : null;
+        // 1. نستقبل داتا الشركة اللي مبعوتة
+        final user = state.extra as UserEntity?;
 
+        // 2. نعمل Cubit جديد خاص بشاشة التعديل دي بس
         return BlocProvider(
           create: (context) => SettingsCubit(SettingsRepository()),
           child: EditProfilePageEmployer(user: user),

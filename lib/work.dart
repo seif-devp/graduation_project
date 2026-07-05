@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/route/route.dart';
 import 'package:graduation_project/core/services/app_initializer.dart';
+import 'package:graduation_project/core/widgets/global_chat_bot_button.dart';
 
 class Work extends StatefulWidget {
   const Work({super.key});
@@ -61,6 +62,17 @@ class _WorkState extends State<Work> with WidgetsBindingObserver {
           locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
+          // ✅ بنلف الشاشة الحالية (routedChild) جوه Stack، ونحط زرار
+          // الـ Chat Bot فوقها كـ Overlay ثابت. بكده الزرار بيفضل ظاهر
+          // في كل شاشات التطبيق من غير ما نضيفه يدويًا في كل واحدة لوحدها.
+          builder: (context, routedChild) {
+            return Stack(
+              children: [
+                if (routedChild != null) routedChild,
+                const GlobalChatBotButton(),
+              ],
+            );
+          },
         );
       },
     );

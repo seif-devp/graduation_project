@@ -44,7 +44,7 @@ class _JobPageState extends State<JobPage> {
           actions: [
             Builder(builder: (context) {
               return IconButton(
-                icon: Icon(Icons.tune, color: primaryColor),
+                icon: Icon(Icons.tune, color: Colors.white),
                 onPressed: () => _showFilterSheet(context),
               );
             }),
