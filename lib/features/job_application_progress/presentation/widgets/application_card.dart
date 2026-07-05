@@ -22,55 +22,118 @@ class ApplicationCard extends StatelessWidget {
     this.onTap,
   });
 
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
+  // Helper to map status string to a timeline step (0-3).
+  // This logic correctly interprets seeker-side statuses.
+  int _mapStatusToCurrentStep(String rawStatus) {
+    final normalizedStatus = rawStatus.trim().toLowerCase();
+    switch (normalizedStatus) {
+      // Step 1: Application Sent
       case 'sent':
-        return const Color(0xFF3B82F6);
+        return 0;
+
+      // Step 2: Application Viewed by Employer
       case 'viewed':
-        return const Color(0xFF6B7280);
+        return 1;
+
+      // Step 3: Interviewing Process
+      // 'accepted interview' means the seeker agreed to an interview, so we are still in the interview stage.
       case 'interview':
-        return const Color(0xFFF97316);
-      case 'rejected':
-        return const Color(0xFFEF4444);
+      case 'pending':
+      case 'rescheduled':
+      case 'accepted interview':
+        return 2;
+
+      // Step 4: Final Decision
+      // 'accepted' means the seeker has accepted the job offer.
+      // 'rejected interview' is a terminal state initiated by the seeker.
+      case 'decision':
+      case 'hired':
       case 'accepted':
-        return const Color(0xFF10B981);
+      case 'rejected':
+      case 'rejected interview':
+        return 3;
+
       default:
-        return Colors.grey;
+        return 0; // Default to the first step for any unknown status.
     }
   }
 
-  IconData _getStatusIcon(String status) {
-    switch (status.toLowerCase()) {
+  // Helper to get the display color for a given status.
+  Color _getStatusColor(String rawStatus) {
+    final normalizedStatus = rawStatus.trim().toLowerCase();
+    switch (normalizedStatus) {
+      case 'rejected':
+      case 'rejected interview':
+        return Colors.red;
+      case 'hired':
+      case 'accepted': // Final job offer accepted
+        return Colors.green;
+      case 'accepted interview': // Seeker accepted the interview invitation
+        return Colors.deepPurple;
+      case 'interview':
+      case 'pending':
+      case 'rescheduled':
+        return Colors.orange;
+      case 'viewed':
+        return Colors.grey;
       case 'sent':
-        return Icons.send;
+      default:
+        return Colors.blue;
+    }
+  }
+
+  // Helper to get the display icon for a given status.
+  IconData _getStatusIcon(String rawStatus) {
+    final normalizedStatus = rawStatus.trim().toLowerCase();
+    switch (normalizedStatus) {
+      case 'rejected':
+      case 'rejected interview':
+        return Icons.cancel;
+      case 'hired':
+      case 'accepted': // Final job offer accepted
+        return Icons.check_circle;
+      case 'accepted interview': // Seeker accepted the interview invitation
+        return Icons.event_available;
+      case 'interview':
+      case 'pending':
+      case 'rescheduled':
+        return Icons.schedule;
       case 'viewed':
         return Icons.visibility;
-      case 'interview':
-        return Icons.calendar_today;
-      case 'rejected':
-        return Icons.close;
-      case 'accepted':
-        return Icons.check_circle;
+      case 'sent':
       default:
-        return Icons.info;
+        return Icons.send;
     }
   }
 
-  Color colorCard(String status) {
-    final s = status.toLowerCase();
-    if (s == 'rejected') return const Color(0xFFFFEBEE);
-    if (s == 'accepted') return const Color(0xFFE8F5E9);
-    return Colors.white;
+  // Helper to set the card's background color based on terminal statuses.
+  Color _getCardBackgroundColor(String rawStatus) {
+    final normalizedStatus = rawStatus.trim().toLowerCase();
+    switch (normalizedStatus) {
+      case 'rejected':
+      case 'rejected interview':
+        return Colors.red.shade50; // Light red for rejection
+      case 'hired':
+      case 'accepted': // Light green for success
+        return Colors.green.shade50;
+      default:
+        return Colors.white; // Default white
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentStep = _mapStatusToCurrentStep(status);
+    final statusColor = _getStatusColor(status);
+    final cardBackgroundColor = _getCardBackgroundColor(status);
+    final statusIcon = _getStatusIcon(status);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: colorCard(status),
+          color: cardBackgroundColor,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
@@ -129,7 +192,10 @@ class ApplicationCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24.h),
-              buildProgressTimeline(status, _getStatusColor(status)),
+              ProgressTimeline(
+                currentStep: currentStep,
+                activeColor: statusColor,
+              ),
               SizedBox(height: 24.h),
               Container(
                 width: double.infinity,
@@ -140,8 +206,7 @@ class ApplicationCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8)),
                 child: Row(
                   children: [
-                    Icon(_getStatusIcon(status),
-                        size: 20, color: _getStatusColor(status)),
+                    Icon(statusIcon, size: 20, color: statusColor),
                     SizedBox(width: 12.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,9 +220,9 @@ class ApplicationCard extends StatelessWidget {
                               TextSpan(
                                   text: status[0].toUpperCase() +
                                       status.substring(1),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF1E293B)))
+                                      color: statusColor))
                             ],
                           ),
                         ),

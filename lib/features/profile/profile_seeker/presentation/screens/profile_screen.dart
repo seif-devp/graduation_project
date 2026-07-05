@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/widgets.dart';
+import 'package:graduation_project/core/utils/avatar_utils.dart';
 import 'package:graduation_project/features/profile/profile_seeker/data/models/profile_model.dart';
 import 'package:graduation_project/features/profile/profile_seeker/data/services/profile_services.dart';
 import 'package:graduation_project/features/profile/profile_seeker/presentation/cubit/profile_cubit.dart';
@@ -114,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                                           label: Text(skill),
                                           backgroundColor:
                                               const Color(0xFF2563EB)
-                                                  .withOpacity(0.1),
+                                                  .withValues(alpha: 0.1),
                                         ))
                                     .toList(),
                               ),
@@ -186,8 +187,10 @@ class ProfileHeader extends StatelessWidget {
             backgroundColor: Colors.white,
             child: CircleAvatar(
               radius: 47,
-              backgroundImage: NetworkImage(
-                  user.avatarUrl ?? 'https://via.placeholder.com/150'),
+              backgroundImage: getSafeAvatarImageProvider(user.avatarUrl),
+              child: getSafeAvatarImageProvider(user.avatarUrl) == null
+                  ? const Icon(Icons.person, size: 42, color: primaryColor)
+                  : null,
             ),
           ),
           SizedBox(height: 10.h),

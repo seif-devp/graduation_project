@@ -14,14 +14,9 @@ class AppInitializer {
   /// Initialize all services at app startup
   Future<void> initialize() async {
     try {
-      // Initialize cache helper first
       await CacheHelper.init();
-      print('✓ Cache helper initialized');
-
-      // Initialize background token refresh if user is authenticated
       await _initializeBackgroundTokenRefresh();
     } catch (e) {
-      print('❌ Error during app initialization: $e');
       rethrow;
     }
   }
@@ -37,13 +32,9 @@ class AppInitializer {
         BackgroundTokenRefreshService().startBackgroundRefresh(
           checkIntervalMinutes: 5,
         );
-        print('✓ Background token refresh service started');
-      } else {
-        print('ℹ️ No valid tokens found - Background refresh not started');
       }
     } catch (e) {
-      print('⚠️ Error initializing background token refresh: $e');
-      // Don't rethrow - allow app to continue even if refresh service fails to start
+      // Allow app to continue if background refresh cannot start.
     }
   }
 
@@ -62,10 +53,9 @@ class AppInitializer {
         BackgroundTokenRefreshService().startBackgroundRefresh(
           checkIntervalMinutes: 5,
         );
-        print('✓ Background token refresh restarted');
       }
     } catch (e) {
-      print('❌ Error restarting background token refresh: $e');
+      // Ignore restart failures silently.
     }
   }
 
@@ -73,9 +63,8 @@ class AppInitializer {
   Future<void> cleanup() async {
     try {
       BackgroundTokenRefreshService().stopBackgroundRefresh();
-      print('✓ Background token refresh stopped');
     } catch (e) {
-      print('❌ Error during cleanup: $e');
+      // Ignore cleanup failures.
     }
   }
 }

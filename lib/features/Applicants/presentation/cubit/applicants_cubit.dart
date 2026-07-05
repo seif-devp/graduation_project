@@ -14,16 +14,18 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
     try {
       // بتنادي هنا على الميثود الحقيقية اللي بتجيب الوظائف من الـ repository عندك
       // لو الـ repository بيرجع Either، فكها بـ fold زي المتقدمين
-      final result = await repository.getEmployerJobs(); 
-      
+      final result = await repository.getEmployerJobs();
+
       result.fold(
         (failure) => emit(state.copyWith(jobsStatus: JobsStatus.failure)),
-        (jobsList) => emit(state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList)),
+        (jobsList) => emit(
+            state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList)),
       );
     } catch (e) {
       // كود احتياطي لو الـ repository عندك مبرمج يرجع List علطول مش Either
       try {
-        final dynamic jobsList = await (repository as dynamic).getEmployerJobs();
+        final dynamic jobsList =
+            await (repository as dynamic).getEmployerJobs();
         emit(state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList));
       } catch (_) {
         emit(state.copyWith(jobsStatus: JobsStatus.failure));
@@ -34,20 +36,30 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
   // دالة تحميل المتقدمين لشاشة الـ Applicants
   Future<void> loadApplicants(String jobId) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
-    final result = await repository.getApplicants(jobId);
-    result.fold(
-      (failure) {
-        emit(state.copyWith(isLoading: false, errorMessage: failure.toString()));
-      },
-      (applicantsList) {
-        emit(state.copyWith(isLoading: false, applicants: applicantsList, currentIndex: 0));
-      },
-    );
+    try {
+      final result = await repository.getApplicants(jobId);
+      result.fold(
+        (failure) {
+          emit(state.copyWith(
+              isLoading: false, errorMessage: failure.toString()));
+        },
+        (applicantsList) {
+          emit(state.copyWith(
+            isLoading: false,
+            applicants: applicantsList,
+            currentIndex: 0,
+            errorMessage: null,
+          ));
+        },
+      );
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
+    }
   }
 
   Future<void> markAsViewed(ApplicationModel applicant) async {
-    if (applicant.status.toLowerCase() == 'viewed' || 
-        applicant.status.toLowerCase() == 'accepted' || 
+    if (applicant.status.toLowerCase() == 'viewed' ||
+        applicant.status.toLowerCase() == 'accepted' ||
         applicant.status.toLowerCase() == 'rejected') return;
     try {
       await repository.updateStatus(applicant.id, 'viewed');

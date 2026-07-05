@@ -8,6 +8,26 @@ class InterviewCard extends StatelessWidget {
   final InterviewEntity interview;
   const InterviewCard({super.key, required this.interview});
 
+  Future<void> _showRescheduleDialog(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+
+    if (pickedDate == null) return;
+
+    final String proposedAt = pickedDate.toIso8601String();
+    if (!context.mounted) return;
+
+    context.read<InterviewCubit>().handleInterviewAction(
+          interview.id,
+          'reschedule',
+          date: proposedAt,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isPending = interview.status.toLowerCase() == 'pending';
@@ -85,21 +105,19 @@ class InterviewCard extends StatelessWidget {
                       color: Colors.green,
                       onTap: () => context
                           .read<InterviewCubit>()
-                          .handleInterviewAction(interview.id, 'accept'),
+                          .handleInterviewAction(interview.id, 'accepted'),
                     ),
                     _buildActionIconButton(
                       icon: Icons.cancel_outlined,
                       color: Colors.red,
                       onTap: () => context
                           .read<InterviewCubit>()
-                          .handleInterviewAction(interview.id, 'reject'),
+                          .handleInterviewAction(interview.id, 'rejected'),
                     ),
                     _buildActionIconButton(
                       icon: Icons.history_outlined,
                       color: Colors.blueAccent,
-                      onTap: () {
-                        // هنا تفتح الـ Date Picker
-                      },
+                      onTap: () => _showRescheduleDialog(context),
                     ),
                   ],
                 ),

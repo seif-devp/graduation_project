@@ -1,73 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget buildProgressTimeline(String status, Color color) {
-  final stages = ['Sent', 'Viewed', 'Interview', 'Decision'];
-  final statusLower = status.toLowerCase();
-  final currentIndex = stages.indexWhere((s) => s.toLowerCase() == statusLower);
+class ProgressTimeline extends StatelessWidget {
+  final int currentStep; // 0-indexed: 0=Sent, 1=Viewed, 2=Interview, 3=Decision
+  final Color activeColor;
 
-  final activeColor = color;
-  final inactiveColor = const Color(0xFFF1F5F9);
+  const ProgressTimeline({
+    super.key,
+    required this.currentStep,
+    required this.activeColor,
+  });
 
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: List.generate(
-      stages.length,
-      (index) {
-        final isCompleted = index < currentIndex && currentIndex != -1;
-        final isCurrent = index == currentIndex;
-        final isUpcoming = index > currentIndex;
+  @override
+  Widget build(BuildContext context) {
+    final stages = ['Sent', 'Viewed', 'Interview', 'Decision'];
+    final inactiveColor = Colors.grey.shade300;
+    final inactiveTextColor = Colors.grey.shade500;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(stages.length, (index) {
+        final isActive = index <= currentStep;
+        final lineColor = isActive ? activeColor : inactiveColor;
+        final nodeColor = isActive ? activeColor : inactiveColor;
+        final textColor =
+            isActive ? const Color(0xFF1E293B) : inactiveTextColor;
 
         return Expanded(
           child: Column(
             children: [
-              // الحل هنا: ثبتنا الارتفاع بـ 36 عشان الخطوط كلها تلحم في نفس المستوى السنتر
               SizedBox(
                 height: 36.h,
                 child: Row(
                   children: [
-                    // الخط الأيسر
+                    // Left connecting line
                     Expanded(
                       child: Container(
                         height: 3.h,
-                        color: index == 0
-                            ? Colors.transparent
-                            : (index <= currentIndex
-                                ? activeColor
-                                : inactiveColor),
+                        color: index == 0 ? Colors.transparent : lineColor,
                       ),
                     ),
-                    // الدائرة (Node)
+                    // Node (circle)
                     Container(
-                      width: isCurrent ? 36.w : 28.w,
-                      height: isCurrent ? 36.h : 28.h,
+                      width: 28.w,
+                      height: 28.h,
                       decoration: BoxDecoration(
-                        color: isUpcoming ? inactiveColor : activeColor,
+                        color: nodeColor,
                         shape: BoxShape.circle,
                       ),
-                      child: isCompleted
-                          ? const Icon(Icons.check,
-                              size: 16, color: Colors.white)
-                          : isUpcoming
-                              ? Center(
-                                  child: Container(
-                                    width: 6.w,
-                                    height: 6.h,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFF94A3B8),
+                      child: Center(
+                        child: (index < currentStep ||
+                                (index == 3 && currentStep == 3))
+                            ? const Icon(Icons.check,
+                                size: 16, color: Colors.white)
+                            : (isActive && index == currentStep && index != 3)
+                                ? Icon(Icons.circle,
+                                    size: 12,
+                                    color: Colors.white.withOpacity(0.8))
+                                : Container(
+                                    width: 8.w,
+                                    height: 8.h,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.8),
                                       shape: BoxShape.circle,
                                     ),
                                   ),
-                                )
-                              : null,
+                      ),
                     ),
-                    // الخط الأيمن
+                    // Right connecting line
                     Expanded(
                       child: Container(
                         height: 3.h,
                         color: index == stages.length - 1
                             ? Colors.transparent
-                            : (index < currentIndex
+                            : (index < currentStep
                                 ? activeColor
                                 : inactiveColor),
                       ),
@@ -80,16 +86,15 @@ Widget buildProgressTimeline(String status, Color color) {
                 stages[index],
                 style: TextStyle(
                   fontSize: 12.sp,
-                  fontWeight: isCurrent ? FontWeight.bold : FontWeight.w500,
-                  color:
-                      isUpcoming ? Colors.grey[500] : const Color(0xFF1E293B),
+                  fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                  color: textColor,
                 ),
                 textAlign: TextAlign.center,
               ),
             ],
           ),
         );
-      },
-    ),
-  );
+      }),
+    );
+  }
 }

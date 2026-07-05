@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +7,7 @@ import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingSeeker_cubit.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingseeker_state.dart';
 
 class EditProfilePageSeeker extends StatefulWidget {
   final SeekerEntity? user; // استقبلنا اليوزر هنا
@@ -20,6 +23,7 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
   late final TextEditingController _emailCtrl;
   late final TextEditingController _phoneCtrl;
   late final TextEditingController _bioCtrl;
+  String? _selectedAvatarPath;
 
   @override
   void initState() {
@@ -74,11 +78,37 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const CircleAvatar(
-                              radius: 44, child: Icon(Icons.person, size: 44)),
+                          CircleAvatar(
+                            radius: 44,
+                            backgroundImage: _selectedAvatarPath != null
+                                ? FileImage(File(_selectedAvatarPath!))
+                                : (widget.user?.avatarUrl != null &&
+                                        widget.user!.avatarUrl!.isNotEmpty
+                                    ? NetworkImage(widget.user!.avatarUrl!)
+                                        as ImageProvider
+                                    : null),
+                            child: _selectedAvatarPath == null &&
+                                    (widget.user?.avatarUrl == null ||
+                                        widget.user!.avatarUrl!.isEmpty)
+                                ? const Icon(Icons.person, size: 44)
+                                : null,
+                          ),
                           const SizedBox(height: 12),
                           OutlinedButton.icon(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final result =
+                                  await FilePicker.platform.pickFiles(
+                                type: FileType.image,
+                                allowMultiple: false,
+                              );
+                              if (result != null &&
+                                  result.files.single.path != null) {
+                                setState(() {
+                                  _selectedAvatarPath =
+                                      result.files.single.path;
+                                });
+                              }
+                            },
                             icon: const Icon(Icons.upload_outlined, size: 16),
                             label: const Padding(
                               padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -172,13 +202,13 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                               onPressed: state.isLoading
                                   ? null
                                   : () {
-                                      // نداء الـ API
                                       context
                                           .read<SettingsSeekerCubit>()
                                           .saveProfileChanges(
                                             name: _nameCtrl.text,
                                             phone: _phoneCtrl.text,
                                             bio: _bioCtrl.text,
+                                            avatarFilePath: _selectedAvatarPath,
                                             context: context,
                                           );
                                     },

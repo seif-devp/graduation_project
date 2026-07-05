@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingseeker_state.dart';
 
-part 'settingSeeker_state.dart';
+
 
 class SettingsSeekerCubit extends Cubit<SettingsState> {
   final SettingsSekeerRepository repository;
@@ -32,9 +33,9 @@ class SettingsSeekerCubit extends Cubit<SettingsState> {
 
   void editProfile(BuildContext context) async {
     final didUpdate = await context.push('/edit_profile', extra: state.user);
-    
+
     if (didUpdate == true) {
-      loadSettingsData(); 
+      loadSettingsData();
     }
   }
 
@@ -43,17 +44,20 @@ class SettingsSeekerCubit extends Cubit<SettingsState> {
     required String name,
     required String phone,
     required String bio,
+    String? avatarFilePath,
     required BuildContext context,
   }) async {
     emit(state.copyWith(isLoading: true));
     try {
       await repository.updateBasicProfile(name: name, phone: phone, bio: bio);
+      if (avatarFilePath != null && avatarFilePath.isNotEmpty) {
+        await repository.updateAvatar(avatarFilePath);
+      }
 
       emit(state.copyWith(isLoading: false));
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile Updated Successfully!')));
 
-      // نرجعه للشاشة اللي قبلها ونبعت true عشان يعمل ريفريش
       context.pop(true);
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));

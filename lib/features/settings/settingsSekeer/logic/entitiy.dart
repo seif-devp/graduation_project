@@ -3,6 +3,7 @@ class SeekerEntity {
   final String email;
   final String phone;
   final String bio;
+  final String? avatarUrl;
   final bool isLightMode;
 
   SeekerEntity({
@@ -10,6 +11,7 @@ class SeekerEntity {
     required this.email,
     required this.phone,
     required this.bio,
+    this.avatarUrl,
     required this.isLightMode,
   });
 

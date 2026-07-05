@@ -28,12 +28,12 @@ class RepoImp implements Repo {
   }
 
   Future<void> acceptInterview(String id) async {
-    await _dio.patch('/api/interviews/$id/accepted');
+    await _dio.patch('/api/interviews/$id/accept');
   }
 
   @override
   Future<void> rejectInterview(String id) async {
-    await _dio.patch('/api/interviews/$id/rejected');
+    await _dio.patch('/api/interviews/$id/reject');
   }
 
   @override

@@ -55,8 +55,10 @@ class TokenRefreshInterceptor extends Interceptor {
         final refreshToken = CacheHelper.getData(key: 'refreshToken');
 
         if (refreshToken == null || refreshToken.isEmpty) {
-          // No refresh token available, propagate the error
           _isRefreshing = false;
+          await CacheHelper.removeData(key: 'accessToken');
+          await CacheHelper.removeData(key: 'refreshToken');
+          await CacheHelper.removeData(key: 'expiresAtUtc');
           return handler.reject(err);
         }
 
@@ -90,9 +92,15 @@ class TokenRefreshInterceptor extends Interceptor {
         ));
       } on DioException catch (e) {
         _isRefreshing = false;
+        await CacheHelper.removeData(key: 'accessToken');
+        await CacheHelper.removeData(key: 'refreshToken');
+        await CacheHelper.removeData(key: 'expiresAtUtc');
         return handler.reject(e);
       } catch (e) {
         _isRefreshing = false;
+        await CacheHelper.removeData(key: 'accessToken');
+        await CacheHelper.removeData(key: 'refreshToken');
+        await CacheHelper.removeData(key: 'expiresAtUtc');
         return handler.reject(err);
       }
     }

@@ -16,9 +16,7 @@ class InterviewsPageEmployer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => InterviewCubitEmployer(InterviewsRepositoryImpl())
-        //TODO don't forget to pass the required parameters to loadInterviewsOneJobForloop on all jobs and request its interviews
-
-        ..loadInterviewsOneJob('', 1, 10), // Added required parameters
+        ..loadAllInterviewsForEmployer(),
       child: Scaffold(
         body: SafeArea(
           child: BlocBuilder<InterviewCubitEmployer, InterviewStateEmployer>(
@@ -123,13 +121,18 @@ class InterviewsPageEmployer extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       Expanded(
-                        child: ListView.separated(
-                          itemCount: state.interviewsEmployer.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 12),
-                          itemBuilder: (context, index) =>
-                              InterviewCardEmployer(
-                            interviewemployer: state.interviewsEmployer[index],
+                        child: RefreshIndicator(
+                          onRefresh: () => context
+                              .read<InterviewCubitEmployer>()
+                              .loadAllInterviewsForEmployer(),
+                          child: ListView.separated(
+                            itemCount: state.interviewsEmployer.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 12),
+                            itemBuilder: (context, index) =>
+                                InterviewCardEmployer(
+                              interviewemployer: state.interviewsEmployer[index],
+                            ),
                           ),
                         ),
                       ),

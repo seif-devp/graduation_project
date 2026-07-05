@@ -63,7 +63,7 @@ class BackgroundTokenRefreshService {
         await refreshToken();
       }
     } catch (e) {
-      print('Error checking token expiry: $e');
+      // Ignore background refresh initialization errors silently.
     }
   }
 
@@ -73,7 +73,7 @@ class BackgroundTokenRefreshService {
       final refreshToken = CacheHelper.getData(key: 'refreshToken');
 
       if (refreshToken == null || refreshToken.isEmpty) {
-        print('No refresh token available');
+        await clearTokens();
         return false;
       }
 
@@ -96,15 +96,15 @@ class BackgroundTokenRefreshService {
           value: response.data['expiresAtUtc'],
         );
 
-        print('Token refreshed successfully');
         return true;
       }
+      await clearTokens();
       return false;
-    } on DioException catch (e) {
-      print('Failed to refresh token: ${e.message}');
+    } on DioException catch (_) {
+      await clearTokens();
       return false;
-    } catch (e) {
-      print('Unexpected error during token refresh: $e');
+    } catch (_) {
+      await clearTokens();
       return false;
     }
   }

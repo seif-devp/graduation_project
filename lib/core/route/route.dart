@@ -74,7 +74,8 @@ final router = GoRouter(
       path: '/resume_upload',
       name: 'resume_upload',
       builder: (context, state) {
-        final jobId = state.extra as String?;
+        final extra = state.extra;
+        final jobId = extra is String ? extra : null;
         return ResumeUploadScreen(jobId: jobId);
       },
     ),
@@ -100,8 +101,9 @@ final router = GoRouter(
       path: '/edit_profile',
       name: 'edit_profile',
       builder: (context, state) {
-        final user = state.extra as SeekerEntity?;
-        
+        final extra = state.extra;
+        final user = extra is SeekerEntity ? extra : null;
+
         return BlocProvider(
           create: (context) => SettingsSeekerCubit(SettingsSekeerRepository()),
           child: EditProfilePageSeeker(user: user),
@@ -112,21 +114,23 @@ final router = GoRouter(
       path: '/edit_profile_employer',
       name: 'edit_profile_employer',
       builder: (context, state) {
-        // 1. نستقبل داتا الشركة اللي مبعوتة
-        final user = state.extra as UserEntity?; 
-        
-        // 2. نعمل Cubit جديد خاص بشاشة التعديل دي بس
+        final extra = state.extra;
+        final user = extra is UserEntity ? extra : null;
+
         return BlocProvider(
           create: (context) => SettingsCubit(SettingsRepository()),
-          child: EditProfilePageEmployer(user: user), // ونباصي الداتا للشاشة
+          child: EditProfilePageEmployer(user: user),
         );
       },
     ),
     GoRoute(
       path: '/job_details',
       name: 'job_details',
-      builder: (context, state) =>
-          JobDetailsPage(jobId: (state.extra as dynamic).id.toString()),
+      builder: (context, state) {
+        final extra = state.extra;
+        final jobId = extra is Map ? extra['id']?.toString() ?? '' : '';
+        return JobDetailsPage(jobId: jobId);
+      },
     ),
     GoRoute(
       path: '/alerts',

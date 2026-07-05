@@ -1,4 +1,5 @@
-part of 'settingSeeker_cubit.dart';
+
+import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
 
 class SettingsState {
   final bool isLoading;

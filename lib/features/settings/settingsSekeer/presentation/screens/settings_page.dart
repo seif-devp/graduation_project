@@ -5,6 +5,7 @@ import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingSeeker_cubit.dart';
+import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingseeker_state.dart';
 
 class SettingsPageSeeker extends StatelessWidget {
   const SettingsPageSeeker({super.key});

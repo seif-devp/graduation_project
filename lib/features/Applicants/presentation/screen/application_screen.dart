@@ -30,12 +30,14 @@ class ApplicantsScreen extends StatelessWidget {
           listenWhen: (p, c) =>
               p.currentIndex != c.currentIndex ||
               p.applicants.length != c.applicants.length,
-          listener: (context, state) {
+          listener: (context, state) async {
+            if (!context.mounted) return;
             if (state.applicants.isNotEmpty &&
                 state.currentIndex < state.applicants.length) {
-              context
+              final currentApplicant = state.applicants[state.currentIndex];
+              await context
                   .read<ApplicantsCubit>()
-                  .markAsViewed(state.applicants[state.currentIndex]);
+                  .markAsViewed(currentApplicant);
             }
           },
           child: BlocBuilder<ApplicantsCubit, ApplicantsState>(

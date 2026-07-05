@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:graduation_project/core/networking/dio.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
@@ -13,7 +15,8 @@ class SettingsSekeerRepository {
           email: data['email'] ?? '',
           phone: data['phone'] ?? '',
           bio: data['bio'] ?? '',
-          isLightMode: true, 
+          avatarUrl: data['avatarUrl'] ?? data['avatar'],
+          isLightMode: true,
         );
       } else {
         throw Exception('Failed to load settings data');
@@ -22,6 +25,7 @@ class SettingsSekeerRepository {
       throw Exception('Error: ${e.message}');
     }
   }
+
   // ضيف الدالة دي جوه كلاس SettingsSekeerRepository
   Future<void> updateBasicProfile({
     required String name,
@@ -42,6 +46,28 @@ class SettingsSekeerRepository {
       }
     } on DioException catch (e) {
       throw Exception('Error: ${e.response?.data ?? e.message}');
+    }
+  }
+
+  Future<void> updateAvatar(String filePath) async {
+    try {
+      final file = File(filePath);
+      final fileName = file.uri.pathSegments.last;
+      final formData = FormData.fromMap({
+        'File': await MultipartFile.fromFile(file.path, filename: fileName),
+      });
+
+      final response = await DioFactory.getDio().put(
+        '/api/users/me/avatar',
+        data: formData,
+        options: Options(contentType: 'multipart/form-data'),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to upload avatar');
+      }
+    } on DioException catch (e) {
+      throw Exception('Avatar upload failed: ${e.response?.data ?? e.message}');
     }
   }
 }
