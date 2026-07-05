@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -37,7 +38,7 @@ class _CareerCoachScreenState extends State<CareerCoachScreen> {
   // إعداد الموديل (تأكد من وضع الـ API Key الخاص بك هنا من Google AI Studio)
   final model = GenerativeModel(
     model: 'gemini-flash-latest',
-    apiKey: 'YOUR_API_KEY_HERE',
+    apiKey: dotenv.env['GEMINI_API_KEY'] ?? '',
   );
 
   @override

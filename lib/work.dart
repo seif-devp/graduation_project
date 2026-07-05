@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/route/route.dart';
 import 'package:graduation_project/core/services/app_initializer.dart';
 import 'package:graduation_project/core/widgets/global_chat_bot_button.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Work extends StatefulWidget {
   const Work({super.key});
