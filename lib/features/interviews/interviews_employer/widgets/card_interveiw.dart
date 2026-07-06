@@ -12,6 +12,8 @@ class InterviewCardEmployer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateToShow =
+        interviewemployer.rescheduleRequestedAt ?? interviewemployer.scheduledAt;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -55,7 +57,7 @@ class InterviewCardEmployer extends StatelessWidget {
               Icon(Icons.calendar_today_outlined,
                   size: 16.sp, color: Colors.grey),
               SizedBox(width: 8.w),
-              Text(DateFormat.yMMMd().format(interviewemployer.scheduledAt),
+              Text(DateFormat.yMMMd().format(dateToShow),
                   style: TextStyle(fontSize: 13.sp, color: Color(0xFF444444))),
             ],
           ),
@@ -65,7 +67,7 @@ class InterviewCardEmployer extends StatelessWidget {
             children: [
               const Icon(Icons.access_time, size: 16, color: Colors.grey),
               SizedBox(width: 8.w),
-              Text(DateFormat.jm().format(interviewemployer.scheduledAt),
+              Text(DateFormat.jm().format(dateToShow),
                   style: TextStyle(fontSize: 13.sp, color: Color(0xFF444444))),
             ],
           ),

@@ -29,6 +29,8 @@ import 'package:graduation_project/features/job_application_progress/data/repo.d
 import 'package:graduation_project/features/job_application_progress/data/remore_source.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/cubit/application_progress_cubit.dart';
 import 'package:graduation_project/features/job_details/screens/job_details.dart';
+import 'package:graduation_project/features/job_list/data/models/job_model_response.dart';
+import 'package:graduation_project/features/job_list/domain/job_entity.dart';
 import 'package:graduation_project/features/job_list/presentation/screens/jop_page.dart';
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/profile_seeker/presentation/screens/profile_screen.dart';
@@ -133,7 +135,14 @@ final router = GoRouter(
       name: 'job_details',
       builder: (context, state) {
         final extra = state.extra;
-        final jobId = extra is Map ? extra['id']?.toString() ?? '' : '';
+        String jobId = '';
+        if (extra is JobModelResponse) {
+          jobId = extra.id;
+        } else if (extra is JobEntity) {
+          jobId = extra.id;
+        } else if (extra is Map) {
+          jobId = extra['id']?.toString() ?? '';
+        }
         return JobDetailsPage(jobId: jobId);
       },
     ),

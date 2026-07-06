@@ -4,5 +4,5 @@ abstract class Repo {
   Future<List<InterviewEntity>> getInterviews();
   Future<void> acceptInterview(String id);
   Future<void> rejectInterview(String id);
-  Future<void> rescheduleInterview(String id, String proposedAt);
+  Future<InterviewEntity> rescheduleInterview(String id, String proposedAt);
 }

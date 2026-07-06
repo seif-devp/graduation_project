@@ -11,22 +11,30 @@ class InterviewModel extends InterviewEntity {
     required super.type,
     required super.meetingLink,
     required super.status,
+    super.rescheduleRequestedAt,
   });
 
   factory InterviewModel.fromJson(Map<String, dynamic> json) {
     // Parse the ISO date string from the API
-    DateTime scheduledDate = DateTime.parse(json['scheduledAt'] ?? DateTime.now().toString());
-    
+    DateTime mainDate;
+    if (json['rescheduleRequestedAt'] != null) {
+      mainDate = DateTime.parse(json['rescheduleRequestedAt']);
+    } else {
+      mainDate =
+          DateTime.parse(json['scheduledAt'] ?? DateTime.now().toString());
+    }
+
     return InterviewModel(
       id: json['id'] ?? '',
       jobTitle: json['jobTitle'] ?? 'No Title',
       company: json['companyName'] ?? 'Unknown Company',
       // Format the DateTime into the strings your UI expects
-      date: DateFormat('MMM dd, yyyy').format(scheduledDate), // e.g., May 11, 2026
-      time: DateFormat('hh:mm a').format(scheduledDate),      // e.g., 03:29 PM
+      date: DateFormat('MMM dd, yyyy').format(mainDate), // e.g., May 11, 2026
+      time: DateFormat('hh:mm a').format(mainDate), // e.g., 03:29 PM
       type: json['mode'] ?? 'Online',
       meetingLink: json['interviewLink'] ?? 'No link provided',
       status: json['status'] ?? 'Pending',
+      rescheduleRequestedAt: json['rescheduleRequestedAt'],
     );
   }
 }

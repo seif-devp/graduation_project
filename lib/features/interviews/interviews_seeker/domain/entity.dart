@@ -7,6 +7,8 @@ class InterviewEntity {
   final String type;
   final String meetingLink;
   final String status;
+  final String? rescheduleRequestedAt;
+
 
   const InterviewEntity({
     required this.id,
@@ -17,6 +19,7 @@ class InterviewEntity {
     required this.type,
     required this.meetingLink,
     required this.status,
+    this.rescheduleRequestedAt,
   });
 
   InterviewEntity copyWith({
@@ -28,6 +31,7 @@ class InterviewEntity {
     String? type,
     String? meetingLink,
     String? status,
+    String? rescheduleRequestedAt,
   }) {
     return InterviewEntity(
       id: id ?? this.id,
@@ -38,6 +42,7 @@ class InterviewEntity {
       type: type ?? this.type,
       meetingLink: meetingLink ?? this.meetingLink,
       status: status ?? this.status,
+      rescheduleRequestedAt: rescheduleRequestedAt ?? this.rescheduleRequestedAt,
     );
   }
 }
