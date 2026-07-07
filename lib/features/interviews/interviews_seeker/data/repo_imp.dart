@@ -37,10 +37,12 @@ class RepoImp implements Repo {
   }
 
   @override
-  Future<void> rescheduleInterview(String id, String proposedAt) async {
-    await _dio.post(
+  Future<InterviewEntity> rescheduleInterview(
+      String id, String proposedAt) async {
+    final response = await _dio.post(
       '/api/interviews/$id/reschedule',
       data: {'proposedAt': proposedAt},
     );
+    return InterviewModel.fromJson(response.data);
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/route/route.dart';
 import 'package:graduation_project/core/services/app_initializer.dart';
 import 'package:graduation_project/core/widgets/global_chat_bot_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Work extends StatefulWidget {
@@ -19,6 +20,18 @@ class _WorkState extends State<Work> with WidgetsBindingObserver {
     super.initState();
     // Listen to app lifecycle events
     WidgetsBinding.instance.addObserver(this);
+    requestStoragePermission();
+  }
+
+  Future<bool> requestStoragePermission() async {
+    // طلب صلاحية الملفات (بينوع حسب إصدار الأندرويد)
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      return true;
+    } else {
+      await Permission.storage.request(); // إعادة الطلب إذا تم رفضه
+      return false;
+    }
   }
 
   @override

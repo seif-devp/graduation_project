@@ -45,7 +45,7 @@ class InterviewsEmployerModel {
   final String mode;
   final String interviewLink;
   final String status;
-  final DateTime rescheduleRequestedAt;
+  final DateTime? rescheduleRequestedAt;
   final DateTime createdAt;
 
   InterviewsEmployerModel({
@@ -59,7 +59,7 @@ class InterviewsEmployerModel {
     required this.mode,
     required this.interviewLink,
     required this.status,
-    required this.rescheduleRequestedAt,
+    this.rescheduleRequestedAt,
     required this.createdAt,
   });
 
@@ -79,7 +79,7 @@ class InterviewsEmployerModel {
         status: json["status"] ?? "",
         rescheduleRequestedAt: json["rescheduleRequestedAt"] != null
             ? DateTime.parse(json["rescheduleRequestedAt"])
-            : DateTime.now(),
+            : null,
         createdAt: json["createdAt"] != null
             ? DateTime.parse(json["createdAt"])
             : DateTime.now(),
@@ -96,7 +96,7 @@ class InterviewsEmployerModel {
         "mode": mode,
         "interviewLink": interviewLink,
         "status": status,
-        "rescheduleRequestedAt": rescheduleRequestedAt.toIso8601String(),
+        "rescheduleRequestedAt": rescheduleRequestedAt?.toIso8601String(),
         "createdAt": createdAt.toIso8601String(),
       };
 
@@ -108,6 +108,7 @@ class InterviewsEmployerModel {
       scheduledAt: scheduledAt,
       status: status,
       interviewLink: interviewLink,
+      rescheduleRequestedAt: rescheduleRequestedAt,
     );
   }
 }

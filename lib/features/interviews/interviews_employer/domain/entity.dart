@@ -5,6 +5,7 @@ class InterviewEntityEmployer {
   final DateTime scheduledAt;
   final String status;
   final String interviewLink;
+  final DateTime? rescheduleRequestedAt;
 
   InterviewEntityEmployer({
     required this.id,
@@ -13,5 +14,6 @@ class InterviewEntityEmployer {
     required this.scheduledAt,
     required this.status,
     required this.interviewLink,
+    this.rescheduleRequestedAt,
   });
 }

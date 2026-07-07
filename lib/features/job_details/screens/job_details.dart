@@ -1,226 +1,189 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/core/helpers/cache_helpers.dart';
+import 'package:graduation_project/features/apply_now_seeker.dart/data/remote_source.dart';
+import 'package:graduation_project/features/apply_now_seeker.dart/data/repo.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_state.dart';
+import 'package:graduation_project/features/job_details/data/ai_remote_source.dart';
+import 'package:graduation_project/features/job_details/data/job_application_repo.dart';
 import 'package:graduation_project/features/job_details/data/remote_detail_source.dart';
 import 'package:graduation_project/features/job_details/data/repo_imp_detail.dart';
-import 'package:graduation_project/features/view_ai_match/presentation/screen/Ai_match.dart';
+import 'package:graduation_project/features/job_details/screens/ai_match_dialog.dart';
+import 'package:graduation_project/features/job_details/screens/resume_selection_dialog.dart';
+import 'package:graduation_project/features/resume/data/model.dart';
 
-class JobDetailsPage extends StatefulWidget {
+class JobDetailsPage extends StatelessWidget {
   const JobDetailsPage({super.key, required this.jobId});
   final String jobId;
 
   @override
-  State<JobDetailsPage> createState() => _JobDetailsPageState();
-}
-
-class _JobDetailsPageState extends State<JobDetailsPage> {
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+  return BlocProvider(
       create: (_) => JobDetailsCubit(
         JobDetailsRepo(JobDetailsRemoteDataSource()),
-      )..fetchJobDetails(widget.jobId),
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF8F9FB),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Text(
-            "Job Details",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          iconTheme: const IconThemeData(color: Colors.black),
+        JobApplicationRepository(
+          aiRemoteSource: AiMatchRemoteDataSource(),
+          // التعديل هنا: بنباصي الـ Repo بدل الـ Remote Source المباشر
+          dotNetRepo: ApplicationRepository(ApplicationRemoteDataSource()), 
         ),
-        body: BlocConsumer<JobDetailsCubit, JobDetailsState>(
-          listener: (context, state) {
-            if (state is ApplyJobSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Applied Successfully! ✅"),
-                  backgroundColor: Colors.green,
-                ),
-              );
+      )..fetchJobDetails(jobId),
+      child: const _JobDetailsView(),
+    );
+  }
+}
 
-              // فتح دايالوج الـ AI تلقائياً بالبيانات الحقيقية المحسوبة والمحفوظة في الكيوبيت
-              final cubit = context.read<JobDetailsCubit>();
-              if (cubit.matchScore != null) {
-                showDialog(
-                  context: context,
-                  builder: (_) => AiMatch(
-                    score: cubit.matchScore!,
-                    matchedSkills: cubit.matchedSkills,
-                    missingSkills: cubit.missingSkills,
-                  ),
-                );
-              }
-            }
-            if (state is ApplyJobError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          builder: (blocContext, state) {
-            if (state is JobDetailsLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+class _JobDetailsView extends StatelessWidget {
+  const _JobDetailsView();
 
-            final cubit = blocContext.read<JobDetailsCubit>();
-            final job = cubit.currentJob;
-            final hasApplied = cubit.hasApplied;
-
-            if (job == null) return const SizedBox();
-
-            final jobText =
-                "${job.title} ${job.description} ${job.requirements.join(' ')}";
-
-            return Column(
-              children: [
-                _buildAiCard(state, cubit),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        Text(
-                          job.title,
-                          style: TextStyle(
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          job.companyName,
-                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                        ),
-                        SizedBox(height: 15.h),
-                        Row(
-                          children: [
-                            const Icon(Icons.location_on_outlined, size: 18),
-                            Text(" ${job.location}"),
-                            SizedBox(width: 15.w),
-                            const Icon(Icons.attach_money, size: 18),
-                            Text(" ${job.salary}"),
-                          ],
-                        ),
-                        SizedBox(height: 25.h),
-                        Text(
-                          "Job Description",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        Text(
-                          job.description,
-                          style: TextStyle(
-                            color: Colors.grey.shade700,
-                            height: 1.5,
-                          ),
-                        ),
-                        SizedBox(height: 20.h),
-                        Text(
-                          "Requirements",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        Wrap(
-                          spacing: 8.w,
-                          runSpacing: 8.h,
-                          children: job.requirements
-                              .map((skill) => Chip(label: Text(skill)))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 32.h),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            hasApplied ? Colors.grey : const Color(0xFF1D61FF),
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      onPressed: hasApplied || state is ApplyJobLoading
-                          ? null
-                          : () async {
-                              final result =
-                                  await FilePicker.platform.pickFiles(
-                                type: FileType.any,
-                                allowMultiple: false,
-                              );
-
-                              if (result != null && result.files.isNotEmpty) {
-                                final path = result.files.first.path;
-                                if (path != null) {
-                                  await CacheHelper.saveData(
-                                      key: 'cvPath', value: path);
-
-                                  if (blocContext.mounted) {
-                                    blocContext
-                                        .read<JobDetailsCubit>()
-                                        .uploadAndSubmitApplication(
-                                          jobId: widget.jobId,
-                                          cvPath: path,
-                                          jobDescription: jobText,
-                                        );
-                                  }
-                                }
-                              }
-                            },
-                      child: state is ApplyJobLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Text(
-                              hasApplied ? "Applied ✅" : "Upload CV & Apply",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
+  void _showLoadingOverlay(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(color: Color(0xFF1D61FF)),
+            SizedBox(height: 20.h),
+            Text(
+              "Analyzing your CV...\nThis might take a minute ⏳",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildAiCard(JobDetailsState state, JobDetailsCubit cubit) {
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<JobDetailsCubit, JobDetailsState>(
+      listener: (context, state) {
+        if (state is ApplyJobLoading) {
+          _showLoadingOverlay(context);
+        } else if (state is ApplyJobSuccess) {
+          Navigator.pop(context); // إغلاق اللودينج الشفاف
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Applied Successfully! ✅"),
+              backgroundColor: Colors.green,
+            ),
+          );
+          
+          showDialog(
+            context: context,
+            builder: (_) => AiMatchDialog(
+              score: state.aiResult.matchScore,
+              matchedSkills: state.aiResult.matchedSkills,
+              missingSkills: state.aiResult.missingSkills,
+            ),
+          );
+        } else if (state is ApplyJobError) {
+          Navigator.pop(context); // إغلاق اللودينج
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is JobDetailsLoading) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        final cubit = context.read<JobDetailsCubit>();
+        final job = cubit.currentJob;
+        final hasApplied = cubit.hasApplied;
+
+        if (job == null) return const Scaffold(body: SizedBox());
+
+        return Scaffold(
+          backgroundColor: const Color(0xFFF8F9FB),
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: Text("Job Details", style: TextStyle(color: Colors.black, fontSize: 18.sp, fontWeight: FontWeight.bold)),
+            iconTheme: const IconThemeData(color: Colors.black),
+          ),
+          body: Column(
+            children: [
+              _buildAiCard(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20.h),
+                      Text(job.title, style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
+                      Text(job.companyName, style: TextStyle(fontSize: 16.sp, color: Colors.grey)),
+                      SizedBox(height: 15.h),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on_outlined, size: 18.sp),
+                          Text(" ${job.location}", style: TextStyle(fontSize: 14.sp)),
+                          SizedBox(width: 15.w),
+                          Icon(Icons.attach_money, size: 18.sp),
+                          Text(" ${job.salary}", style: TextStyle(fontSize: 14.sp)),
+                        ],
+                      ),
+                      SizedBox(height: 25.h),
+                      Text("Job Description", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10.h),
+                      Text(job.description, style: TextStyle(color: Colors.grey.shade700, height: 1.5, fontSize: 14.sp)),
+                      SizedBox(height: 20.h),
+                      Text("Requirements", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10.h),
+                      Wrap(
+                        spacing: 8.w,
+                        runSpacing: 8.h,
+                        children: job.requirements.map((skill) => Chip(label: Text(skill, style: TextStyle(fontSize: 12.sp)))).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 32.h),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: hasApplied ? Colors.grey : const Color(0xFF1D61FF),
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                    ),
+                    onPressed: hasApplied ? null : () async {
+                      final selectedCv = await showDialog(
+                        context: context,
+                        builder: (context) => const ResumeSelectionDialog(),
+                      );
+
+                      if (selectedCv != null && selectedCv is ResumeModel && context.mounted) {
+                        cubit.applyWithResume(selectedCv);
+                      }
+                    },
+                    child: Text(
+                      hasApplied ? "Applied ✅" : "Select CV & Apply",
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.sp),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAiCard() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       padding: EdgeInsets.all(16.w),
@@ -230,36 +193,10 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.auto_awesome, color: Colors.white),
+          Icon(Icons.auto_awesome, color: Colors.white, size: 24.sp),
           SizedBox(width: 10.w),
           Expanded(
-            child: state is ApplyJobLoading
-                ? const Row(
-                    children: [
-                      SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        "Processing AI & Submitting application...",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  )
-                : Text(
-                    cubit.matchScore != null
-                        ? "AI Match Score: ${cubit.matchScore!.toStringAsFixed(1)}%"
-                        : "AI Match System Active",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+            child: Text("AI Match System Active", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp)),
           ),
         ],
       ),

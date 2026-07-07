@@ -23,22 +23,34 @@ class InterviewCubit extends Cubit<InterviewState> {
 
   Future<void> handleInterviewAction(String id, String action,
       {String? date}) async {
+    final currentState = state;
+    if (currentState is! InterviewLoaded) return;
+
+    emit(InterviewActionLoading(currentState.interviews, id));
+
     try {
       if (action == 'accepted') {
         await repository.acceptInterview(id);
+        await loadInterviews();
       } else if (action == 'rejected') {
         await repository.rejectInterview(id);
+        await loadInterviews();
       } else if (action == 'reschedule') {
         if (date == null || date.trim().isEmpty) {
           emit(InterviewError('Please choose a new date before rescheduling.'));
           return;
         }
-        await repository.rescheduleInterview(id, date);
+        final updatedInterview = await repository.rescheduleInterview(id, date);
+        final updatedInterviews = currentState.interviews
+            .map((interview) =>
+                interview.id == id ? updatedInterview : interview)
+            .toList();
+        emit(InterviewLoaded(updatedInterviews));
       }
-
-      await loadInterviews();
     } catch (e) {
       emit(InterviewError('Failed to update interview: ${e.toString()}'));
+      // Restore previous state on error
+      emit(currentState);
     }
   }
 }

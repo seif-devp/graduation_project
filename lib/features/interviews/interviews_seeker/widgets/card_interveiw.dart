@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/interviews/interviews_seeker/domain/entity.dart';
 import 'package:graduation_project/features/interviews/interviews_seeker/presentation/cubit/interview_cubit.dart';
+import 'package:graduation_project/features/interviews/interviews_seeker/presentation/cubit/interview_state.dart';
 
 class InterviewCard extends StatelessWidget {
   final InterviewEntity interview;
@@ -88,39 +89,63 @@ class InterviewCard extends StatelessWidget {
 
             // ── الجزء اليمين: أيقونات التحكم الرأسية ──
             if (isPending)
-              Container(
-                width: 50.w,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildActionIconButton(
-                      icon: Icons.check_circle_outline,
-                      color: Colors.green,
-                      onTap: () => context
-                          .read<InterviewCubit>()
-                          .handleInterviewAction(interview.id, 'accepted'),
+              BlocBuilder<InterviewCubit, InterviewState>(
+                builder: (context, state) {
+                  if (state is InterviewActionLoading &&
+                      state.interviewId == interview.id) {
+                    return Container(
+                      width: 50.w,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: const Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                    );
+                  }
+                  return Container(
+                    width: 50.w,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
                     ),
-                    _buildActionIconButton(
-                      icon: Icons.cancel_outlined,
-                      color: Colors.red,
-                      onTap: () => context
-                          .read<InterviewCubit>()
-                          .handleInterviewAction(interview.id, 'rejected'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildActionIconButton(
+                          icon: Icons.check_circle_outline,
+                          color: Colors.green,
+                          onTap: () => context
+                              .read<InterviewCubit>()
+                              .handleInterviewAction(interview.id, 'accepted'),
+                        ),
+                        _buildActionIconButton(
+                          icon: Icons.cancel_outlined,
+                          color: Colors.red,
+                          onTap: () => context
+                              .read<InterviewCubit>()
+                              .handleInterviewAction(interview.id, 'rejected'),
+                        ),
+                        _buildActionIconButton(
+                          icon: Icons.history_outlined,
+                          color: Colors.blueAccent,
+                          onTap: () => _showRescheduleDialog(context),
+                        ),
+                      ],
                     ),
-                    _buildActionIconButton(
-                      icon: Icons.history_outlined,
-                      color: Colors.blueAccent,
-                      onTap: () => _showRescheduleDialog(context),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
           ],
         ),

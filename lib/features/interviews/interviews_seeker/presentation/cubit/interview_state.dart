@@ -11,6 +11,12 @@ class InterviewLoaded extends InterviewState {
   InterviewLoaded(this.interviews);
 }
 
+class InterviewActionLoading extends InterviewState {
+  final List<InterviewEntity> interviews;
+  final String interviewId;
+  InterviewActionLoading(this.interviews, this.interviewId);
+}
+
 class InterviewError extends InterviewState {
   final String message;
   InterviewError(this.message);

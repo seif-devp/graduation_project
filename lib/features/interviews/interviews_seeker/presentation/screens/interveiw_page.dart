@@ -54,9 +54,11 @@ class InterviewsPage extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        state is InterviewLoaded
+                        (state is InterviewLoaded)
                             ? '${state.interviews.length} scheduled'
-                            : 'Upcoming scheduled meetings',
+                            : (state is InterviewActionLoading)
+                                ? '${state.interviews.length} scheduled'
+                                : 'Upcoming scheduled meetings',
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.white.withOpacity(0.8),
@@ -93,6 +95,17 @@ class InterviewsPage extends StatelessWidget {
     }
 
     if (state is InterviewLoaded) {
+      return ListView.separated(
+        // الـ padding هنا بيبدأ من تحت الهيدر مباشرة
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        itemCount: state.interviews.length,
+        separatorBuilder: (context, index) => SizedBox(height: 12.h),
+        itemBuilder: (context, index) =>
+            InterviewCard(interview: state.interviews[index]),
+      );
+    }
+
+    if (state is InterviewActionLoading) {
       return ListView.separated(
         // الـ padding هنا بيبدأ من تحت الهيدر مباشرة
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),

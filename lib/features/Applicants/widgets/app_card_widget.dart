@@ -50,7 +50,7 @@ class ApplicantCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Text(
-                "$score% Match",
+                "${applicant.aiMatchScore}% Match",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

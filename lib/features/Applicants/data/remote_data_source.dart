@@ -20,6 +20,7 @@ class ApplicantsRemoteDataSource {
 
   Future<List<ApplicationModel>> getApplicantsByJob(String jobId) async {
     final response = await DioFactory.getDio().get('/api/applications/job/$jobId');
+    print(response.data);
     final items = response.data['items'] as List;
 
     return items

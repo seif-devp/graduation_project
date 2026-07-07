@@ -1,19 +1,30 @@
 import 'package:graduation_project/features/job_details/data/model_detail.dart';
+import 'package:graduation_project/features/job_details/data/ai_match_model.dart';
 
-abstract class JobDetailsState {}
-class JobDetailsInitial extends JobDetailsState {}
-class JobDetailsLoading extends JobDetailsState {}
-class JobDetailsSuccess extends JobDetailsState {
+sealed class JobDetailsState {}
+
+final class JobDetailsInitial extends JobDetailsState {}
+final class JobDetailsLoading extends JobDetailsState {}
+
+final class JobDetailsSuccess extends JobDetailsState {
   final JobDetailsModel job;
   JobDetailsSuccess(this.job);
 }
-class JobDetailsError extends JobDetailsState {
+
+final class JobDetailsError extends JobDetailsState {
   final String message;
   JobDetailsError(this.message);
 }
-class ApplyJobLoading extends JobDetailsState {}
-class ApplyJobSuccess extends JobDetailsState {}
-class ApplyJobError extends JobDetailsState {
+
+// حالات التقديم والـ AI
+final class ApplyJobLoading extends JobDetailsState {}
+
+final class ApplyJobSuccess extends JobDetailsState {
+  final AiMatchModel aiResult;
+  ApplyJobSuccess(this.aiResult);
+}
+
+final class ApplyJobError extends JobDetailsState {
   final String message;
   ApplyJobError(this.message);
 }
