@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/core/const/colors.dart';
 import 'package:graduation_project/core/const/colors.dart' as AppColors;
 import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Applicants/presentation/screen/application_screen.dart';
@@ -16,19 +15,17 @@ import 'package:graduation_project/features/Home/Home_employer/widget/employer_h
 import 'package:graduation_project/features/Home/Home_employer/widget/quick_actions.dart';
 import 'package:graduation_project/features/Home/Home_employer/widget/recent_activity.dart';
 
-
 class EmployerHomeScreen extends StatelessWidget {
   const EmployerHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          EmployerHomeCubit(
-            EmployerHomeRepository(
-              RemoteDataSourceEployer(),
-            ),
-          )..fetchHomeDataAndJobs(),
+      create: (context) => EmployerHomeCubit(
+        EmployerHomeRepository(
+          RemoteDataSourceEployer(),
+        ),
+      )..fetchHomeDataAndJobs(),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -55,8 +52,7 @@ class EmployerHomeScreen extends StatelessWidget {
                         applicantsCount: 0,
                       );
 
-                final allJobs =
-                    state is MyJobsSuccess ? state.jobsList : [];
+                final allJobs = state is MyJobsSuccess ? state.jobsList : [];
 
                 final recentJobs = allJobs.take(3).toList();
 
@@ -65,7 +61,6 @@ class EmployerHomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       EmployerHeaderSection(data: stats),
-
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 20.w,
@@ -73,7 +68,6 @@ class EmployerHomeScreen extends StatelessWidget {
                         ),
                         child: const QuickActionsSection(),
                       ),
-
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 24.w),
                         child: Text(
@@ -85,18 +79,15 @@ class EmployerHomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-
                       SizedBox(height: 12.h),
-
                       recentJobs.isEmpty
                           ? const RecentActivitySection()
                           : ListView.builder(
                               shrinkWrap: true,
-                              physics:
-                                  const NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.zero,
                               itemCount: recentJobs.length,
-                                                            itemBuilder: (context, index) {
+                              itemBuilder: (context, index) {
                                 final job = recentJobs[index];
 
                                 return Card(
@@ -105,8 +96,7 @@ class EmployerHomeScreen extends StatelessWidget {
                                     vertical: 8.h,
                                   ),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(12.r),
+                                    borderRadius: BorderRadius.circular(12.r),
                                   ),
                                   elevation: 0.5,
                                   child: ListTile(
@@ -157,7 +147,6 @@ class EmployerHomeScreen extends StatelessWidget {
                                 );
                               },
                             ),
-
                       SizedBox(height: 20.h),
                     ],
                   ),

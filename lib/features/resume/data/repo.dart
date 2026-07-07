@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:graduation_project/core/helpers/cache_helpers.dart';
 import 'package:graduation_project/core/networking/errors.dart';
 import 'package:graduation_project/features/resume/data/model.dart';
@@ -12,11 +13,11 @@ class ResumeRepository {
   Future<Either<Failure, ResumeModel>> uploadResume(String filePath) async {
     try {
       final result = await remoteDataSource.uploadResume(filePath);
-  
+
       await CacheHelper.saveData(key: 'resumeId', value: result.id);
-      
+
       await CacheHelper.saveData(key: 'cvPath', value: filePath);
-      
+
       return Right(result);
     } catch (e) {
       return Left(ServerFailure('Error Upload Cv: ${e.toString()}'));
@@ -29,7 +30,7 @@ class ResumeRepository {
       final result = await remoteDataSource.getResumes();
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure('فشل في جلب السير الذاتية: ${e.toString()}'));
+      return Left(ServerFailure('فشل في جلب السيرة الذاتية: ${e.toString()}'));
     }
   }
 
@@ -39,7 +40,10 @@ class ResumeRepository {
       await remoteDataSource.deleteResume(id);
       return const Right(null);
     } catch (e) {
-      return Left(ServerFailure('فشل في حذف السيرة الذاتية: ${e.toString()}'));
+      if (e is DioException && e.response?.statusCode == 500) {
+        return Left(ServerFailure('Server error during delete, please try again later.'));
+      }
+      return Left(ServerFailure('Failed to delete resume: ${e.toString()}'));
     }
   }
 

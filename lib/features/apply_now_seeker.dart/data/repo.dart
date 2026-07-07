@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:graduation_project/core/networking/errors.dart';
 import 'package:graduation_project/features/apply_now_seeker.dart/data/model.dart';
 import 'package:graduation_project/features/apply_now_seeker.dart/data/remote_source.dart';
@@ -17,14 +18,21 @@ class ApplicationRepository {
     try {
       final result = await remoteDataSource.submitApplication(
         ApplicationRequestModel(
-          jobId: jobId, 
-          resumeId: resumeId, 
+          jobId: jobId,
+          resumeId: resumeId,
           aiMatchScore: aiScore,
         ),
       );
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure('فشل في تقديم الطلب: ${e.toString()}'));
+      if (e is DioException && e.response?.statusCode == 409) {
+        if (e.response?.data['error'] ==
+            'You have already applied to this job.') {
+          return Left(ServerFailure('You have already applied for this job.'));
+        }
+      }
+      return Left(
+          ServerFailure('Failed to submit application: ${e.toString()}'));
     }
   }
 
@@ -33,7 +41,8 @@ class ApplicationRepository {
       final resumeId = await remoteDataSource.uploadResume(filePath);
       return Right(resumeId);
     } catch (e) {
-      return Left(ServerFailure('فشل في رفع السيرة الذاتية للـ .NET: ${e.toString()}'));
+      return Left(
+          ServerFailure('فشل في رفع السيرة الذاتية للـ .NET: ${e.toString()}'));
     }
   }
 
@@ -44,7 +53,8 @@ class ApplicationRepository {
           cvPath: cvPath, jobDescription: jobDescription);
       return Right(result);
     } catch (e) {
-      return Left(ServerFailure('فشل في حساب مطابقة الذكاء الاصطناعي: ${e.toString()}'));
+      return Left(ServerFailure(
+          'فشل في حساب مطابقة الذكاء الاصطناعي: ${e.toString()}'));
     }
   }
 }

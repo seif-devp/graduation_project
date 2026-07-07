@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/features/Applicants/data/services/schedule_interview.dart';
 import 'package:graduation_project/features/Applicants/logic/entity.dart';
@@ -304,12 +305,28 @@ class _ScheduleInterviewDialogState extends State<ScheduleInterviewDialog> {
                                     content: Text(
                                         'Interview scheduled successfully.')),
                               );
-                            } catch (e) {
+                                                        } catch (e) {
                               if (!mounted) return;
+                              String errorMessage =
+                                  'Failed to schedule interview. Please try again.';
+                              if (e is DioException &&
+                                  e.response?.data is Map) {
+                                final responseData =
+                                    e.response!.data as Map<String, dynamic>;
+                                if (responseData.containsKey('error')) {
+                                  if (responseData['error'] ==
+                                      'An interview is already associated with this application.') {
+                                    errorMessage =
+                                        'you already scheduled an interview once and candidate reject it';
+                                  } else {
+                                    errorMessage = responseData['error'];
+                                  }
+                                }
+                              }
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                    content: Text(
-                                        'Failed to schedule interview: ${e.toString()}')),
+                                  content: Text(errorMessage),
+                                ),
                               );
                             } finally {
                               if (mounted) {

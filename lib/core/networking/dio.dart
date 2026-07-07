@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:graduation_project/core/networking/error_interceptor.dart';
 import 'package:graduation_project/features/Auth/data/services/token_refresh_interceptor.dart';
 
 class DioFactory {
@@ -15,7 +16,7 @@ class DioFactory {
           'Accept': 'application/json',
         },
       ));
-
+      dio!.interceptors.add(ErrorInterceptor());
       dio!.interceptors.add(TokenRefreshInterceptor(dioClient: dio!));
       dio!.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
     }

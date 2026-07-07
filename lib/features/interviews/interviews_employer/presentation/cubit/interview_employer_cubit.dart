@@ -22,12 +22,15 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
       final interviews =
           await repositoryemployer.getInterviewsByJobId(jobId, page, pageSize);
 
+      if (isClosed) return;
+
       if (interviews.isEmpty) {
         emit(InterviewsEmployerEmpty());
       } else {
         emit(InterviewEmployerLoaded(interviews));
       }
     } catch (e) {
+      if (isClosed) return;
       emit(InterviewEmployerError(e.toString()));
     }
   }
@@ -39,6 +42,8 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
       final interviews =
           await repositoryemployer.getallInterviews(jobIds, page, pageSize);
 
+      if (isClosed) return;
+
       if (interviews.isEmpty) {
         emit(InterviewsEmployerEmpty());
       } else {
@@ -46,6 +51,7 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
         emit(InterviewEmployerLoaded(interviews));
       }
     } catch (e) {
+      if (isClosed) return;
       emit(InterviewEmployerError(e.toString()));
     }
   }
@@ -56,6 +62,8 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
     try {
       final employerRepo = EmployerHomeRepository(RemoteDataSourceEployer());
       final jobsResult = await employerRepo.getJobs();
+
+      if (isClosed) return;
 
       final jobIds = jobsResult.fold<List<String>>(
         (failure) => <String>[],
@@ -69,6 +77,7 @@ class InterviewCubitEmployer extends Cubit<InterviewStateEmployer> {
 
       await loadAllInterviews(jobIds, page, pageSize);
     } catch (e) {
+      if (isClosed) return;
       emit(InterviewEmployerError(e.toString()));
     }
   }

@@ -220,7 +220,7 @@ class _ApplicationProgressScreenState extends State<ApplicationProgressScreen> {
               aiRemoteSource: AiMatchRemoteDataSource(),
               dotNetRepo: ApplicationRepository(ApplicationRemoteDataSource()),
             ),
-          ),
+          )..fetchJobDetails(currentJobId),
           child: BlocBuilder<JobDetailsCubit, JobDetailsState>(
             builder: (context, state) {
               if (state is JobDetailsLoading) {
@@ -252,7 +252,7 @@ class _ApplicationProgressScreenState extends State<ApplicationProgressScreen> {
                     child: Text(state.message,
                         style: const TextStyle(color: Colors.red))));
               }
-              return const SizedBox.shrink();
+              return _buildSheetWrapper(const Center(child: loading));
             },
           ),
         );

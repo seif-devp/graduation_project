@@ -1,3 +1,4 @@
+import 'package:graduation_project/core/services/snackbar_service.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,6 +75,7 @@ class _WorkState extends State<Work> with WidgetsBindingObserver {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp.router(
+          scaffoldMessengerKey: SnackbarService.scaffoldMessengerKey,
           locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
           routerConfig: router,

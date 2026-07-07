@@ -28,7 +28,8 @@ class BackgroundTokenRefreshService {
   /// Checks every [checkIntervalMinutes] if token needs refresh
   void startBackgroundRefresh({int checkIntervalMinutes = 5}) {
     if (kDebugMode) {
-      print('BackgroundTokenRefreshService: Starting background refresh service');
+      print(
+          'BackgroundTokenRefreshService: Starting background refresh service');
     }
     // Cancel existing timer if any
     _refreshTimer?.cancel();
@@ -48,7 +49,8 @@ class BackgroundTokenRefreshService {
   /// Stop the background refresh service
   void stopBackgroundRefresh() {
     if (kDebugMode) {
-      print('BackgroundTokenRefreshService: Stopping background refresh service');
+      print(
+          'BackgroundTokenRefreshService: Stopping background refresh service');
     }
     _refreshTimer?.cancel();
     _refreshTimer = null;
@@ -74,18 +76,21 @@ class BackgroundTokenRefreshService {
       final timeUntilExpiry = expiresAt.difference(now);
 
       if (kDebugMode) {
-        print('BackgroundTokenRefreshService: Time until expiry: $timeUntilExpiry');
+        print(
+            'BackgroundTokenRefreshService: Time until expiry: $timeUntilExpiry');
       }
       // Refresh if expiring within 2 minutes
       if (timeUntilExpiry.inSeconds < 120) {
         if (kDebugMode) {
-          print('BackgroundTokenRefreshService: Token is expiring soon, initiating refresh');
+          print(
+              'BackgroundTokenRefreshService: Token is expiring soon, initiating refresh');
         }
         await refreshToken();
       }
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundTokenRefreshService: Error while checking for token refresh: $e');
+        print(
+            'BackgroundTokenRefreshService: Error while checking for token refresh: $e');
       }
       // Ignore background refresh initialization errors silently.
     }
@@ -103,7 +108,7 @@ class BackgroundTokenRefreshService {
         if (kDebugMode) {
           print('BackgroundTokenRefreshService: No refresh token found');
         }
-        await clearTokens();
+        // Don't clear tokens here, as another process might be refreshing them.
         return false;
       }
 
@@ -131,22 +136,31 @@ class BackgroundTokenRefreshService {
 
         return true;
       }
+
       if (kDebugMode) {
-        print('BackgroundTokenRefreshService: Token refresh failed with status code ${response.statusCode}');
+        print(
+            'BackgroundTokenRefreshService: Token refresh failed with status code ${response.statusCode}');
       }
-      await clearTokens();
+      // If the refresh token is rejected, clear tokens
+      if (response.statusCode == 401 || response.statusCode == 403) {
+        await clearTokens();
+      }
       return false;
     } on DioException catch (e) {
       if (kDebugMode) {
         print('BackgroundTokenRefreshService: Token refresh failed: $e');
       }
-      await clearTokens();
+      // If the refresh token is rejected, clear tokens
+      if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
+        await clearTokens();
+      }
       return false;
     } catch (e) {
       if (kDebugMode) {
-        print('BackgroundTokenRefreshService: Token refresh failed with unexpected error: $e');
+        print(
+            'BackgroundTokenRefreshService: Token refresh failed with unexpected error: $e');
       }
-      await clearTokens();
+      // Do not clear tokens for unexpected errors to allow for retries
       return false;
     }
   }

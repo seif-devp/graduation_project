@@ -84,10 +84,13 @@ class _JobDetailsView extends StatelessWidget {
           );
         } else if (state is ApplyJobError) {
           Navigator.pop(context); // إغلاق اللودينج
+          final message = state.message;
+          final isAlreadyApplied = message == 'You have already applied for this job.';
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
+              content: Text(message),
+              backgroundColor: isAlreadyApplied ? Colors.orange : Colors.red,
             ),
           );
         }

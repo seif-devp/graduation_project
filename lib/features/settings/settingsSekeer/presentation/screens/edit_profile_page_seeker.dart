@@ -10,7 +10,7 @@ import 'package:graduation_project/features/settings/settingsSekeer/presentation
 import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingseeker_state.dart';
 
 class EditProfilePageSeeker extends StatefulWidget {
-  final SeekerEntity? user; 
+  final SeekerEntity? user;
 
   const EditProfilePageSeeker({super.key, this.user});
 
@@ -240,7 +240,7 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
         TextField(
           controller: controller,
           maxLines: maxLines,
-          readOnly: isReadOnly, 
+          readOnly: isReadOnly,
           decoration: InputDecoration(
             isDense: true,
             contentPadding:
