@@ -12,22 +12,25 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
   Future<void> fetchAllJobs() async {
     emit(state.copyWith(jobsStatus: JobsStatus.loading));
     try {
-      // بتنادي هنا على الميثود الحقيقية اللي بتجيب الوظائف من الـ repository عندك
-      // لو الـ repository بيرجع Either، فكها بـ fold زي المتقدمين
       final result = await repository.getEmployerJobs();
+
+      // ✅ الحماية من الكراش لو الشاشة اتقفلت قبل ما السيرفر يرد
+      if (isClosed) return; 
 
       result.fold(
         (failure) => emit(state.copyWith(jobsStatus: JobsStatus.failure)),
-        (jobsList) => emit(
-            state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList)),
+        (jobsList) => emit(state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList)),
       );
     } catch (e) {
-      // كود احتياطي لو الـ repository عندك مبرمج يرجع List علطول مش Either
       try {
-        final dynamic jobsList =
-            await (repository as dynamic).getEmployerJobs();
+        final dynamic jobsList = await (repository as dynamic).getEmployerJobs();
+        
+        // ✅ الحماية
+        if (isClosed) return; 
+
         emit(state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList));
       } catch (_) {
+        if (isClosed) return;
         emit(state.copyWith(jobsStatus: JobsStatus.failure));
       }
     }
@@ -38,10 +41,13 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
     emit(state.copyWith(isLoading: true, errorMessage: null));
     try {
       final result = await repository.getApplicants(jobId);
+
+      // ✅ الحماية هنا كمان
+      if (isClosed) return;
+
       result.fold(
         (failure) {
-          emit(state.copyWith(
-              isLoading: false, errorMessage: failure.toString()));
+          emit(state.copyWith(isLoading: false, errorMessage: failure.toString()));
         },
         (applicantsList) {
           emit(state.copyWith(
@@ -53,6 +59,7 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
         },
       );
     } catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
   }

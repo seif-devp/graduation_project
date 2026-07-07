@@ -74,6 +74,10 @@ class TokenRefreshInterceptor extends Interceptor {
           key: 'refreshToken',
           value: newTokens['refreshToken'],
         );
+        await CacheHelper.saveData(
+          key: 'expiresAtUtc',
+          value: newTokens['expiresAtUtc'],
+        );
 
         _isRefreshing = false;
 
@@ -114,7 +118,7 @@ class TokenRefreshInterceptor extends Interceptor {
   ) async {
     try {
       final response = await dioClient.post(
-        '/api/auth/refresh-token',
+        '/api/auth/refresh',
         data: {'refreshToken': refreshToken},
         options: Options(
           sendTimeout: const Duration(seconds: 10),
