@@ -252,80 +252,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   },
                 ),
                 SizedBox(height: 24.h),
-                Row(
-                  children: [
-                    const Expanded(child: Divider(thickness: 1)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: const Text('Or continue with',
-                          style: TextStyle(color: Colors.black54)),
-                    ),
-                    const Expanded(child: Divider(thickness: 1)),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // زرار جوجل بعد التعديل
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: 50.h,
-                        width: 50.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black12, blurRadius: 8),
-                          ],
-                        ),
-                        child: Center(
-                          child: SizedBox(
-                            height: 28.h,
-                            width: 28.w,
-                            child: Lottie.asset(
-                              'assets/icons/Google_Logo.json',
-                              repeat: true,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 16.w),
-                    // زرار لينكد إن بعد التعديل
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: 50.h,
-                        width: 50.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black12, blurRadius: 8),
-                          ],
-                        ),
-                        child: Center(
-                          child: SizedBox(
-                            height: 28.h,
-                            width: 28.w,
-                            child: Transform.scale(
-                              scale: 2.8,
-                              child: Lottie.asset(
-                                'assets/icons/linkdin.json',
-                                repeat: true,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 32.h),
+                
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
