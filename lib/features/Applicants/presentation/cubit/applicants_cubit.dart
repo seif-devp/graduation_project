@@ -15,18 +15,20 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
       final result = await repository.getEmployerJobs();
 
       // ✅ الحماية من الكراش لو الشاشة اتقفلت قبل ما السيرفر يرد
-      if (isClosed) return; 
+      if (isClosed) return;
 
       result.fold(
         (failure) => emit(state.copyWith(jobsStatus: JobsStatus.failure)),
-        (jobsList) => emit(state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList)),
+        (jobsList) => emit(
+            state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList)),
       );
     } catch (e) {
       try {
-        final dynamic jobsList = await (repository as dynamic).getEmployerJobs();
-        
+        final dynamic jobsList =
+            await (repository as dynamic).getEmployerJobs();
+
         // ✅ الحماية
-        if (isClosed) return; 
+        if (isClosed) return;
 
         emit(state.copyWith(jobsStatus: JobsStatus.success, jobs: jobsList));
       } catch (_) {
@@ -47,7 +49,8 @@ class ApplicantsCubit extends Cubit<ApplicantsState> {
 
       result.fold(
         (failure) {
-          emit(state.copyWith(isLoading: false, errorMessage: failure.toString()));
+          emit(state.copyWith(
+              isLoading: false, errorMessage: failure.toString()));
         },
         (applicantsList) {
           emit(state.copyWith(

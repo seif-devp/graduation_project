@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/route/route.dart';
 import 'package:graduation_project/core/services/app_initializer.dart';
+import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/core/widgets/global_chat_bot_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -76,6 +77,9 @@ class _WorkState extends State<Work> with WidgetsBindingObserver {
           locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
           builder: (context, routedChild) {
             return Stack(
               children: [

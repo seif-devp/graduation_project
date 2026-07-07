@@ -1,4 +1,4 @@
-// مسار الملف: lib/core/helpers/cache_helper.dart
+import 'package:flutter/foundation.dart';
 import 'package:graduation_project/core/networking/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +14,9 @@ class CacheHelper {
     required String key,
     required dynamic value,
   }) async {
+    if (kDebugMode) {
+      print('CacheHelper: Saving data with key: $key and value: $value');
+    }
     if (value is String) return await sharedPreferences.setString(key, value);
     if (value is int) return await sharedPreferences.setInt(key, value);
     if (value is bool) return await sharedPreferences.setBool(key, value);
@@ -48,7 +51,9 @@ Future<String> downloadCvToTemp(String fileUrl) async {
     fullUrl = '$baseUrl$separator$cleanUrl';
   }
 
-  print("DEBUG: Final URL being requested -> $fullUrl");
+  if (kDebugMode) {
+    print("DEBUG: Final URL being requested -> $fullUrl");
+  }
 
   // 4. تحميل الملف
   final tempDir = await getTemporaryDirectory();
