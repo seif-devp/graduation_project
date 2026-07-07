@@ -10,7 +10,7 @@ import 'package:graduation_project/features/settings/settingsSekeer/presentation
 import 'package:graduation_project/features/settings/settingsSekeer/presentation/cubit/settingseeker_state.dart';
 
 class EditProfilePageSeeker extends StatefulWidget {
-  final SeekerEntity? user; // استقبلنا اليوزر هنا
+  final SeekerEntity? user; 
 
   const EditProfilePageSeeker({super.key, this.user});
 
@@ -149,32 +149,7 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    _buildCard(
-                      title: 'My Resumes',
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.upload_file, size: 16),
-                              label: const Text('Upload'),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.grey.shade300),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          _buildResumeTile(
-                              'Sarah_Johnson_Resume_2026.pdf', '15/01/2026'),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
@@ -265,7 +240,7 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
         TextField(
           controller: controller,
           maxLines: maxLines,
-          readOnly: isReadOnly, // تفعيل القراءة فقط
+          readOnly: isReadOnly, 
           decoration: InputDecoration(
             isDense: true,
             contentPadding:

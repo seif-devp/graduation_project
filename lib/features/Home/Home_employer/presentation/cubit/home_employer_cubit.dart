@@ -16,7 +16,7 @@ class EmployerHomeCubit extends Cubit<EmployerHomeState> {
     jobsResult.fold(
       (failure) => emit(MyJobsError(failure.message)),
       (jobsList) {
-        // ✅ بنحسب الـ stats من الوظايف
+        
         final activeJobs = jobsList.length;
         final totalApplicants = jobsList.fold<int>(
           0, (sum, job) => sum + job.applicationCount,

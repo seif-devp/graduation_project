@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({super.key});
@@ -17,7 +18,10 @@ class SectionTitle extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Text("See all", style: TextStyle(color: Colors.blue,fontSize: 16.sp)),
+        TextButton(
+          onPressed: () => context.goNamed("jobPage"),
+          child:  Text( "See all", style: TextStyle(color: Colors.blue,fontSize: 16.sp)),
+          ),
       ],
     );
   }

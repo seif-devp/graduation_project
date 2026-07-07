@@ -16,8 +16,6 @@ class _ChatMessage {
   _ChatMessage({required this.text, required this.isUser});
 }
 
-/// بيخزن المحادثة طول ما التطبيق شغال (مش هتتمسح لو خرجت من الشاشة
-/// ورجعتلها تاني، هتتمسح بس لو قفلت التطبيق بالكامل من الـ Recents).
 class _ChatHistoryStore {
   static final List<_ChatMessage> messages = [];
 }
@@ -138,7 +136,7 @@ class _CareerCoachScreenState extends State<CareerCoachScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(24),
                       child: Text(
-                        "👋 Welcome to your Career Coach AI! I'm here to help you ",
+                        "👋 Welcome to your Chatbot AI! I'm here to help you ",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey[600], fontSize: 15),
                       ),
