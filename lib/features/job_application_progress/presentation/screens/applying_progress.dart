@@ -4,12 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/const/colors.dart'; // تأكد من استيراد الـ primaryColor
 import 'package:graduation_project/core/const/widgets.dart';
+import 'package:graduation_project/features/apply_now_seeker.dart/data/remote_source.dart';
+import 'package:graduation_project/features/apply_now_seeker.dart/data/repo.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/cubit/application_progress_cubit.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/cubit/application_progress_state.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/widgets/application_card.dart';
 import 'package:graduation_project/features/job_application_progress/presentation/widgets/application_detail_widget.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_state.dart';
+import 'package:graduation_project/features/job_details/data/ai_remote_source.dart';
+import 'package:graduation_project/features/job_details/data/job_application_repo.dart';
 import 'package:graduation_project/features/job_details/data/remote_detail_source.dart';
 import 'package:graduation_project/features/job_details/data/repo_imp_detail.dart';
 
@@ -210,9 +214,13 @@ class _ApplicationProgressScreenState extends State<ApplicationProgressScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return BlocProvider(
-          create: (context) =>
-              JobDetailsCubit(JobDetailsRepo(JobDetailsRemoteDataSource()))
-                ..fetchJobDetails(currentJobId),
+          create: (context) => JobDetailsCubit(
+            JobDetailsRepo(JobDetailsRemoteDataSource()),
+            JobApplicationRepository(
+              aiRemoteSource: AiMatchRemoteDataSource(),
+              dotNetRepo: ApplicationRepository(ApplicationRemoteDataSource()),
+            ),
+          ),
           child: BlocBuilder<JobDetailsCubit, JobDetailsState>(
             builder: (context, state) {
               if (state is JobDetailsLoading) {

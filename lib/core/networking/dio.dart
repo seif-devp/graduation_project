@@ -8,8 +8,8 @@ class DioFactory {
     if (dio == null) {
       dio = Dio(BaseOptions(
         baseUrl: "https://smartjop.runasp.net",
-        receiveTimeout: const Duration(seconds: 20),
-        connectTimeout: const Duration(seconds: 20),
+        receiveTimeout: const Duration(seconds: 60),
+        connectTimeout: const Duration(seconds: 60),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

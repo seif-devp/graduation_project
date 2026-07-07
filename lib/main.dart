@@ -6,7 +6,7 @@ import 'package:graduation_project/work.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  
+
   // Initialize all app services
   await AppInitializer().initialize();
 

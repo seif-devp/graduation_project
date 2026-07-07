@@ -1,95 +1,52 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/core/helpers/cache_helpers.dart';
-import 'package:graduation_project/features/apply_now_seeker.dart/data/remote_source.dart';
-import 'package:graduation_project/features/apply_now_seeker.dart/data/repo.dart';
-import 'package:graduation_project/features/job_details/cubit/job_details_state.dart';
-import 'package:graduation_project/features/job_details/data/model_detail.dart';
 import 'package:graduation_project/features/job_details/data/repo_imp_detail.dart';
+import 'package:graduation_project/features/job_details/data/job_application_repo.dart';
+import 'package:graduation_project/features/job_details/data/model_detail.dart';
+import 'package:graduation_project/features/resume/data/model.dart';
+import 'job_details_state.dart';
 
 class JobDetailsCubit extends Cubit<JobDetailsState> {
-  final JobDetailsRepo repo;
-  final ApplicationRepository applicationRepository = ApplicationRepository(
-    ApplicationRemoteDataSource(),
-  );
+  final JobDetailsRepo jobRepo;
+  final JobApplicationRepository appRepo;
 
-  JobDetailsModel? _currentJob;
-  bool _hasApplied = false;
+  JobDetailsModel? currentJob;
+  bool hasApplied = false;
 
-  double? matchScore;
-  List<String> matchedSkills = [];
-  List<String> missingSkills = [];
-
-  JobDetailsModel? get currentJob => _currentJob;
-  bool get hasApplied => _hasApplied;
-
-  JobDetailsCubit(this.repo) : super(JobDetailsInitial());
+  JobDetailsCubit(this.jobRepo, this.appRepo) : super(JobDetailsInitial());
 
   Future<void> fetchJobDetails(String id) async {
     emit(JobDetailsLoading());
-    final result = await repo.getJobDetails(id);
+    final result = await jobRepo.getJobDetails(id);
     result.fold(
       (failure) => emit(JobDetailsError(failure.message)),
       (job) {
-        _currentJob = job;
+        currentJob = job;
         emit(JobDetailsSuccess(job));
       },
     );
   }
 
-  Future<void> uploadAndSubmitApplication({
-    required String jobId,
-    required String cvPath,
-    required String jobDescription,
-  }) async {
+  Future<void> applyWithResume(ResumeModel resume) async {
+    if (currentJob == null) return;
+    
     emit(ApplyJobLoading());
 
-    int finalAiScore = 0;
+    // دمج الوصف والمتطلبات عشان نبعتها للـ AI
+    final jobText = "${currentJob!.title} ${currentJob!.description} ${currentJob!.requirements.join(' ')}";
 
-    // 1️⃣ حساب الـ AI من سيرفر البايثون
-    final aiResult = await applicationRepository.getAiMatchScore(cvPath, jobDescription);
-    aiResult.fold(
-      (failure) {
-        finalAiScore = 0; 
-      },
-      (data) {
-        // حماية التحويل من dynamic لـ double ثم تقريبه لـ int صريح لـ .NET
-        var rawScore = data['match_score'] ?? 0;
-        matchScore = rawScore is num ? rawScore.toDouble() : double.tryParse(rawScore.toString()) ?? 0.0;
-        
-        matchedSkills = List<String>.from(data['matched_skills'] ?? []);
-        missingSkills = List<String>.from(data['missing_skills'] ?? []);
-        
-        finalAiScore = matchScore!.round(); // ✅ السكور الفعلي الدقيق
-      },
+    final result = await appRepo.processAndApply(
+      jobId: currentJob!.id,
+      resumeId: resume.id,
+      cvUrl: resume.fileUrl, 
+      jobDescription: jobText,
     );
 
-    // 2️⃣ الرفع للـ .NET
-    final uploadResult = await applicationRepository.uploadResumeToDotNet(cvPath);
-
-    await uploadResult.fold(
-      (failure) async {
-        emit(ApplyJobError(failure.message));
-      },
-      (realResumeId) async {
-        await CacheHelper.saveData(key: 'resumeId', value: realResumeId);
-
-        // 3️⃣ تقديم الطلب النهائي بالسكور الصحيح تماماً ليظهر عند الأمبلوير
-        final submitResult = await applicationRepository.submitApplication(
-          jobId: jobId,
-          resumeId: realResumeId,
-          aiScore: finalAiScore, 
-        );
-
-        submitResult.fold(
-          (failure) => emit(ApplyJobError(failure.message)),
-          (_) {
-            _hasApplied = true;
-            emit(ApplyJobSuccess());
-          },
-        );
+    result.fold(
+      (failure) => emit(ApplyJobError(failure.message)),
+      (aiData) {
+        hasApplied = true;
+        emit(ApplyJobSuccess(aiData));
       },
     );
-
-    if (_currentJob != null) emit(JobDetailsSuccess(_currentJob!));
   }
 }
