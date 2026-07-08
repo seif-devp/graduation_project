@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:graduation_project/core/networking/dio.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';
@@ -10,12 +9,25 @@ class SettingsSekeerRepository {
       final response = await DioFactory.getDio().get('/api/users/me');
       if (response.statusCode == 200) {
         final data = response.data;
+        
+        // 🔴 تصليح مسار الصورة هنا
+        String? rawAvatar = data['avatarUrl'] ?? data['avatar'];
+        String? fullAvatarUrl;
+        
+        if (rawAvatar != null && rawAvatar.isNotEmpty) {
+          if (rawAvatar.startsWith('http')) {
+            fullAvatarUrl = rawAvatar;
+          } else {
+            fullAvatarUrl = 'https://smartjop.runasp.net$rawAvatar';
+          }
+        }
+
         return SeekerEntity(
           name: data['name'] ?? '',
           email: data['email'] ?? '',
           phone: data['phone'] ?? '',
           bio: data['bio'] ?? '',
-          avatarUrl: data['avatarUrl'] ?? data['avatar'],
+          avatarUrl: fullAvatarUrl, // المسار بعد التصليح
           isLightMode: true,
         );
       } else {
@@ -26,7 +38,6 @@ class SettingsSekeerRepository {
     }
   }
 
-  // ضيف الدالة دي جوه كلاس SettingsSekeerRepository
   Future<void> updateBasicProfile({
     required String name,
     required String phone,

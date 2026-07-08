@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Notifications/notification_employer/cubit/notification_Employer_cubit.dart';
 import 'package:graduation_project/features/Notifications/notification_seeker/data/model.dart';
 
@@ -54,7 +55,7 @@ class _NotificationsPageEmployerState
       body: BlocBuilder<NotificationCubitEmployer, NotificationStateEmployer>(
         builder: (context, state) {
           if (state is NotificationLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: loading);
           }
 
           if (state is NotificationFailed) {

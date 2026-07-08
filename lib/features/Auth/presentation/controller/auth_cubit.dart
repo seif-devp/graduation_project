@@ -39,8 +39,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       _tokenRefreshService.startBackgroundRefresh(checkIntervalMinutes: 5);
       emit(AuthSuccess(role: realRole, token: resp.accessToken));
-    } catch (e) {
-      emit(AuthFailure('Failed to login: ${e.toString()}'));
+   } catch (e) {
+      // بنشيل كلمة Exception: عشان الرسالة تظهر للمستخدم نضيفة
+      String cleanMessage = e.toString().replaceAll('Exception: ', '');
+      emit(AuthFailure(cleanMessage));
     }
   }
 

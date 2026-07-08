@@ -8,7 +8,6 @@ class RecentActivitySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      // شيلنا الـ Column والـ Text اللي كان فيهم العنوان المكرر
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

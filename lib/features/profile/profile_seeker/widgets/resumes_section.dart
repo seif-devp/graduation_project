@@ -17,16 +17,22 @@ class ResumesSection extends StatelessWidget {
       listener: (context, resumeState) {
         if (resumeState is ResumeActionSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(resumeState.message), backgroundColor: Colors.green),
+            SnackBar(
+                content: Text(resumeState.message),
+                backgroundColor: Colors.green),
           );
         } else if (resumeState is ResumeFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(resumeState.errorMessage), backgroundColor: Colors.red),
+            SnackBar(
+                content: Text(resumeState.errorMessage),
+                backgroundColor: Colors.red),
           );
         }
       },
       buildWhen: (previous, current) =>
-          current is GetResumesLoading || current is GetResumesSuccess || current is GetResumesFailure,
+          current is GetResumesLoading ||
+          current is GetResumesSuccess ||
+          current is GetResumesFailure,
       builder: (context, resumeState) {
         return Frame(
           title: "My Resumes",
@@ -38,7 +44,8 @@ class ResumesSection extends StatelessWidget {
                 children: [
                   TextButton.icon(
                     onPressed: () async {
-                      FilePickerResult? result = await FilePicker.platform.pickFiles(
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
                         type: FileType.custom,
                         allowedExtensions: ['pdf', 'doc', 'docx'],
                       );
@@ -56,36 +63,44 @@ class ResumesSection extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 5.h),
-              if (resumeState is GetResumesLoading || resumeState is ResumeActionLoading)
+              if (resumeState is GetResumesLoading ||
+                  resumeState is ResumeActionLoading)
                 const Center(child: CircularProgressIndicator())
               else if (resumeState is GetResumesFailure)
-                Center(child: Text(resumeState.errorMessage, style: const TextStyle(color: Colors.red)))
+                Center(
+                    child: Text(resumeState.errorMessage,
+                        style: const TextStyle(color: Colors.red)))
               else if (resumeState is GetResumesSuccess)
                 resumeState.resumes.isEmpty
                     ? const Padding(
                         padding: EdgeInsets.all(16.0),
-                        child: Text("No resumes uploaded yet.", style: TextStyle(color: Colors.grey)),
+                        child: Text("No resumes uploaded yet.",
+                            style: TextStyle(color: Colors.grey)),
                       )
                     : Column(
                         children: resumeState.resumes.map((resume) {
                           return Padding(
                             padding: EdgeInsets.only(bottom: 10.h),
                             child: ResumeItem(
-  resume: resume, // ✅ بتباصي الموديل كامل هنا
-  actions: [
-    IconButton(
-      icon: Icon(
-        resume.isDefault ? Icons.star : Icons.star_border,
-        color: resume.isDefault ? Colors.amber : Colors.grey,
-      ),
-      onPressed: () => context.read<ResumeCubit>().setDefaultResume(resume.id),
-    ),
-    IconButton(
-      icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
-      onPressed: () => context.read<ResumeCubit>().deleteResume(resume.id),
-    ),
-  ],
-),
+                              resume: resume, // ✅ بتباصي الموديل كامل هنا
+                              actions: [
+                                // زرار الـ Default (النجمة) بس اللي هيفضل موجود
+                                IconButton(
+                                  icon: Icon(
+                                    resume.isDefault
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                    color: resume.isDefault
+                                        ? Colors.amber
+                                        : Colors.grey,
+                                  ),
+                                  onPressed: () => context
+                                      .read<ResumeCubit>()
+                                      .setDefaultResume(resume.id),
+                                ),
+                                // ❌ تم إزالة زرار الحذف (Delete) بالكامل من هنا
+                              ],
+                            ),
                           );
                         }).toList(),
                       )

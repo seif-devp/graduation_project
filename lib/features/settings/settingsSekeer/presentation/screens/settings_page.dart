@@ -33,7 +33,6 @@ class SettingsPageSeeker extends StatelessWidget {
           final user = state.user;
 
           return Scaffold(
-            // الخلفية زرقاء عشان تليق مع الـ Header
             backgroundColor: isDark ? const Color(0xFF121212) : primaryColor,
             body: SafeArea(
               child: SingleChildScrollView(
@@ -41,7 +40,6 @@ class SettingsPageSeeker extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // --- Header (White text for contrast) ---
                     Text("Settings",
                         style: TextStyle(
                             fontSize: 24.sp,
@@ -51,8 +49,6 @@ class SettingsPageSeeker extends StatelessWidget {
                         style:
                             TextStyle(fontSize: 14.sp, color: Colors.white70)),
                     SizedBox(height: 24.h),
-
-                    // --- Profile Card ---
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(16.w),
@@ -70,11 +66,19 @@ class SettingsPageSeeker extends StatelessWidget {
                         children: [
                           Row(
                             children: [
+                              // --- 🔴 التعديل هنا لظهور الصورة ---
                               CircleAvatar(
                                 radius: 35.r,
                                 backgroundColor: Colors.blue.shade100,
-                                child: Icon(Icons.person,
-                                    size: 40.sp, color: Colors.blue),
+                                backgroundImage: (user?.avatarUrl != null &&
+                                        user!.avatarUrl!.isNotEmpty)
+                                    ? NetworkImage(user.avatarUrl!)
+                                    : null,
+                                child: (user?.avatarUrl == null ||
+                                        user!.avatarUrl!.isEmpty)
+                                    ? Icon(Icons.person,
+                                        size: 40.sp, color: Colors.blue)
+                                    : null,
                               ),
                               SizedBox(width: 16.w),
                               Expanded(
@@ -117,8 +121,6 @@ class SettingsPageSeeker extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 24.h),
-
-                    // --- Account Information ---
                     _sectionTitle("Account Information"),
                     SizedBox(height: 8.h),
                     _buildInfoCard(cardColor, [
@@ -139,10 +141,7 @@ class SettingsPageSeeker extends StatelessWidget {
                       _infoRow(Icons.description_outlined, "Bio:",
                           user?.bio ?? "No Bio added", subTextColor, textColor),
                     ]),
-
                     SizedBox(height: 24.h),
-
-                    // --- Appearance ---
                     _sectionTitle("Appearance"),
                     SizedBox(height: 8.h),
                     Container(
@@ -165,10 +164,7 @@ class SettingsPageSeeker extends StatelessWidget {
                             .toggleTheme(val),
                       ),
                     ),
-
                     SizedBox(height: 32.h),
-
-                    // --- Logout ---
                     SizedBox(
                       width: double.infinity,
                       height: 50.h,

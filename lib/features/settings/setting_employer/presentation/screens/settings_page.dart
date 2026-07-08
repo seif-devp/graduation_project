@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/const/widgets.dart';
-import 'package:graduation_project/features/settings/setting_employer/data/repo.dart';
+import 'package:graduation_project/features/settings/setting_employer/logic/repo.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
-import 'package:graduation_project/core/const/colors.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // تعريف اللون الأزرق المطلوب
     const Color myPrimaryBlue = Color(0xFF033B7A);
 
     return BlocProvider(
@@ -34,9 +32,20 @@ class SettingsPage extends StatelessWidget {
 
           final user = state.user;
 
+          // تجهيز العرض: لو اسم الشركة موجود نعرضه، ولو لأ نعرض اسم الشخص
+          final String displayTitle = (user?.companyName != null &&
+                  user!.companyName!.trim().isNotEmpty)
+              ? user.companyName!
+              : (user?.name ?? "No Name");
+
+          // تجهيز العرض الفرعي: لو اسم الشركة معروض فوق، نعرض تحت (الاسم • الإيميل)
+          final String displaySubtitle = (user?.companyName != null &&
+                  user!.companyName!.trim().isNotEmpty)
+              ? "${user?.name ?? ''} • ${user?.email ?? ''}"
+              : (user?.email ?? "No Email");
+
           return Scaffold(
             backgroundColor: bgColor,
-            // تم إضافة الـ AppBar هنا باللون المطلوب
             appBar: AppBar(
               backgroundColor: myPrimaryBlue,
               title: Column(
@@ -47,9 +56,7 @@ class SettingsPage extends StatelessWidget {
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
-                  SizedBox(
-                    height: 4.h,
-                  ),
+                  SizedBox(height: 4.h),
                   Text("Manage your company account",
                       style: TextStyle(fontSize: 14.sp, color: Colors.white70)),
                 ],
@@ -82,23 +89,40 @@ class SettingsPage extends StatelessWidget {
                             CircleAvatar(
                               radius: 35.r,
                               backgroundColor: myPrimaryBlue.withOpacity(0.1),
-                              child: Icon(Icons.business,
-                                  size: 35.sp, color: myPrimaryBlue),
+                              backgroundImage: (user?.avatarUrl != null &&
+                                      user!.avatarUrl!.isNotEmpty)
+                                  ? NetworkImage(user.avatarUrl!)
+                                  : null,
+                              child: (user?.avatarUrl == null ||
+                                      user!.avatarUrl!.isEmpty)
+                                  ? Icon(Icons.business,
+                                      size: 35.sp, color: myPrimaryBlue)
+                                  : null,
                             ),
                             SizedBox(width: 16.w),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(user?.name ?? "No Name",
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: textColor)),
-                                  Text(user?.email ?? "No Email",
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: subTextColor)),
+                                  // 🔴 التعديل هنا: عرض اسم الشركة بشكل رئيسي
+                                  Text(
+                                    displayTitle,
+                                    style: TextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: textColor),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  // عرض الاسم الشخصي والإيميل تحته
+                                  Text(
+                                    displaySubtitle,
+                                    style: TextStyle(
+                                        fontSize: 13.sp, color: subTextColor),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ],
                               ),
                             ),
@@ -113,7 +137,7 @@ class SettingsPage extends StatelessWidget {
                                 .editProfile(context),
                             icon: Icon(Icons.edit_outlined,
                                 size: 18.sp, color: textColor),
-                            label: Text("Edit Company Profile",
+                            label: Text("Edit Profile",
                                 style: TextStyle(color: textColor)),
                             style: OutlinedButton.styleFrom(
                                 side: BorderSide(color: Colors.grey.shade300),
@@ -126,7 +150,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20.h),
 
-                  // --- بقية الأقسام ---
+                  // --- Company Information ---
                   _buildSection("Company Information", textColor, cardColor,
                       subTextColor, [
                     _buildRow(
@@ -149,6 +173,8 @@ class SettingsPage extends StatelessWidget {
                         subTextColor),
                   ]),
                   SizedBox(height: 20.h),
+
+                  // --- Basic Information ---
                   _buildSection(
                       "Basic Information", textColor, cardColor, subTextColor, [
                     _buildRow(
@@ -166,7 +192,7 @@ class SettingsPage extends StatelessWidget {
                   ]),
                   SizedBox(height: 20.h),
 
-                  // Appearance
+                  // --- Appearance ---
                   Container(
                     decoration: BoxDecoration(
                         color: cardColor,
@@ -183,6 +209,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 30.h),
 
+                  // --- Logout ---
                   ElevatedButton(
                     onPressed: () =>
                         context.read<SettingsCubit>().logout(context),

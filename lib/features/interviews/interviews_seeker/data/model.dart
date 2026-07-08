@@ -8,7 +8,7 @@ class InterviewModel extends InterviewEntity {
     required super.company,
     required super.date,
     required super.time,
-    required super.type,
+    required super.mode,
     required super.meetingLink,
     required super.status,
     super.rescheduleRequestedAt,
@@ -31,7 +31,7 @@ class InterviewModel extends InterviewEntity {
       // Format the DateTime into the strings your UI expects
       date: DateFormat('MMM dd, yyyy').format(mainDate), // e.g., May 11, 2026
       time: DateFormat('hh:mm a').format(mainDate), // e.g., 03:29 PM
-      type: json['mode'] ?? 'Online',
+      mode: json['mode'] ?? 'Online',
       meetingLink: json['interviewLink'] ?? 'No link provided',
       status: json['status'] ?? 'Pending',
       rescheduleRequestedAt: json['rescheduleRequestedAt'],

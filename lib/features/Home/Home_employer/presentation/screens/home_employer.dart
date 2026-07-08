@@ -132,17 +132,6 @@ class EmployerHomeScreen extends StatelessWidget {
                                     subtitle: Text(
                                       job.companyName ?? "غير محدد",
                                     ),
-                                    trailing: IconButton(
-                                      icon: const Icon(
-                                        Icons.delete_outline,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        context
-                                            .read<EmployerHomeCubit>()
-                                            .removeJob(job.id.toString());
-                                      },
-                                    ),
                                   ),
                                 );
                               },

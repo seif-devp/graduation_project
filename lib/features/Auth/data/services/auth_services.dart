@@ -36,7 +36,8 @@ Future<AuthResponseModel> registerJobSeeker({
       final authResponse = AuthResponseModel.fromJson(response.data);
       await CacheHelper.saveData(
           key: 'accessToken', value: authResponse.accessToken);
-          await CacheHelper.saveData(key: 'name', value: authResponse.user.name); // حفظ الاسم في الكاش
+      await CacheHelper.saveData(
+          key: 'name', value: authResponse.user.name); // حفظ الاسم في الكاش
       await CacheHelper.saveData(
           key: 'refreshToken', value: authResponse.refreshToken);
       await CacheHelper.saveData(
@@ -83,13 +84,13 @@ Future<AuthResponseModel> registerEmployer({
       final authResponse = AuthResponseModel.fromJson(response.data);
       await CacheHelper.saveData(
           key: 'accessToken', value: authResponse.accessToken);
-      await CacheHelper.saveData(key: 'name', value: authResponse.user.name); 
+      await CacheHelper.saveData(key: 'name', value: authResponse.user.name);
 
       await CacheHelper.saveData(
           key: 'refreshToken', value: authResponse.refreshToken);
       await CacheHelper.saveData(
           key: 'expiresAtUtc', value: authResponse.expiresAtUtc);
-      
+
       return authResponse;
     } else {
       throw Exception('Failed to register employer: ${response.statusMessage}');
@@ -128,7 +129,15 @@ Future<AuthResponseModel> login({
       throw Exception('Failed to login: ${response.statusMessage}');
     }
   } on DioException catch (e) {
+    // لو الخطأ 400 أو 401 أو 404 معناه إن البيانات غلط
+    if (e.response?.statusCode == 400 ||
+        e.response?.statusCode == 401 ||
+        e.response?.statusCode == 404) {
+      throw Exception('Invalid email or password. Please try again.');
+    }
+
+    // أي خطأ تاني (زي النت فاصل مثلاً)
     final errorMsg = e.response?.data ?? e.message;
-    throw Exception('Failed to login: $errorMsg');
+    throw Exception(errorMsg.toString());
   }
 }

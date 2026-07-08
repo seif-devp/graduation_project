@@ -94,12 +94,12 @@ class ApplicantCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildCustomActionButton(
-                label: "Reject",
-                icon: Icons.thumb_down,
-                color: const Color(0xFFFDECEA),
-                iconColor: const Color(0xFFD32F2F),
-                onTap: onReject,
+               _buildCustomActionButton(
+                label: "Accept",
+                icon: Icons.thumb_up,
+                color: const Color(0xFFE8F5E9),
+                iconColor: const Color(0xFF388E3C),
+                onTap: onAccept,
               ),
               _buildCustomActionButton(
                 label: "Interview",
@@ -109,12 +109,13 @@ class ApplicantCard extends StatelessWidget {
                 onTap: onInterview,
               ),
               _buildCustomActionButton(
-                label: "Accept",
-                icon: Icons.thumb_up,
-                color: const Color(0xFFE8F5E9),
-                iconColor: const Color(0xFF388E3C),
-                onTap: onAccept,
+                label: "Reject",
+                icon: Icons.thumb_down,
+                color: const Color(0xFFFDECEA),
+                iconColor: const Color(0xFFD32F2F),
+                onTap: onReject,
               ),
+             
             ],
           ),
         ],

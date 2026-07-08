@@ -8,6 +8,7 @@ import 'package:graduation_project/features/Applicants/presentation/cubit/applic
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_state.dart';
 import 'package:graduation_project/features/Applicants/presentation/screen/application_screen.dart';
 import 'package:graduation_project/features/Applicants/widgets/card_widget.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/job_list/data/models/job_model_response.dart';
 
 class JobPageEmployer extends StatefulWidget {
@@ -154,7 +155,7 @@ class _JobPageEmployerState extends State<JobPageEmployer> {
                 builder: (context, state) {
                   if (state.jobsStatus == JobsStatus.loading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: loading,
                     );
                   }
 

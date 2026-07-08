@@ -79,7 +79,7 @@ class InterviewCard extends StatelessWidget {
                         Icons.access_time, Colors.orange, interview.time),
                     SizedBox(height: 8.h),
                     _buildInfoRow(
-                        Icons.videocam_outlined, Colors.purple, interview.type),
+                        Icons.videocam_outlined, Colors.purple, interview.mode),
                     SizedBox(height: 12.h),
                     _buildMeetingLink(interview.meetingLink),
                   ],

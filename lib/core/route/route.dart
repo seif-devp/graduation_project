@@ -35,8 +35,8 @@ import 'package:graduation_project/features/job_list/presentation/screens/jop_pa
 import 'package:graduation_project/features/post_job/presentation/screen/post_job.dart';
 import 'package:graduation_project/features/profile/profile_seeker/presentation/screens/profile_screen.dart';
 import 'package:graduation_project/features/resume/presentation/screen/page.dart';
-import 'package:graduation_project/features/settings/setting_employer/data/repo.dart';
-import 'package:graduation_project/features/settings/setting_employer/logic/entitiy.dart';
+import 'package:graduation_project/features/settings/setting_employer/logic/repo.dart';
+import 'package:graduation_project/features/settings/setting_employer/data/entitiy.dart';
 import 'package:graduation_project/features/settings/setting_employer/presentation/cubit/setting_cubit.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/data/repoSeeker.dart';
 import 'package:graduation_project/features/settings/settingsSekeer/logic/entitiy.dart';

@@ -28,7 +28,6 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
   @override
   void initState() {
     super.initState();
-    // بنربط الداتا اللي جاية من الـ API بالحقول
     _nameCtrl = TextEditingController(text: widget.user?.name ?? '');
     _emailCtrl = TextEditingController(text: widget.user?.email ?? '');
     _phoneCtrl = TextEditingController(text: widget.user?.phone ?? '');
@@ -80,13 +79,14 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                         children: [
                           CircleAvatar(
                             radius: 44,
+                            backgroundColor: Colors.blue.shade50,
                             backgroundImage: _selectedAvatarPath != null
                                 ? FileImage(File(_selectedAvatarPath!))
                                 : (widget.user?.avatarUrl != null &&
-                                        widget.user!.avatarUrl!.isNotEmpty
+                                        widget.user!.avatarUrl!.isNotEmpty)
                                     ? NetworkImage(widget.user!.avatarUrl!)
                                         as ImageProvider
-                                    : null),
+                                    : null,
                             child: _selectedAvatarPath == null &&
                                     (widget.user?.avatarUrl == null ||
                                         widget.user!.avatarUrl!.isEmpty)
@@ -254,11 +254,8 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                 ? lightFill
                 : Colors.grey.shade800,
           ),
-          style: TextStyle(
-              fontSize: 14,
-              color:
-                  isReadOnly ? Colors.grey : null // لو مقفول نخليه لونه رمادي
-              ),
+          style:
+              TextStyle(fontSize: 14, color: isReadOnly ? Colors.grey : null),
         ),
       ],
     );
@@ -280,46 +277,6 @@ class _EditProfilePageState extends State<EditProfilePageSeeker> {
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           child,
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResumeTile(String name, String date) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Theme.of(context).brightness == Brightness.light
-            ? const Color(0xFFEEF7FF)
-            : Colors.grey.shade800,
-        border: Border.all(color: Colors.transparent),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                const SizedBox(height: 4),
-                Text(date,
-                    style:
-                        TextStyle(fontSize: 12, color: Colors.grey.shade600)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: const Text('PDF',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-          ),
         ],
       ),
     );

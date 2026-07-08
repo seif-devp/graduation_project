@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Applicants/data/remote_data_source.dart';
 import 'package:graduation_project/features/Applicants/data/repo_application.dart';
 import 'package:graduation_project/features/Applicants/presentation/cubit/applicants_cubit.dart';
@@ -41,7 +42,7 @@ class ApplicantsScreenn extends StatelessWidget {
           builder: (context, state) {
             if (state.isLoading) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child:loading,
               );
             }
 

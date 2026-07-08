@@ -24,15 +24,26 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
+    // 🔴 تصليح مسار الصورة هنا
+    String? rawAvatar = json['avatarUrl'];
+    String? fullAvatarUrl;
+    
+    if (rawAvatar != null && rawAvatar.isNotEmpty) {
+      if (rawAvatar.startsWith('http')) {
+        fullAvatarUrl = rawAvatar;
+      } else {
+        fullAvatarUrl = 'https://smartjop.runasp.net$rawAvatar';
+      }
+    }
+
     return ProfileModel(
       id: json['id'] ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       phone: json['phone'],
       bio: json['bio'],
-      avatarUrl: json['avatarUrl'],
+      avatarUrl: fullAvatarUrl, // المسار بعد التصليح
       isVerified: json['isVerified'] ?? false,
-      // الباك إند بيرجع الـ role كـ String زي "Seeker"، هنحوله لرقم عشان يكمل مع اللوجيك بتاعنا
       role: json['role'] == 'Employer' ? 1 : 0,
       seekerProfile: json['seekerProfile'] != null
           ? SeekerProfileModel.fromJson(json['seekerProfile'])

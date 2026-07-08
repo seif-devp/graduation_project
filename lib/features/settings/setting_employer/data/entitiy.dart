@@ -4,8 +4,8 @@ class UserEntity {
   final String phone;
   final String bio;
   final bool isLightMode;
+  final String? avatarUrl; // 🔴 ضفنا مسار الصورة هنا
 
-  // الحقول الجديدة الخاصة بالشركة
   final String? companyName;
   final String? companySize;
   final String? industry;
@@ -17,6 +17,7 @@ class UserEntity {
     required this.phone,
     required this.bio,
     required this.isLightMode,
+    this.avatarUrl,
     this.companyName,
     this.companySize,
     this.industry,
@@ -29,6 +30,7 @@ class UserEntity {
     String? phone,
     String? bio,
     bool? isLightMode,
+    String? avatarUrl,
     String? companyName,
     String? companySize,
     String? industry,
@@ -40,6 +42,7 @@ class UserEntity {
       phone: phone ?? this.phone,
       bio: bio ?? this.bio,
       isLightMode: isLightMode ?? this.isLightMode,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
       companyName: companyName ?? this.companyName,
       companySize: companySize ?? this.companySize,
       industry: industry ?? this.industry,

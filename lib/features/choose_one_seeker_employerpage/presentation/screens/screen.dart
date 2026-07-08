@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/core/const/colors.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/choose_one_seeker_employerpage/presentation/cubit/choose_cubit.dart';
 import 'package:graduation_project/features/choose_one_seeker_employerpage/presentation/cubit/choose_state.dart';
 
@@ -49,7 +50,7 @@ class ApplicantDetailsScreen
 
               return const Center(
                 child:
-                    CircularProgressIndicator(),
+                    loading,
               );
             }
 

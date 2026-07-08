@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Applicants/data/services/schedule_interview.dart';
 import 'package:graduation_project/features/Applicants/logic/entity.dart';
 
@@ -345,8 +346,7 @@ class _ScheduleInterviewDialogState extends State<ScheduleInterviewDialog> {
                         ? const SizedBox(
                             width: 18,
                             height: 18,
-                            child: CircularProgressIndicator(
-                                strokeWidth: 2, color: Colors.white),
+                            child: loading,
                           )
                         : const Text('Schedule Interview',
                             style: TextStyle(color: Colors.white)),

@@ -15,6 +15,7 @@ class JobResponseModel {
 class JobModel {
   final String id;
   final String companyName;
+  final String? companyLogoUrl; // التعديل هنا: خليناها String?
   final String title;
   final String description;
   final List<String> requirements;
@@ -25,6 +26,7 @@ class JobModel {
   JobModel({
     required this.id,
     required this.companyName,
+    this.companyLogoUrl, // التعديل هنا
     required this.title,
     required this.description,
     required this.requirements,
@@ -34,9 +36,22 @@ class JobModel {
   });
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
+    // تظبيط مسار اللوجو عشان يقرأ من السيرفر صح
+    String? rawLogo = json['companyLogoUrl'];
+    String? fullLogoUrl;
+    
+    if (rawLogo != null && rawLogo.isNotEmpty) {
+      if (rawLogo.startsWith('http')) {
+        fullLogoUrl = rawLogo;
+      } else {
+        fullLogoUrl = 'https://smartjop.runasp.net$rawLogo';
+      }
+    }
+
     return JobModel(
       id: json['id'] ?? '',
       companyName: json['companyName'] ?? '',
+      companyLogoUrl: fullLogoUrl, // التعديل هنا
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       requirements: List<String>.from(json['requirements'] ?? []),

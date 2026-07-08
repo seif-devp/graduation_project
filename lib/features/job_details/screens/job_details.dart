@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/apply_now_seeker.dart/data/remote_source.dart';
 import 'package:graduation_project/features/apply_now_seeker.dart/data/repo.dart';
 import 'package:graduation_project/features/job_details/cubit/job_details_cubit.dart';
@@ -45,7 +46,7 @@ class _JobDetailsView extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircularProgressIndicator(color: Color(0xFF1D61FF)),
+            loading,
             SizedBox(height: 20.h),
             Text(
               "Analyzing your CV...\nThis might take a minute ⏳",
@@ -97,7 +98,7 @@ class _JobDetailsView extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is JobDetailsLoading) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(body: Center(child: loading));
         }
 
         final cubit = context.read<JobDetailsCubit>();

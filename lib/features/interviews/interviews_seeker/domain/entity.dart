@@ -4,7 +4,7 @@ class InterviewEntity {
   final String company;
   final String date;
   final String time;
-  final String type;
+  final String mode;
   final String meetingLink;
   final String status;
   final String? rescheduleRequestedAt;
@@ -16,7 +16,7 @@ class InterviewEntity {
     required this.company,
     required this.date,
     required this.time,
-    required this.type,
+    required this.mode,
     required this.meetingLink,
     required this.status,
     this.rescheduleRequestedAt,
@@ -28,7 +28,7 @@ class InterviewEntity {
     String? company,
     String? date,
     String? time,
-    String? type,
+    String? mode,
     String? meetingLink,
     String? status,
     String? rescheduleRequestedAt,
@@ -39,7 +39,7 @@ class InterviewEntity {
       company: company ?? this.company,
       date: date ?? this.date,
       time: time ?? this.time,
-      type: type ?? this.type,
+      mode: mode ?? this.mode,
       meetingLink: meetingLink ?? this.meetingLink,
       status: status ?? this.status,
       rescheduleRequestedAt: rescheduleRequestedAt ?? this.rescheduleRequestedAt,

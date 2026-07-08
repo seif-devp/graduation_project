@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 
 class CareerCoachScreen extends StatefulWidget {
   const CareerCoachScreen({super.key});
@@ -328,10 +329,7 @@ class _CareerCoachScreenState extends State<CareerCoachScreen> {
                     ? const SizedBox(
                         width: 18,
                         height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
+                        child: loading,
                       )
                     : const Icon(Icons.send, color: Colors.white, size: 20),
                 onPressed: _isLoading ? null : _sendMessage,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/const/widgets.dart';
 import 'package:graduation_project/features/Home/Home_employer/presentation/cubit/home_employer_cubit.dart';
 import 'package:graduation_project/features/Home/Home_employer/presentation/cubit/home_employer_state.dart';
 
@@ -265,7 +266,7 @@ class _MyJobsScreenState extends State<MyJobsScreen> {
         },
         builder: (context, state) {
           if (state is MyJobsLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: loading);
           }
 
           if (state is MyJobsSuccess) {
@@ -386,7 +387,7 @@ class _MyJobsScreenState extends State<MyJobsScreen> {
             );
           }
 
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: loading);
         },
       ),
     );

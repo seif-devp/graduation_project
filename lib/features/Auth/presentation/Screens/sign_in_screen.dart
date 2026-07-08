@@ -52,7 +52,13 @@ class _SignInScreenState extends State<SignInScreen> {
         }
         if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Error occurred while signing in')),
+            SnackBar(
+              content: Text(
+                state.errorMessage, 
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+              ),
+              backgroundColor: Colors.red, // لون أحمر عشان ده خطأ
+            ),
           );
         }
       },
